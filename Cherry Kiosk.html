@@ -2046,7 +2046,7 @@ const HDR_DEFAULT = 'neutral'; // HDR 파일 배치 후 HDR_FOOTPRINT_COURT 로 
 
 /* GLB 캐시 무효화용 버전. 모델 파일을 수정·재업로드할 때마다 이 값을 변경해서
    브라우저·model-viewer 내부 캐시가 새 파일을 다시 다운받도록 강제한다. */
-const GLB_CACHE_VERSION = '20260526d';
+const GLB_CACHE_VERSION = '20260526e';
 function glbUrl(path) {
   if (!path) return path;
   return path + (path.includes('?') ? '&' : '?') + 'v=' + GLB_CACHE_VERSION;
