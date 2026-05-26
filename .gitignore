@@ -1,0 +1,24 @@
+# 내부 작업/디버그 폴더 및 파일 (언더스코어 접두) — 배포 대상 아님
+_*/
+_*.py
+_*.png
+_*.jpg
+_*.webp
+_*.html
+_*.json
+
+# 메모리/피드백 (Claude Code 내부)
+memory/
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# 로그/임시
+*.log
+*.tmp
+*.bak
