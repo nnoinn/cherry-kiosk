@@ -1084,6 +1084,36 @@
   }
   .modal-full-btn:active { background: var(--cherry); transform: scale(.97); }
 
+  /* 3D 모델 로딩 모달 — 프로그레스 바 */
+  .load-progress-bar {
+    width: 100%; height: 14px; background: var(--bg-soft, #f6f7fa);
+    border-radius: 7px; overflow: hidden;
+    border: 1.5px solid var(--border);
+    margin-top: 8px;
+  }
+  .load-progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--cherry), var(--cherry-light, #f4a8b4));
+    transition: width .15s ease-out;
+    border-radius: 6px;
+  }
+  .load-percent-text {
+    font-size: 56px; font-weight: 900; color: var(--cherry);
+    margin: 12px 0 24px; letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .load-status-text {
+    font-size: 18px; color: var(--fg3); margin-top: 16px;
+  }
+  .load-spinner {
+    width: 60px; height: 60px; margin: 0 auto 24px;
+    border: 5px solid var(--bg-soft, #f0f0f0);
+    border-top-color: var(--cherry);
+    border-radius: 50%;
+    animation: load-spin 0.9s linear infinite;
+  }
+  @keyframes load-spin { to { transform: rotate(360deg); } }
+
   /* Help modal */
   .help-modal { text-align: left; }
   .help-modal .modal-title { text-align: left; }
@@ -1712,10 +1742,122 @@ function handlePrev() {
 function handleNext() {
   if (state.step===1 && !state.model) return;
   if (state.step===2) { state.brush = state.activeSwitch; state.step++; renderBuilder(); return; }
-  if (state.step===3 && state.buildMode==='build') { state.buildMode='review'; renderStep(); renderFooter(); return; }
+  if (state.step===3 && state.buildMode==='build') {
+    // 리뷰 모드로 전환하면서 동시에 로딩 모달 표시 — model-viewer 의 진짜 load 이벤트 기다림
+    const m = state.model;
+    const rawUrl = m && m.glbImages ? m.glbImages[state.color] : null;
+    if (!rawUrl) { state.buildMode='review'; renderStep(); renderFooter(); return; }
+    showModelLoadingModal(glbUrl(rawUrl));
+    return;
+  }
   if (state.step===3 && state.buildMode==='review') { showQrModal(); return; }
   state.step++;
   renderBuilder();
+}
+
+/* 3D 모델 로딩 모달.
+ * 1) 모달을 먼저 띄움
+ * 2) 숨김 model-viewer 를 생성해 GLB 다운로드 + 파싱 + GPU 업로드까지 완료 대기
+ * 3) load 이벤트 발화하면 리뷰 페이지로 전환 + 모달 닫기
+ *    (리뷰 페이지의 새 model-viewer 는 같은 URL 이라 HTTP 캐시에서 즉시 가져옴)
+ */
+function showModelLoadingModal(url) {
+  openModal(`
+    <div class="load-spinner"></div>
+    <div class="modal-title">3D 모델 로딩 중</div>
+    <div class="load-percent-text" id="load-percent">0%</div>
+    <div class="load-progress-bar"><div class="load-progress-fill" id="load-fill"></div></div>
+    <div class="load-status-text" id="load-status">조립된 키보드를 불러오고 있습니다...</div>
+  `);
+
+  // 표시 퍼센티지 부드럽게 증가 — model-viewer progress 가 중간에 멈춰도 자연스럽게 100까지 채움.
+  // displayed: 화면에 표시되는 값, target: 추격 대상 (실제 진행 + 시간 기반 추정 의 최댓값)
+  let displayed = 0;
+  let target = 0;
+  let realProgress = 0;
+  let finishedFlag = false;
+  const startTime = performance.now();
+  const ESTIMATED_LOAD_MS = 4000; // 시간 기반 추정의 기준 (4초 정도면 자연스럽게 94까지 도달)
+
+  const updateUI = () => {
+    const pctEl = document.getElementById('load-percent');
+    const fillEl = document.getElementById('load-fill');
+    const rounded = Math.round(displayed);
+    if (pctEl) pctEl.textContent = rounded + '%';
+    if (fillEl) fillEl.style.width = rounded + '%';
+  };
+
+  const rafLoop = () => {
+    // 시간 기반 추정 — easeOut 곡선으로 0→94 천천히
+    const elapsed = performance.now() - startTime;
+    const t = Math.min(1, elapsed / ESTIMATED_LOAD_MS);
+    const timeEstimate = (1 - Math.pow(1 - t, 2.5)) * 94; // easeOut → 0..94
+    // 실제 진행률(real) 과 시간 추정 중 큰 값을 target 으로
+    let candidate = Math.max(realProgress * 100, timeEstimate);
+    // 완료된 경우 100
+    if (finishedFlag) candidate = 100;
+    target = Math.max(target, candidate); // 후퇴 방지 (단조 증가)
+    // displayed 가 target 을 부드럽게 추격
+    displayed += (target - displayed) * 0.12;
+    if (target - displayed < 0.5 && target >= 100) displayed = 100;
+    updateUI();
+    if (!finishedFlag || displayed < 100) {
+      rafId = requestAnimationFrame(rafLoop);
+    }
+  };
+  let rafId = requestAnimationFrame(rafLoop);
+
+  // 숨김 model-viewer 생성 — 실제 GLB 파싱 + GPU 업로드 진행.
+  // loading="eager" 필수: 화면 밖에 있어도 IntersectionObserver 우회해서 즉시 로드 시작.
+  // 위치는 fixed + 0/0 + tiny + opacity 0 — viewport 안에 있어야 일부 브라우저에서 진짜로 시작.
+  const hidden = document.createElement('model-viewer');
+  hidden.setAttribute('loading', 'eager');
+  hidden.setAttribute('reveal', 'auto');
+  hidden.style.cssText = 'position:fixed;left:0;top:0;width:120px;height:80px;opacity:0;pointer-events:none;z-index:-1';
+  hidden.src = url;
+  document.body.appendChild(hidden);
+
+  const finish = () => {
+    if (finishedFlag) return;
+    finishedFlag = true;
+    realProgress = 1;
+    // displayed 가 100 에 도달할 때까지 대기 (RAF loop 이 자연스럽게 추격)
+    const waitFor100 = () => {
+      if (displayed >= 99.5) {
+        try { hidden.remove(); } catch (e) {}
+        state.buildMode = 'review';
+        renderStep();
+        renderFooter();
+        requestAnimationFrame(() => requestAnimationFrame(() => closeModal()));
+      } else {
+        requestAnimationFrame(waitFor100);
+      }
+    };
+    requestAnimationFrame(waitFor100);
+  };
+
+  hidden.addEventListener('progress', (e) => {
+    const p = (e.detail && typeof e.detail.totalProgress === 'number') ? e.detail.totalProgress : 0;
+    realProgress = Math.max(realProgress, p);
+    if (p >= 1) finish();
+  });
+  hidden.addEventListener('load', finish, { once: true });
+  hidden.addEventListener('error', (e) => {
+    console.warn('Model load error, proceeding anyway:', e);
+    finish();
+  }, { once: true });
+
+  // 폴백 폴링: 200ms 마다 model-viewer 의 loaded 속성 체크 (이벤트 누락 대비)
+  const poller = setInterval(() => {
+    if (finishedFlag) { clearInterval(poller); return; }
+    if (hidden.loaded || hidden.modelIsVisible) { clearInterval(poller); finish(); return; }
+    if (typeof hidden.progress === 'number' && hidden.progress > realProgress) {
+      realProgress = hidden.progress;
+    }
+  }, 200);
+
+  // Safety timeout — 30초 이상 걸리면 그냥 진입
+  setTimeout(() => { if (!finishedFlag) { clearInterval(poller); finish(); } }, 30000);
 }
 
 /* ════════════════ STEP 1 ════════════════ */
@@ -1901,6 +2043,14 @@ function getLightingFor(color, glbPath) {
    ※ 파일이 실제로 배치되지 않았다면 모델 로드가 실패하므로 'neutral' 유지. */
 const HDR_FOOTPRINT_COURT = 'assets/footprint_court_2k.hdr';
 const HDR_DEFAULT = 'neutral'; // HDR 파일 배치 후 HDR_FOOTPRINT_COURT 로 변경
+
+/* GLB 캐시 무효화용 버전. 모델 파일을 수정·재업로드할 때마다 이 값을 변경해서
+   브라우저·model-viewer 내부 캐시가 새 파일을 다시 다운받도록 강제한다. */
+const GLB_CACHE_VERSION = '20260526d';
+function glbUrl(path) {
+  if (!path) return path;
+  return path + (path.includes('?') ? '&' : '?') + 'v=' + GLB_CACHE_VERSION;
+}
 function mvLighting(color) {
   switch (color) {
     case '블랙':
@@ -2817,7 +2967,7 @@ function renderStep3(main) {
         <div class="review-3d">
           ${(m && m.glbImages && m.glbImages[state.color]) ? (() => {
             const L = getLightingFor(state.color, m.glbImages[state.color]);
-            return `<model-viewer src="${m.glbImages[state.color]}" alt="${m.name} ${state.color}"
+            return `<model-viewer src="${glbUrl(m.glbImages[state.color])}" alt="${m.name} ${state.color}"
               camera-controls touch-action="pan-y" auto-rotate auto-rotate-delay="2000" rotation-per-second="15deg"
               exposure="${L.exposure}" shadow-intensity="${L.shadow}" shadow-softness="${L.softness || '0.85'}"
               environment-image="${L.env}" tone-mapping="${L.tone}"
