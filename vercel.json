@@ -8,14 +8,20 @@
     {
       "source": "/(.*)\\.glb",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
         { "key": "Content-Type", "value": "model/gltf-binary" }
       ]
     },
     {
       "source": "/(.*)\\.(webp|png|jpg|jpeg)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(.*)\\.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
     }
   ]
