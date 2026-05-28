@@ -1045,10 +1045,10 @@
   }
   .ric-zone-tag {
     flex: 0 0 140px; font-size: 28px; font-weight: 800;
-    color: var(--fg); letter-spacing: .5px;
+    color: var(--fg); letter-spacing: .5px; text-align: center;
   }
   .ric-mapping-arrow { color: var(--fg3); font-weight: 700; font-size: 28px; }
-  .ric-switch-tag { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+  .ric-switch-tag { display: flex; align-items: center; justify-content: center; gap: 12px; flex: 1; min-width: 0; }
   .ric-switch-dot { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
   .ric-switch-name { font-size: 28px; font-weight: 800; color: var(--fg); }
   .ric-switch-type { font-size: 13px; color: var(--fg3); font-weight: 600; }
@@ -3020,7 +3020,7 @@ function renderStep3(main) {
                     <div class="ric-mapping-arrow">→</div>
                     <div class="ric-switch-tag">
                       <span class="ric-switch-dot" style="background:${sw.color}"></span>
-                      <span class="ric-switch-name">${sw.name}</span>
+                      <span class="ric-switch-name">${sw.name.replace(/^MX\s*/, '')}</span>
                     </div>
                   </div>
                 `).join('')}
