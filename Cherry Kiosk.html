@@ -88,7 +88,7 @@
     font-size: 36px; font-weight: 900; color: var(--cherry); letter-spacing: 2px;
     z-index: 5;
   }
-  .landing-cherry-icon { width: 52px; height: 52px; margin-top: -4px; }
+  .landing-cherry-icon { width: 104px; height: 104px; margin-top: -4px; }
   .landing-bg-kb {
     position: absolute; inset: 0;
     pointer-events: none;
@@ -121,7 +121,7 @@
   }
   .landing-title-kb {
     font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
-    font-size: 70px; font-weight: 700; color: var(--fg); letter-spacing: 12px; margin-top: 16px;
+    font-size: 88px; font-weight: 700; color: var(--fg); letter-spacing: 4px; margin-top: 16px;
     transform: scaleX(1.2); transform-origin: center;
   }
   .landing-cta {
@@ -130,7 +130,7 @@
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--cherry); color: #fff;
     border-radius: 22px; padding: 34px 120px;
-    font-size: 42px; font-weight: 800;
+    font-size: 56px; font-weight: 800;
     box-shadow: 0 12px 40px rgba(197,48,69,.25);
     transition: background .2s, transform .15s;
     border: none; cursor: pointer; z-index: 5;
@@ -217,7 +217,7 @@
   .hub-card:active .hub-card-cta { background: var(--cherry-dark); }
   .hub-card-body { display: flex; flex-direction: column; gap: 12px; }
   .hub-card-title { font-size: 44px; font-weight: 900; color: var(--fg); letter-spacing: -1.5px; line-height: 48.4px; }
-  .hub-card-desc { font-size: 26px; font-weight: 400; color: var(--fg2); line-height: 35.2px; }
+  .hub-card-desc { font-size: 28px; font-weight: 400; color: var(--fg2); line-height: 37.2px; }
   .hub-card-cta {
     display: flex; align-items: center; justify-content: center;
     width: 80px; height: 80px;
@@ -373,7 +373,9 @@
     position: relative; padding: 80px 0 16px;
   }
   .timeline::before {
-    content:''; position: absolute; top: 0; bottom: 0; left: 50%;
+    /* 로고(체리) 초기 위치(top:24px, 높이 110px → 중심 ≈ 79px)부터 점선 시작.
+       스크롤 안 한 첫 화면에서 로고 위에 점선이 안 보이고, 점선 끝에서 로고가 출발. */
+    content:''; position: absolute; top: 79px; bottom: 0; left: 50%;
     width: 3px; transform: translateX(-50%);
     background-image: linear-gradient(to bottom, var(--cherry) 50%, transparent 50%);
     background-size: 3px 12px;
@@ -470,6 +472,11 @@
   .tech-highlights {
     display: flex; flex-wrap: wrap; gap: 10px;
   }
+  /* 초록 키워드(pill)와 위 텍스트 간격 차등 — 현재 desc margin-bottom 14px 기준 */
+  .tech-item:nth-child(1) .tech-highlights,
+  .tech-item:nth-child(3) .tech-highlights { margin-top: 14px; }  /* 14+14 = 28px (2배) */
+  .tech-item:nth-child(2) .tech-highlights,
+  .tech-item:nth-child(4) .tech-highlights { margin-top: 7px; }   /* 14+7 = 21px (1.5배) */
   .tech-pill {
     font-size: 24px; font-weight: 700; color: #16A34A;
     background: rgba(22, 163, 74, 0.1); padding: 12px 22px; border-radius: 100px;
@@ -810,6 +817,8 @@
     background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); padding: 32px;
     display: flex; flex-direction: column; gap: 16px;
   }
+  /* 포스커브 설명 — 스위치 설명 한 줄(.sdc-summary)과 동일 글꼴/사이즈 */
+  .force-curve-desc { font-size: 30px; color: var(--fg2); line-height: 1.6; }
   #s2-svg { width: 100%; height: 480px; display: block; }
 
   .switch-detail-card {
@@ -826,10 +835,8 @@
   .sdc-col-title.pro { color: #16a34a; }
   .sdc-col-title.con { color: #dc2626; }
   .sdc-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .sdc-list li { font-size: 26px; color: var(--fg2); padding-left: 16px; position: relative; line-height: 1.5; white-space: nowrap; }
-  .sdc-list li::before { content: ''; position: absolute; left: 0; top: 8px; width: 8px; height: 8px; border-radius: 50%; }
-  .sdc-list.pro li::before { background: #bbf7d0; }
-  .sdc-list.con li::before { background: #fecaca; }
+  /* 동그라미 구분자 제거 + 제목 글자("장"/"유") 시작점과 세로정렬 (아이콘 18px + gap 8px = 26px) */
+  .sdc-list li { font-size: 26px; color: var(--fg2); padding-left: 26px; line-height: 1.5; white-space: nowrap; }
 
   .tech-card {
     background: var(--cherry-light); border: 1.5px solid var(--cherry-mid);
@@ -848,7 +855,7 @@
   .s3-layout { flex: 1; display: flex; overflow: hidden; height: 100%; }
   .s3-detail { flex: 1; padding: 44px 36px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; position: relative; }
   .s3-tip-btn {
-    position: absolute; top: 40px; right: 36px;
+    position: absolute; top: 20px; right: 20px;
     display: flex; align-items: center; gap: 12px;
     padding: 16px 28px; border-radius: 100px;
     background: var(--surface); border: 1.5px solid var(--border);
@@ -1170,7 +1177,6 @@
 <div id="screen-landing" class="screen active" onclick="go('home')">
   <div class="landing-bg-kb"></div>
   <div class="landing-top-logo">
-    <span class="logo-text">CHERRY</span>
     <img src="images/logo.svg" class="landing-cherry-icon" alt="Cherry">
   </div>
   <div class="landing-content">
@@ -1602,7 +1608,7 @@ const models = [
     }
   },
   { id:'m8', name:'MX-LP 2.1 WL', series:'XTRFY', layout:'컴팩트(65%)', housing:'고품질 플라스틱', connect:'유선(USB-A, C)\n무선(2.4G) / BT(5.2채널)', keycap:'ABS / 레이저 에칭 + UV 코팅', polling:'1ms', img:'images/MX-LP 2.1 WL.jpg',
-    pros:['컴팩트 무선 게이밍 키보드','전체 높이 35% 감소, 반동 속도 40% 향상','고급 노르딕 칩 장착','<1ms 게이밍 모드 저레이턴시','안티고스팅, N키 롤오버, Win키 잠금'],
+    pros:['컴팩트 무선 게이밍 키보드','전체 높이 35% 감소, 반동 속도 40% 향상','고급 노르딕 칩 장착','<1ms 게이밍 모드 저레이턴시','win키 잠금, 안티고스팅 및 N키 롤오버'],
     recommendUser:'개성 있는 컴팩트 키보드 선호 게이머, 휴대용 게이밍 키보드 필요 유저',
     lighting:'각 키마다 최대 1600만 색상 표현 가능한 RGB LED, 나만의 조명 효과 생성 및 키보드 내장 메모리에 저장',
     colors:['블랙','화이트','브라운'],
@@ -1886,7 +1892,6 @@ function renderStep1(main) {
     main.innerHTML = `
       <div class="s1-detail">
         <div class="sidebar">
-          <div class="sidebar-header"><div class="sidebar-label">라인업 탐색</div></div>
           <div class="sidebar-list" id="s1-list">
             ${models.map(mdl => `
               <button class="sidebar-item ${mdl.id===m.id?'active':''}" onclick="selectModel('${mdl.id}')">
@@ -2446,7 +2451,6 @@ function renderStep2(main) {
   main.innerHTML = `
     <div class="s2-layout">
       <div class="sidebar">
-        <div class="sidebar-header"><div class="sidebar-label">스위치 탐색</div></div>
         <div class="sidebar-list" id="s2-list"></div>
       </div>
       <div class="s2-detail">
@@ -2495,6 +2499,7 @@ function renderStep2(main) {
             포스 커브
             <div class="badge" id="s2-force"></div>
           </div>
+          <div class="force-curve-desc">키를 누르는 힘과 깊이의 관계</div>
           <svg id="s2-svg" viewBox="-50 -10 470 260" preserveAspectRatio="xMidYMid meet"></svg>
         </div>
     </div>`;
@@ -2539,7 +2544,7 @@ function updateStep2() {
         <ul class="sdc-list pro">${d.pros.map(p=>`<li>${p}</li>`).join('')}</ul>
       </div>
       <div>
-        <div class="sdc-col-title con"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> 유의사항</div>
+        <div class="sdc-col-title con"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="7" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> 유의사항</div>
         <ul class="sdc-list con">${d.cons.map(c=>`<li>${c}</li>`).join('')}</ul>
       </div>
     </div>
@@ -2865,19 +2870,18 @@ function renderStep3(main) {
     main.innerHTML = `
       <div class="s3-layout">
         <div class="sidebar">
-          <div class="sidebar-header"><div class="sidebar-label">스위치 선택</div></div>
           <div class="sidebar-list" id="s3-list"></div>
         </div>
         <div class="s3-detail">
-          <button class="s3-tip-btn" onclick="showHelpModal()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            추천 팁
-          </button>
           <div>
-            <div class="step-heading">커스텀 스위치 매핑</div>
+            <div class="step-heading">커스텀 스위치 맵핑</div>
             <div class="step-sub">스위치를 선택하여 하단 기판을 터치하여 체결하세요.</div>
           </div>
           <div class="keyboard-wrap" id="kb-wrap">
+            <button class="s3-tip-btn" onclick="showHelpModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+              추천 팁
+            </button>
             ${(() => {
               // 모델별 레이아웃 선택 (Full / TKL / Compact 65%)
               const layout = getActiveLayout();
@@ -3099,8 +3103,8 @@ function renderZoneOverlays() {
     let inner = '<defs><filter id="zoneOutline"><feMorphology operator="erode" radius="2" in="SourceGraphic" result="eroded"/><feComposite in="SourceGraphic" in2="eroded" operator="out"/></filter></defs>';
     Object.entries(zones).forEach(([zone, rects]) => {
       const c = '0,0,0';
-      inner += `<g opacity="0.05">${buildRects(rects, c)}</g>`;
-      inner += `<g opacity="0.45" filter="url(#zoneOutline)">${buildRects(rects, c)}</g>`;
+      inner += `<g opacity="0.07">${buildRects(rects, c)}</g>`;
+      inner += `<g opacity="0.72" filter="url(#zoneOutline)">${buildRects(rects, c)}</g>`;
     });
 
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
