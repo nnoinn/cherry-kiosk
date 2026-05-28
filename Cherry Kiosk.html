@@ -983,10 +983,10 @@
   }
   .review-info-card-stack { flex-direction: column; align-items: stretch; gap: 18px; }
   .ric-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
-  .ric-label { font-size: 14px; font-weight: 700; color: var(--fg3); letter-spacing: 2px; text-transform: uppercase; }
-  .ric-title { font-size: 30px; font-weight: 800; color: var(--fg); line-height: 1.2; }
-  .ric-sub { font-size: 18px; color: var(--fg2); font-weight: 600; margin-top: 4px; }
-  .ric-sub2 { font-size: 15px; color: var(--fg3); }
+  .ric-label { font-size: 30px; font-weight: 700; color: var(--fg3); letter-spacing: 2px; text-transform: uppercase; }
+  .ric-title { font-size: 46px; font-weight: 800; color: var(--fg); line-height: 1.2; }
+  .ric-sub { font-size: 36px; color: var(--fg2); font-weight: 600; margin-top: 4px; }
+  .ric-sub2 { font-size: 30px; color: var(--fg3); }
   .ric-img-wrap {
     flex: 1.2; border-radius: 16px;
     background: linear-gradient(145deg, #f8f9fb, #ecedf0);
@@ -1044,13 +1044,13 @@
     border-radius: 12px; border: 1px solid var(--border);
   }
   .ric-zone-tag {
-    flex: 0 0 110px; font-size: 16px; font-weight: 800;
+    flex: 0 0 180px; font-size: 36px; font-weight: 800;
     color: var(--fg); letter-spacing: .5px;
   }
-  .ric-mapping-arrow { color: var(--fg3); font-weight: 700; font-size: 18px; }
-  .ric-switch-tag { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
-  .ric-switch-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
-  .ric-switch-name { font-size: 16px; font-weight: 800; color: var(--fg); }
+  .ric-mapping-arrow { color: var(--fg3); font-weight: 700; font-size: 30px; }
+  .ric-switch-tag { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+  .ric-switch-dot { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+  .ric-switch-name { font-size: 36px; font-weight: 800; color: var(--fg); }
   .ric-switch-type { font-size: 13px; color: var(--fg3); font-weight: 600; }
   .ric-empty { color: var(--fg3); font-size: 16px; padding: 14px 4px; }
 
@@ -1121,7 +1121,7 @@
     font-variant-numeric: tabular-nums;
   }
   .load-status-text {
-    font-size: 18px; color: var(--fg3); margin-top: 16px;
+    font-size: 24px; color: var(--fg3); margin-top: 16px;
   }
   .load-spinner {
     width: 60px; height: 60px; margin: 0 auto 24px;
@@ -3021,7 +3021,6 @@ function renderStep3(main) {
                     <div class="ric-switch-tag">
                       <span class="ric-switch-dot" style="background:${sw.color}"></span>
                       <span class="ric-switch-name">${sw.name}</span>
-                      <span class="ric-switch-type">${sw.type}</span>
                     </div>
                   </div>
                 `).join('')}
