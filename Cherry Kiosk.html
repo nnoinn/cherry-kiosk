@@ -606,6 +606,13 @@
   .sidebar-header { padding: 32px 28px 24px; border-bottom: 1.5px solid var(--border); }
   .sidebar-label { font-size: 22px; font-weight: 700; color: var(--fg3); letter-spacing: 2px; text-transform: uppercase; }
   .sidebar-list { flex: 1; overflow-y: auto; padding: 20px 18px; display: flex; flex-direction: column; gap: 10px; }
+  /* 라인업 선택 리스트: 9개 모델을 스크롤 없이 화면 높이에 균등 배치 */
+  #s1-list { overflow: hidden; gap: 6px; padding: 10px 14px; }
+  #s1-list .s1-model-item {
+    flex: 1 1 0; min-height: 0;
+    padding: 6px 10px; gap: 2px; margin-bottom: 0;
+    justify-content: center;
+  }
   .sidebar-item {
     padding: 14px 14px; border-radius: 14px;
     border: 2px solid transparent; background: transparent;
@@ -712,8 +719,8 @@
   .switch-color-bar { width: 10px; height: 52px; border-radius: 6px; flex-shrink: 0; }
   .switch-name { font-size: 52px; font-weight: 900; letter-spacing: -2px; white-space: nowrap; }
   .switch-badge {
-    padding: 8px 20px; border-radius: 100px;
-    font-size: 17px; font-weight: 700;
+    padding: 12px 28px; border-radius: 100px;
+    font-size: 30px; font-weight: 700;
     background: var(--bg); color: var(--fg2);
     border: 1.5px solid var(--border);
   }
@@ -830,7 +837,11 @@
   .sdc-spec { background: var(--bg); border-radius: 16px; padding: 20px 16px; text-align: center; }
   .sdc-spec-label { font-size: 22px; font-weight: 700; color: var(--fg3); letter-spacing: 0; text-transform: none; margin-bottom: 8px; }
   .sdc-spec-value { font-size: 28px; font-weight: 800; color: var(--fg); }
-  .sdc-pros-cons { display: grid; grid-template-columns: 290px 366px; gap: 40px; margin-right: -36px; }
+  /* specs(4열 1fr)와 동일 그리드 → 장점은 1~2열, 유의사항은 3~4열(=총이동거리 박스 좌측에 정렬) */
+  .sdc-pros-cons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .sdc-pros-cons > div:nth-child(1) { grid-column: 1 / 3; }
+  .sdc-pros-cons > div:nth-child(2) { grid-column: 3 / 5; overflow: visible; }
+  .sdc-pros-cons > div:nth-child(2) .sdc-list li { white-space: nowrap; }
   .sdc-col-title { font-size: 26px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
   .sdc-col-title.pro { color: #16a34a; }
   .sdc-col-title.con { color: #dc2626; }
@@ -1628,7 +1639,7 @@ const switches = {
   red:    { id:'red',    name:'MX Red',        type:'Linear',  force:'45cN', desc:'부드러운 저음역, 선형 타건감', img:'images/MX RED.webp',
     detail: { opForce:'45cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥1억 회',
       summary:'걸림 없이 부드럽게 입력되는 순수 리니어 올라운더 스위치.',
-      pros:['빠른 연타 유리','장시간 사용 시 손목 피로 최소'],
+      pros:['빠른 연타 유리','장시간 사용 시 피로 최소화'],
       cons:['오타 빈도 증가 가능','타건 피드백 부족']
     }, color:'#ef4444', stroke:'#ef4444', path:'M0,150 L150,131 L300,106 L370,90 Q390,80 395,55 L400,33' },
   brown:  { id:'brown',  name:'MX Brown',       type:'Tactile', force:'55cN', desc:'균형 잡힌 톤, 명확한 타이핑 피드백', img:'images/MX BROWN.webp',
@@ -1664,7 +1675,7 @@ const switches = {
   silent: { id:'silent', name:'MX Silent Red',  type:'Silent',  force:'45cN', desc:'극저소음 설계, 사무·야간 사용 적합', img:'images/MX SILENT RED.webp',
     detail: { opForce:'45cN', preTravel:'1.9mm', totalTravel:'3.7mm', life:'≥0.5억 회',
       summary:'댐퍼 내장으로 소음을 약 30% 저감한 저소음 리니어 스위치.',
-      pros:['MX Red 동급 부드러운 타건감','정숙 환경 최적'],
+      pros:['부드러운 타건감','정숙 환경 최적'],
       cons:['댐퍼로 인한 무른 바닥감','리니어 특유의 피드백 부재']
     }, color:'#fb7185', stroke:'#fb7185', path:'M0,150 L150,131 L300,107 L350,98 L365,93 Q372,75 370,67' },
 };
@@ -1894,11 +1905,11 @@ function renderStep1(main) {
         <div class="sidebar">
           <div class="sidebar-list" id="s1-list">
             ${models.map(mdl => `
-              <button class="sidebar-item ${mdl.id===m.id?'active':''}" onclick="selectModel('${mdl.id}')">
-                <div style="width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;padding:4px;margin-bottom:4px">
+              <button class="sidebar-item s1-model-item ${mdl.id===m.id?'active':''}" onclick="selectModel('${mdl.id}')">
+                <div class="s1-model-img" style="width:100%;flex:1 1 0;min-height:0;border-radius:10px;overflow:hidden;padding:2px">
                   <img src="${nookkiForModel(mdl)}" style="width:100%;height:100%;object-fit:contain;display:block" alt="${mdl.name}">
                 </div>
-                <div class="sidebar-item-name" style="font-size:24px">${mdl.name}</div>
+                <div class="sidebar-item-name" style="font-size:22px">${mdl.name}</div>
               </button>
             `).join('')}
           </div>
@@ -2544,7 +2555,7 @@ function updateStep2() {
         <ul class="sdc-list pro">${d.pros.map(p=>`<li>${p}</li>`).join('')}</ul>
       </div>
       <div>
-        <div class="sdc-col-title con"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="7" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> 유의사항</div>
+        <div class="sdc-col-title con"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="3" x2="12" y2="15"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg> 유의사항</div>
         <ul class="sdc-list con">${d.cons.map(c=>`<li>${c}</li>`).join('')}</ul>
       </div>
     </div>
@@ -3180,26 +3191,26 @@ function showHelpModal() {
   openModal(`
     <div class="help-modal">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
-        <div class="modal-title" style="margin:0">키 영역별 추천 스위치</div>
+        <div class="modal-title" style="margin:0;font-size:40px">키 영역별 추천 스위치</div>
         <button class="modal-close" onclick="closeModal()" style="position:static;flex-shrink:0">✕</button>
       </div>
       ${kbPreview}
       <div class="help-list">
         <div class="help-item">
-          <div class="help-item-title" style="font-size:26px">문자 · 숫자 키</div>
-          <div class="help-item-desc" style="font-size:24px">타이핑 — <strong style="color:#d97706">Brown</strong> · <strong style="color:#94a3b8">Clear</strong></div>
+          <div class="help-item-title" style="font-size:36px">문자 · 숫자 키</div>
+          <div class="help-item-desc" style="font-size:32px">타이핑 — <strong style="color:#d97706">Brown</strong> · <strong style="color:#94a3b8">Clear</strong></div>
         </div>
         <div class="help-item">
-          <div class="help-item-title" style="font-size:26px">방향 · 게이밍 키</div>
-          <div class="help-item-desc" style="font-size:24px">빠른 연타 — <strong style="color:#ef4444">Red</strong></div>
+          <div class="help-item-title" style="font-size:36px">방향 · 게이밍 키</div>
+          <div class="help-item-desc" style="font-size:32px">빠른 연타 — <strong style="color:#ef4444">Red</strong></div>
         </div>
         <div class="help-item">
-          <div class="help-item-title" style="font-size:26px">모디파이어</div>
-          <div class="help-item-desc" style="font-size:24px">저소음 — <strong style="color:#fb7185">Silent Red</strong></div>
+          <div class="help-item-title" style="font-size:36px">모디파이어</div>
+          <div class="help-item-desc" style="font-size:32px">저소음 — <strong style="color:#fb7185">Silent Red</strong></div>
         </div>
         <div class="help-item">
-          <div class="help-item-title" style="font-size:26px">엔터 · 스페이스</div>
-          <div class="help-item-desc" style="font-size:24px">강한 피드백 — <strong style="color:#3b82f6">Blue</strong> · <strong style="color:#555555">Black</strong></div>
+          <div class="help-item-title" style="font-size:36px">엔터 · 스페이스</div>
+          <div class="help-item-desc" style="font-size:32px">강한 피드백 — <strong style="color:#3b82f6">Blue</strong> · <strong style="color:#555555">Black</strong></div>
         </div>
       </div>
     </div>`);
