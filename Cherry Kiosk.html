@@ -688,7 +688,7 @@
 
   .color-options { display: flex; gap: 18px; flex-wrap: wrap; }
   .color-btn {
-    width: 144px; height: 56px;
+    width: 200px; height: 56px;
     border-radius: 16px;
     border: 2px solid var(--border); background: var(--bg);
     font-size: 24px; font-weight: 700; cursor: pointer; transition: all .15s;
@@ -1532,19 +1532,15 @@ const models = [
     pros:['볼륨 및 계산기용 추가 키 4개','안티고스팅 및 N키 롤오버'],
     recommendUser:'데이터 입력이 많은 회계/사무직, 계산기 필요한 사용자',
     lighting:'잠금 상태키 하얀색 LED 내장',
-    colors:['블랙','민트','오렌지','핑크','화이트'],
+    colors:['블랙','오렌지','화이트'],
     housingImages:{
       '블랙':'images/keyboard_housing/KC 200 MX_black(default).webp',
-      '민트':'images/keyboard_housing/KC 200 MX_mint.webp',
       '오렌지':'images/keyboard_housing/KC 200 MX_orange.webp',
-      '핑크':'images/keyboard_housing/KC 200 MX_pink.webp',
       '화이트':'images/keyboard_housing/KC 200 MX_white.webp',
     } ,
     glbImages:{
       '블랙':'models/model_color/KC 200 MX_Black.glb',
-      '민트':'models/model_color/KC 200 MX_Mint.glb',
       '오렌지':'models/model_color/KC 200 MX_Orange.glb',
-      '핑크':'models/model_color/KC 200 MX_Pink.glb',
       '화이트':'models/model_color/KC 200 MX_White.glb',
     }
   },
@@ -2082,7 +2078,6 @@ function mvLighting(color) {
       return { exposure: '1.15', shadow: '0.35', tone: 'commerce', env: HDR_DEFAULT };
     case '핑크':
       return { exposure: '1.20', shadow: '0.35', tone: 'commerce', env: HDR_DEFAULT };
-    case '민트':
     case '오렌지':
     case '브라운':
     case '옐로우':
