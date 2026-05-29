@@ -2538,7 +2538,7 @@ function updateStep2() {
   document.getElementById('s2-name').textContent = sw.name;
   document.getElementById('s2-type').textContent = sw.type;
   document.getElementById('s2-desc').textContent = sw.desc;
-  document.getElementById('s2-force').textContent = sw.force.replace(/\s*cN/i, '');
+  document.getElementById('s2-force').textContent = sw.force;
 
   // Detail card
   const d = sw.detail;
@@ -2574,8 +2574,10 @@ function updateStep2() {
     <g font-size="14" font-weight="600" fill="#94a3b8" font-family="'Pretendard Variable','Pretendard',sans-serif">
       ${yTicks.map(v => { const y = 200 - v * 5/3; return `<text x="-8" y="${y + 5}" text-anchor="end">${v}</text>`; }).join('')}
       ${xTicks.map(v => { const x = v * 100; return `<text x="${x}" y="220" text-anchor="middle">${v}</text>`; }).join('')}
-      <text x="0" y="-14" text-anchor="middle" fill="#64748b" font-size="17">(cN)</text>
-      <text x="400" y="235" text-anchor="end" fill="#64748b" font-size="17">(mm)</text>
+      <text x="-8" y="-14" text-anchor="end">(cN)</text>
+      <text x="402" y="248" text-anchor="end">(mm)</text>
+      <text x="-38" y="100" text-anchor="middle" transform="rotate(-90 -38 100)" fill="#64748b" font-size="17">작동력</text>
+      <text x="200" y="248" text-anchor="middle" fill="#64748b" font-size="17">키눌림 거리</text>
     </g>
     <g stroke="#cbd5e1" stroke-width="1.2">
       <line x1="0" y1="0" x2="0" y2="200"/>
