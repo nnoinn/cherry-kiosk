@@ -1161,17 +1161,6 @@
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-  /* 스위치 분석 페이지 전용 — 손가락으로 잡을 수 있는 두꺼운 회색 스크롤바 */
-  .s2-detail::-webkit-scrollbar { width: 14px; }
-  .s2-detail::-webkit-scrollbar-track { background: rgba(0,0,0,.04); border-radius: 10px; }
-  .s2-detail::-webkit-scrollbar-thumb {
-    background: #94a3b8; border-radius: 10px;
-    min-height: 100px;
-    border: 2px solid transparent; background-clip: content-box;
-  }
-  .s2-detail::-webkit-scrollbar-thumb:active {
-    background: #64748b; background-clip: content-box;
-  }
 </style>
 <script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 
@@ -2564,7 +2553,7 @@ function updateStep2() {
         <ul class="sdc-list pro">${d.pros.map(p=>`<li>${p}</li>`).join('')}</ul>
       </div>
       <div>
-        <div class="sdc-col-title con"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="14"/><line x1="12" y1="19" x2="12.01" y2="19"/></svg> 유의사항</div>
+        <div class="sdc-col-title con"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="6" x2="12" y2="15"/><line x1="12" y1="19" x2="12.01" y2="19"/></svg> 유의사항</div>
         <ul class="sdc-list con">${d.cons.map(c=>`<li>${c}</li>`).join('')}</ul>
       </div>
     </div>
