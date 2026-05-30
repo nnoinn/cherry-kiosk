@@ -303,7 +303,7 @@
     border: 1.6px solid var(--border); padding: 37px 28px;
     text-align: center;
     width: 280px; height: 128px;
-    display: flex; flex-direction: column; justify-content: center; gap: 12px;
+    display: flex; flex-direction: column; justify-content: center; gap: 8px;
     box-sizing: border-box;
   }
   .overview-num {
@@ -748,8 +748,20 @@
     font-size: 21px; font-weight: 700; border: none; cursor: pointer;
     display: flex; align-items: center; gap: 10px;
     box-shadow: 0 8px 24px rgba(197,48,69,.25); transition: filter .15s;
+    animation: freqPlayPulse 1.8s ease-in-out infinite;
   }
-  .freq-play-btn:active { filter: brightness(0.92); transform: scale(.97); }
+  .freq-play-btn:active { filter: brightness(0.92); transform: scale(.97); animation: none; }
+  /* 테두리 반짝 — 클릭 유도용 펄스 글로우 */
+  @keyframes freqPlayPulse {
+    0%, 100% {
+      box-shadow: 0 8px 24px rgba(197,48,69,.30),
+                  0 0 0 0 rgba(197,48,69,.55);
+    }
+    50% {
+      box-shadow: 0 10px 28px rgba(197,48,69,.45),
+                  0 0 0 10px rgba(197,48,69,0);
+    }
+  }
   .freq-graphs {
     display: grid; grid-template-columns: 2.6fr 1fr; gap: 18px;
     background: #ffffff; border-radius: 18px; padding: 22px 20px 14px;
@@ -825,7 +837,8 @@
     display: flex; flex-direction: column; gap: 16px;
   }
   /* 포스커브 설명 — 스위치 설명 한 줄(.sdc-summary)과 동일 글꼴/사이즈 */
-  .force-curve-desc { font-size: 30px; color: var(--fg2); line-height: 1.6; }
+  /* margin-top: -8px → 제목과의 간격을 .force-card gap(16px)의 절반(8px)로 축소 */
+  .force-curve-desc { font-size: 30px; color: var(--fg2); line-height: 1.6; margin-top: -8px; }
   #s2-svg { width: 100%; height: 480px; display: block; }
 
   .switch-detail-card {
@@ -846,8 +859,8 @@
   .sdc-col-title.pro { color: #16a34a; }
   .sdc-col-title.con { color: #dc2626; }
   .sdc-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  /* 동그라미 구분자 제거 + 제목 글자("장"/"유") 시작점과 세로정렬 (아이콘 18px + gap 8px = 26px) */
-  .sdc-list li { font-size: 26px; color: var(--fg2); padding-left: 26px; line-height: 1.5; white-space: nowrap; }
+  /* 동그라미 구분자 제거 + 제목 글자("장"/"유") 시작점과 세로정렬 (아이콘 20px + gap 8px = 28px) */
+  .sdc-list li { font-size: 26px; color: var(--fg2); padding-left: 28px; line-height: 1.5; white-space: nowrap; }
 
   .tech-card {
     background: var(--cherry-light); border: 1.5px solid var(--cherry-mid);
@@ -876,6 +889,18 @@
   }
   .s3-tip-btn svg { width: 32px; height: 32px; flex-shrink: 0; }
   .s3-tip-btn:active { background: var(--cherry-light); border-color: var(--cherry); color: var(--cherry); transform: scale(.97); }
+
+  /* 맵핑 초기화 — 키보드 영역 좌상단, 배경 없이 아이콘만 (추천 팁과 동일 높이) */
+  .s3-reset-btn {
+    position: absolute; top: 20px; left: 20px;
+    display: flex; align-items: center; justify-content: center;
+    width: 68px; height: 68px;
+    background: transparent; border: none; padding: 0;
+    cursor: pointer; z-index: 10;
+    color: var(--fg2); transition: color .15s, transform .15s;
+  }
+  .s3-reset-btn svg { width: 44px; height: 44px; }
+  .s3-reset-btn:active { color: var(--cherry); transform: scale(.92); }
 
   .keyboard-wrap {
     flex: 1; min-height: 0;
@@ -986,7 +1011,6 @@
   .ric-label { font-size: 30px; font-weight: 700; color: var(--fg3); letter-spacing: 2px; text-transform: uppercase; }
   .ric-title { font-size: 46px; font-weight: 800; color: var(--fg); line-height: 1.2; }
   .ric-sub { font-size: 36px; color: var(--fg2); font-weight: 600; margin-top: 4px; }
-  .ric-sub2 { font-size: 30px; color: var(--fg3); }
   .ric-img-wrap {
     flex: 1.2; border-radius: 16px;
     background: linear-gradient(145deg, #f8f9fb, #ecedf0);
@@ -1036,23 +1060,6 @@
     display: flex; gap: 4px; align-items: flex-start;
   }
   .ric-kb-single .kb-section-numpad { justify-self: end; }
-
-  .ric-mapping-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 28px; }
-  .ric-mapping-row {
-    display: flex; align-items: center; gap: 14px;
-    padding: 12px 16px; background: var(--bg-soft, #f6f7fa);
-    border-radius: 12px; border: 1px solid var(--border);
-  }
-  .ric-zone-tag {
-    flex: 0 0 140px; font-size: 28px; font-weight: 800;
-    color: var(--fg); letter-spacing: .5px; text-align: center;
-  }
-  .ric-mapping-arrow { color: var(--fg3); font-weight: 700; font-size: 28px; }
-  .ric-switch-tag { display: flex; align-items: center; justify-content: center; gap: 12px; flex: 1; min-width: 0; }
-  .ric-switch-dot { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
-  .ric-switch-name { font-size: 28px; font-weight: 800; color: var(--fg); }
-  .ric-switch-type { font-size: 13px; color: var(--fg3); font-weight: 600; }
-  .ric-empty { color: var(--fg3); font-size: 16px; padding: 14px 4px; }
 
   /* ── MODALS ── */
   #modal-layer {
@@ -1200,7 +1207,7 @@
 <!-- ══ HOME (HUB) ══ -->
 <div id="screen-home" class="screen">
   <div class="home-body home-hub">
-    <div class="home-eyebrow">Custom Mechanical Keyboard Studio</div>
+    <div class="home-eyebrow">Custom interactive Studio</div>
     <div class="home-headline">CHERRY를<br>만나보세요</div>
     <div class="home-desc">70년 역사의 정통, 스위치 기술의 진수,<br>그리고 나만의 키보드를 설계하는 경험까지</div>
 
@@ -1586,16 +1593,14 @@ const models = [
     pros:['무선 TKL 게이밍 키보드','<1ms 게이밍 모드 저레이턴시','메탈 케이스 포함 휴대용 디자인','win키 잠금, 안티 고스팅 및 N키 롤오버'],
     recommendUser:'멀티기기 게이밍 유저, 스트리머, 콘솔+PC 겸용 게이머',
     lighting:'각 키마다 최대 1600만 색상 표현 가능한 RGB LED',
-    colors:['블랙','화이트','핑크'],
+    colors:['블랙','화이트'],
     housingImages:{
       '블랙':'images/keyboard_housing/MX 8.2 TKL WL_black(default).webp',
       '화이트':'images/keyboard_housing/MX 8.2 TKL WL_white.webp',
-      '핑크':'images/keyboard_housing/MX 8.2 TKL WL_pink.webp',
     } ,
     glbImages:{
       '블랙':'models/model_color/MX 8.2 TKL WL_Black.glb',
       '화이트':'models/model_color/MX_8.2_TKL_WL_White.glb',
-      '핑크':'models/model_color/MX 8.2 TKL WL_Pink.glb',
     }
   },
   { id:'m7', name:'MX 3.0S WL', series:'XTRFY', layout:'풀사이즈(100%)', housing:'압출 알루미늄', connect:'유선(USB-A, C)\n무선(2.4G) / BT(3채널)', keycap:'ABS / 더블샷 (이색사출)', polling:'1ms', img:'images/MX 3.0S WL.jpg',
@@ -1616,18 +1621,16 @@ const models = [
   },
   { id:'m8', name:'MX-LP 2.1 WL', series:'XTRFY', layout:'컴팩트(65%)', housing:'고품질 플라스틱', connect:'유선(USB-A, C)\n무선(2.4G) / BT(5.2채널)', keycap:'ABS / 레이저 에칭 + UV 코팅', polling:'1ms', img:'images/MX-LP 2.1 WL.jpg',
     pros:['컴팩트 무선 게이밍 키보드','전체 높이 35% 감소, 반동 속도 40% 향상','고급 노르딕 칩 장착','<1ms 게이밍 모드 저레이턴시','win키 잠금, 안티고스팅 및 N키 롤오버'],
-    recommendUser:'개성 있는 컴팩트 키보드 선호 게이머, 휴대용 게이밍 키보드 필요 유저',
+    recommendUser:'컴팩트 키보드 선호 게이머, 휴대용 게이밍 키보드 필요 유저',
     lighting:'각 키마다 최대 1600만 색상 표현 가능한 RGB LED, 나만의 조명 효과 생성 및 키보드 내장 메모리에 저장',
-    colors:['블랙','화이트','브라운'],
+    colors:['블랙','화이트'],
     housingImages:{
       '블랙':'images/keyboard_housing/MX-LP 2.1 COMPACT WL_black(default).webp',
       '화이트':'images/keyboard_housing/MX-LP 2.1 COMPACT WL_white.webp',
-      '브라운':'images/keyboard_housing/MX-LP 2.1 COMPACT WL_brown.webp',
     },
     glbImages:{
       '블랙':'models/model_color/MX-LP 2.1 WL_black.glb',
       '화이트':'models/model_color/MX-LP 2.1 WL_White.glb',
-      '브라운':'models/model_color/MX-LP_2.1_WL_Brown.glb',
     } },
 ];
 
@@ -2079,7 +2082,6 @@ function mvLighting(color) {
     case '핑크':
       return { exposure: '1.20', shadow: '0.35', tone: 'commerce', env: HDR_DEFAULT };
     case '오렌지':
-    case '브라운':
     case '옐로우':
       return { exposure: '1.10', shadow: '0.35', tone: 'commerce', env: HDR_DEFAULT };
     default:
@@ -2547,11 +2549,11 @@ function updateStep2() {
     <div class="sdc-summary">${d.summary}</div>
     <div class="sdc-pros-cons">
       <div>
-        <div class="sdc-col-title pro"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 장점</div>
+        <div class="sdc-col-title pro"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 장점</div>
         <ul class="sdc-list pro">${d.pros.map(p=>`<li>${p}</li>`).join('')}</ul>
       </div>
       <div>
-        <div class="sdc-col-title con"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> 유의사항</div>
+        <div class="sdc-col-title con"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="6" x2="12" y2="14"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> 유의사항</div>
         <ul class="sdc-list con">${d.cons.map(c=>`<li>${c}</li>`).join('')}</ul>
       </div>
     </div>
@@ -2887,6 +2889,9 @@ function renderStep3(main) {
             <div class="step-sub">스위치를 선택하여 하단 기판을 터치하여 체결하세요.</div>
           </div>
           <div class="keyboard-wrap" id="kb-wrap">
+            <button class="s3-reset-btn" onclick="resetMapping()" aria-label="맵핑 초기화">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            </button>
             <button class="s3-tip-btn" onclick="showHelpModal()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
               추천 팁
@@ -2996,7 +3001,6 @@ function renderStep3(main) {
               <div class="ric-label">선택 모델</div>
               <div class="ric-title">${m ? m.name : '—'}</div>
               <div class="ric-sub">${m ? m.layout : ''} · ${state.color}</div>
-              <div class="ric-sub2">${m ? m.housing : ''}</div>
             </div>
             <div class="ric-img-wrap">
               <!-- TODO: 축 배치 레이아웃(상/하판 통합) 삽입 예정 -->
@@ -3005,25 +3009,6 @@ function renderStep3(main) {
           <div class="review-info-card review-info-card-stack">
             <div class="ric-label">스위치 배치도</div>
             <div class="ric-kb-wrap">${renderReviewKeyboard()}</div>
-          </div>
-          <div class="review-info-card review-info-card-stack">
-            <div class="ric-label">스위치 배치 정보</div>
-            ${mappedZones.length === 0 ? `
-              <div class="ric-empty">아직 배치된 스위치가 없습니다. 이전 단계에서 구역별 스위치를 지정하세요.</div>
-            ` : `
-              <div class="ric-mapping-list">
-                ${mappedZones.map(({ label, sw }) => `
-                  <div class="ric-mapping-row">
-                    <div class="ric-zone-tag">${label}</div>
-                    <div class="ric-mapping-arrow">→</div>
-                    <div class="ric-switch-tag">
-                      <span class="ric-switch-dot" style="background:${sw.color}"></span>
-                      <span class="ric-switch-name">${sw.name.replace(/^MX\s*/, '')}</span>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            `}
           </div>
         </div>
       </div>`;
@@ -3053,6 +3038,12 @@ function selectBrush(id) { state.brush = id; updateStep3Sidebar(); }
 
 function paintZone(zone) {
   state.mapping[zone] = state.brush;
+  updateKeyboard();
+}
+
+function resetMapping() {
+  // 모든 zone 매핑을 비워 초기 상태로 돌림
+  Object.keys(state.mapping).forEach(z => { state.mapping[z] = null; });
   updateKeyboard();
 }
 
