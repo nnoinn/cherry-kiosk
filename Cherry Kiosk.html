@@ -859,8 +859,8 @@
   .sdc-col-title.pro { color: #16a34a; }
   .sdc-col-title.con { color: #dc2626; }
   .sdc-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  /* 동그라미 구분자 제거 + 제목 글자("장"/"유") 시작점과 세로정렬 (아이콘 20px + gap 8px = 28px) */
-  .sdc-list li { font-size: 26px; color: var(--fg2); padding-left: 28px; line-height: 1.5; white-space: nowrap; }
+  /* 동그라미 구분자 제거 + 제목 글자("장"/"유") 시작점과 세로정렬 (아이콘 24px + gap 8px = 32px) */
+  .sdc-list li { font-size: 26px; color: var(--fg2); padding-left: 32px; line-height: 1.5; white-space: nowrap; }
 
   .tech-card {
     background: var(--cherry-light); border: 1.5px solid var(--cherry-mid);
@@ -2549,11 +2549,11 @@ function updateStep2() {
     <div class="sdc-summary">${d.summary}</div>
     <div class="sdc-pros-cons">
       <div>
-        <div class="sdc-col-title pro"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 장점</div>
+        <div class="sdc-col-title pro"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 장점</div>
         <ul class="sdc-list pro">${d.pros.map(p=>`<li>${p}</li>`).join('')}</ul>
       </div>
       <div>
-        <div class="sdc-col-title con"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="6" x2="12" y2="15"/><line x1="12" y1="19" x2="12.01" y2="19"/></svg> 유의사항</div>
+        <div class="sdc-col-title con"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="13"/><circle cx="12" cy="19" r="2" fill="currentColor" stroke="none"/></svg> 유의사항</div>
         <ul class="sdc-list con">${d.cons.map(c=>`<li>${c}</li>`).join('')}</ul>
       </div>
     </div>
