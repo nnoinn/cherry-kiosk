@@ -42,6 +42,66 @@
     --letter-spacing-tight: -1.5px;
     --letter-spacing-normal: 0;
     --letter-spacing-wide: 2px;
+
+    /* ═══════════════════════════════════════════════════════════════
+       DESIGN TOKENS v2 — 신규 추가, 아직 미적용 상태.
+       다음 단계에서 코드의 px 값을 var()로 점진적으로 치환할 예정.
+       기존 --font-*, --line-height-*, --letter-spacing-* 토큰은
+       실제 코드에서 사용되지 않는 죽은 코드(0 reference)이지만,
+       1단계에서는 손대지 않고 새 토큰은 --t-/--fw-/--s-/--gray-/--r-
+       네임스페이스로 분리해 추가만 함.
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* ── Typography scale (9 tier) ── */
+    --t-hero:    142px;  /* 랜딩 영웅 카피 */
+    --t-display:  80px;  /* 메인 큰 카피 (예약) */
+    --t-h1:       46px;  /* 큰 모달·페이지 메인 타이틀 */
+    --t-h2:       36px;  /* 카드·섹션 메인 타이틀 */
+    --t-h3:       30px;  /* 부제목·강조 본문·설명문 */
+    --t-body:     26px;  /* 기본 본문 */
+    --t-body-sm:  22px;  /* 보조 본문 (사이드바, 라벨) */
+    --t-caption:  18px;  /* 캡션·뱃지 */
+    --t-micro:    14px;  /* 미세 표기 (그래프 숫자) */
+
+    /* ── Font weight ── */
+    --fw-regular:   500;
+    --fw-medium:    600;
+    --fw-bold:      700;
+    --fw-extrabold: 800;
+    --fw-black:     900;
+
+    /* ── Spacing (4px base, 28·36은 의도적으로 생략해 24/32/40으로 정렬) ── */
+    --s-1:   4px;
+    --s-2:   8px;
+    --s-3:  12px;
+    --s-4:  16px;
+    --s-5:  20px;
+    --s-6:  24px;
+    --s-8:  32px;
+    --s-10: 40px;
+    --s-12: 48px;
+    --s-14: 56px;
+    --s-16: 64px;
+    --s-20: 80px;
+
+    /* ── Gray scale (Slate 기반 원시 토큰) ── */
+    --gray-50:  #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+
+    /* ── Radius ── */
+    --r-sm:   12px;
+    --r-md:   16px;
+    --r-lg:   24px;
+    --r-xl:   36px;
+    --r-pill: 999px;
   }
 
   html, body {
