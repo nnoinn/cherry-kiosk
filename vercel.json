@@ -2,7 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": false,
   "rewrites": [
-    { "source": "/", "destination": "/Cherry Kiosk.html" }
+    { "source": "/", "destination": "/Cherry Kiosk.html" },
+    { "source": "/v2", "destination": "/Cherry Kiosk v2.html" }
   ],
   "headers": [
     {
