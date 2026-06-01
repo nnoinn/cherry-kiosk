@@ -16,12 +16,14 @@
     --cherry-dark: #a02638;
     --cherry-light: #fdf0f2;
     --cherry-mid: #f5c6cc;
-    --fg: #111318;
-    --fg2: #52555e;
-    --fg3: #9ea3ae;
-    --border: #e4e6eb;
-    --surface: #ffffff;
-    --bg: #f4f5f7;
+    /* Semantic gray — 모두 --gray-* 원시 토큰을 참조(단일 출처).
+       Slate 팔레트 기준으로 기존 hex 대비 매우 미세한 cooler shift 발생. */
+    --fg:      var(--gray-900);  /* 본문 주 텍스트 */
+    --fg2:     var(--gray-600);  /* 보조 텍스트 */
+    --fg3:     var(--gray-400);  /* 흐린 텍스트, 캡션 */
+    --border:  var(--gray-200);  /* 경계선 */
+    --surface: #ffffff;           /* 카드 배경 (순백 유지) */
+    --bg:      #f4f5f7;           /* 페이지 배경 (warm tint 유지) */
     --radius: 24px;
     --radius-lg: 36px;
 
@@ -422,7 +424,7 @@
   /* Story header */
   .story-header { text-align: center; margin-bottom: 24px; }
   .story-eyebrow {
-    font-size: var(--t-body); font-weight: 700; color: #9EA3AE;
+    font-size: var(--t-body); font-weight: 700; color: var(--fg3);
     letter-spacing: 3px; margin-bottom: 14px;
   }
   .story-title {
@@ -502,7 +504,7 @@
     flex: 1;
   }
   .tech-img {
-    background: #F4F5F7;
+    background: var(--bg);
     border-right: 2.4px solid var(--border);
     height: 100%; overflow: hidden;
   }
@@ -834,7 +836,7 @@
   .freq-y-axis {
     position: absolute; left: 0; top: 32px; bottom: 60px; width: 48px;
     display: flex; flex-direction: column; justify-content: space-between;
-    font-size: var(--t-body-sm); font-weight: 600; color: #94a3b8; text-align: right;
+    font-size: var(--t-body-sm); font-weight: 600; color: var(--fg3); text-align: right;
     pointer-events: none;
   }
   .freq-y-axis span { padding-right: 8px; line-height: 1; transform: translateY(-50%); }
@@ -843,7 +845,7 @@
   .freq-unit-label {
     position: absolute; top: 4px; left: 0; width: 48px;
     padding-right: 8px; text-align: right;
-    font-size: var(--t-body-sm); color: #94a3b8; font-weight: 700;
+    font-size: var(--t-body-sm); color: var(--fg3); font-weight: 700;
   }
   .freq-plot {
     position: absolute; left: 52px; right: 6px; top: 32px; bottom: 60px;
@@ -854,13 +856,13 @@
   .freq-x-axis {
     position: absolute; left: 52px; right: 6px; bottom: 32px;
     display: flex; justify-content: space-between;
-    font-size: var(--t-body-sm); font-weight: 600; color: #94a3b8;
+    font-size: var(--t-body-sm); font-weight: 600; color: var(--fg3);
     pointer-events: none;
   }
   .freq-bars-wrap .freq-x-axis { left: 6px; right: 6px; }
   .freq-unit-x {
     position: absolute; right: 6px; bottom: 4px;
-    font-size: var(--t-body-sm); font-weight: 600; color: #94a3b8;
+    font-size: var(--t-body-sm); font-weight: 600; color: var(--fg3);
     pointer-events: none;
   }
   .freq-peak-pill {
