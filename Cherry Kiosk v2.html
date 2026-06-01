@@ -52,16 +52,19 @@
        네임스페이스로 분리해 추가만 함.
        ═══════════════════════════════════════════════════════════════ */
 
-    /* ── Typography scale (9 tier) ── */
-    --t-hero:    142px;  /* 랜딩 영웅 카피 */
-    --t-display:  80px;  /* 메인 큰 카피 (예약) */
-    --t-h1:       46px;  /* 큰 모달·페이지 메인 타이틀 */
-    --t-h2:       36px;  /* 카드·섹션 메인 타이틀 */
-    --t-h3:       30px;  /* 부제목·강조 본문·설명문 */
-    --t-body:     26px;  /* 기본 본문 */
-    --t-body-sm:  22px;  /* 보조 본문 (사이드바, 라벨) */
-    --t-caption:  18px;  /* 캡션·뱃지 */
-    --t-micro:    14px;  /* 미세 표기 (그래프 숫자) */
+    /* ── Typography scale (12 tier, 실측 후 확장) ── */
+    --t-hero:      160px;  /* 랜딩 CHERRY */
+    --t-display:   142px;  /* home hero */
+    --t-page-xl:    96px;  /* 콘텐츠 페이지 헤더 (역사·기술) */
+    --t-page-lg:    64px;  /* 큰 카드 타이틀 (hub-card) */
+    --t-page-md:    52px;  /* step-heading, switch-name */
+    --t-h1:         46px;  /* 화면 메인 타이틀, 모달 큰 제목 */
+    --t-h2:         36px;  /* 카드·섹션 메인 타이틀 (37/38/40 흡수) */
+    --t-h3:         30px;  /* 부제목·강조 본문·설명문 (28/32 흡수) */
+    --t-body:       26px;  /* 기본 본문 (24 흡수) */
+    --t-body-sm:    22px;  /* 보조 본문 (19/20/21 흡수) */
+    --t-caption:    18px;  /* 캡션·뱃지 (15/16/17 흡수) */
+    --t-micro:      14px;  /* 미세 표기 (그래프 숫자) */
 
     /* ── Font weight ── */
     --fw-regular:   500;
@@ -145,7 +148,7 @@
   .landing-top-logo {
     position: absolute; top: 4%; left: 0; right: 0;
     display: flex; align-items: center; justify-content: center; gap: 6px;
-    font-size: 36px; font-weight: 900; color: var(--cherry); letter-spacing: 2px;
+    font-size: var(--t-h2); font-weight: 900; color: var(--cherry); letter-spacing: 2px;
     z-index: 5;
   }
   .landing-cherry-icon { width: 104px; height: 104px; margin-top: -4px; }
@@ -176,12 +179,12 @@
   }
   .landing-title-cherry {
     font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
-    font-size: 160px; font-weight: 900; color: var(--fg); letter-spacing: -2px; line-height: 1;
+    font-size: var(--t-hero); font-weight: 900; color: var(--fg); letter-spacing: -2px; line-height: 1;
     transform: scaleX(1.2); transform-origin: center;
   }
   .landing-title-kb {
     font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
-    font-size: 88px; font-weight: 700; color: var(--fg); letter-spacing: 4px; margin-top: 16px;
+    font-size: var(--t-page-xl); font-weight: 700; color: var(--fg); letter-spacing: 4px; margin-top: 16px;
     transform: scaleX(1.2); transform-origin: center;
   }
   .landing-cta {
@@ -190,7 +193,7 @@
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--cherry); color: #fff;
     border-radius: 22px; padding: 34px 120px;
-    font-size: 56px; font-weight: 800;
+    font-size: var(--t-page-md); font-weight: 800;
     box-shadow: 0 12px 40px rgba(197,48,69,.25);
     transition: background .2s, transform .15s;
     border: none; cursor: pointer; z-index: 5;
@@ -222,9 +225,9 @@
     width: 52px; height: 52px; border-radius: 50%;
     background: var(--cherry); color: #fff;
     display: flex; align-items: center; justify-content: center;
-    font-size: 28px; font-weight: 900; font-style: italic;
+    font-size: var(--t-h3); font-weight: 900; font-style: italic;
   }
-  .header-title { font-size: 32px; font-weight: 700; letter-spacing: -1px; }
+  .header-title { font-size: var(--t-h3); font-weight: 700; letter-spacing: -1px; }
   .header-title span { font-weight: 300; color: var(--fg3); }
 
   /* ── HOME BUTTON (top-left on every screen except landing/main) ── */
@@ -253,7 +256,7 @@
     white-space: nowrap;
     padding: 0 40px; height: 64px;
     border-radius: 100px;
-    font-size: 24px; font-weight: 700; margin-bottom: 58px;
+    font-size: var(--t-body); font-weight: 700; margin-bottom: 58px;
   }
 
   /* ── HOME HUB ── */
@@ -276,8 +279,8 @@
   .hub-card:active { transform: scale(.98); border-color: var(--cherry); }
   .hub-card:active .hub-card-cta { background: var(--cherry-dark); }
   .hub-card-body { display: flex; flex-direction: column; gap: 12px; }
-  .hub-card-title { font-size: 44px; font-weight: 900; color: var(--fg); letter-spacing: -1.5px; line-height: 48.4px; }
-  .hub-card-desc { font-size: 28px; font-weight: 400; color: var(--fg2); line-height: 37.2px; }
+  .hub-card-title { font-size: var(--t-h1); font-weight: 900; color: var(--fg); letter-spacing: -1.5px; line-height: 48.4px; }
+  .hub-card-desc { font-size: var(--t-h3); font-weight: 400; color: var(--fg2); line-height: 37.2px; }
   .hub-card-cta {
     display: flex; align-items: center; justify-content: center;
     width: 80px; height: 80px;
@@ -306,7 +309,7 @@
     margin: 0;
   }
   .content-header-title {
-    font-size: 28px; font-weight: 700; color: var(--fg);
+    font-size: var(--t-h3); font-weight: 700; color: var(--fg);
     letter-spacing: -.6px;
     display: flex; align-items: center; justify-content: center;
     height: 72px;
@@ -325,7 +328,7 @@
     display: inline-flex; align-items: center; gap: 14px;
     padding: 26px 56px; border-radius: 18px;
     background: var(--cherry); color: #fff;
-    font-size: 26px; font-weight: 800; letter-spacing: -.4px;
+    font-size: var(--t-body); font-weight: 800; letter-spacing: -.4px;
     border: none; cursor: pointer; transition: all .2s;
     box-shadow: 0 10px 32px rgba(190, 18, 60, .28);
   }
@@ -341,16 +344,16 @@
   .page-progress { display: none; }
   .content-hero { margin-bottom: 64px; text-align: center; }
   .content-eyebrow {
-    display: inline-block; font-size: 17px; font-weight: 800; letter-spacing: 6px;
+    display: inline-block; font-size: var(--t-caption); font-weight: 800; letter-spacing: 6px;
     color: var(--cherry); margin-bottom: 24px;
   }
   .content-title {
     font-family: 'Pretendard Variable','Pretendard',sans-serif;
-    font-size: 96px; font-weight: 900; color: var(--fg);
+    font-size: var(--t-page-xl); font-weight: 900; color: var(--fg);
     letter-spacing: -3px; line-height: 1.05; margin-bottom: 28px;
   }
   .content-lede {
-    font-size: 26px; color: var(--fg2); line-height: 1.7;
+    font-size: var(--t-body); color: var(--fg2); line-height: 1.7;
   }
 
   /* Overview stats */
@@ -368,12 +371,12 @@
   }
   .overview-num {
     font-family: 'Pretendard Variable','Pretendard',sans-serif;
-    font-size: 38px; font-weight: 900; color: var(--cherry);
+    font-size: var(--t-h2); font-weight: 900; color: var(--cherry);
     letter-spacing: -1px; line-height: 52px;
     white-space: nowrap;
   }
   .overview-label {
-    font-size: 24px; font-weight: 400; color: var(--fg2);
+    font-size: var(--t-body); font-weight: 400; color: var(--fg2);
     white-space: nowrap;
   }
   .overview-grid.bottom { margin-top: 60px; margin-bottom: 0; }
@@ -382,7 +385,7 @@
   .origin-hero { text-align: center; margin-bottom: 64px; }
   .origin-title {
     font-family: 'Pretendard Variable','Pretendard',sans-serif;
-    font-size: 96px; font-weight: 600; color: var(--fg2);
+    font-size: var(--t-page-xl); font-weight: 600; color: var(--fg2);
     letter-spacing: 3px; line-height: 96.8px;
   }
 
@@ -393,10 +396,10 @@
     text-align: center;
   }
   .origin-block .lead {
-    font-size: 32px; font-weight: 500; color: var(--fg2); line-height: 42.55px;
+    font-size: var(--t-h3); font-weight: 500; color: var(--fg2); line-height: 42.55px;
   }
   .origin-block .body {
-    font-size: 28px; font-weight: 400; color: var(--fg2); line-height: 42px;
+    font-size: var(--t-h3); font-weight: 400; color: var(--fg2); line-height: 42px;
     white-space: pre-line;
   }
 
@@ -404,27 +407,27 @@
   .team-cherry-block { margin-top: 96px; }
   .team-cherry-title {
     font-family: 'Pretendard Variable','Pretendard',sans-serif;
-    font-size: 96px; font-weight: 600; color: var(--fg2);
+    font-size: var(--t-page-xl); font-weight: 600; color: var(--fg2);
     letter-spacing: 2px; line-height: 61.6px; margin: 0 0 40px;
   }
   .team-cherry-q {
-    font-size: 32px; color: var(--fg2); line-height: 42.55px;
+    font-size: var(--t-h3); color: var(--fg2); line-height: 42.55px;
     font-weight: 500; margin: 0 0 40px;
   }
   .team-cherry-body {
-    font-size: 26px; font-weight: 400; color: var(--fg2); line-height: 38px;
+    font-size: var(--t-body); font-weight: 400; color: var(--fg2); line-height: 38px;
     white-space: pre-line;
   }
 
   /* Story header */
   .story-header { text-align: center; margin-bottom: 24px; }
   .story-eyebrow {
-    font-size: 24px; font-weight: 700; color: #9EA3AE;
+    font-size: var(--t-body); font-weight: 700; color: #9EA3AE;
     letter-spacing: 3px; margin-bottom: 14px;
   }
   .story-title {
     font-family: 'Pretendard Variable','Pretendard',sans-serif;
-    font-size: 64px; font-weight: 700; color: var(--fg2);
+    font-size: var(--t-page-lg); font-weight: 700; color: var(--fg2);
     letter-spacing: -2px;
   }
 
@@ -472,18 +475,18 @@
   }
   .timeline-year {
     font-family: 'Pretendard Variable','Pretendard',sans-serif;
-    font-size: 64px; font-weight: 800; color: var(--fg);
+    font-size: var(--t-page-lg); font-weight: 800; color: var(--fg);
     letter-spacing: -1.5px; line-height: 64px;
   }
   .timeline-desc {
-    font-size: 26px; font-weight: 500; color: var(--fg2); line-height: 37.4px;
+    font-size: var(--t-body); font-weight: 500; color: var(--fg2); line-height: 37.4px;
     max-width: 480px; white-space: pre-line;
   }
   .timeline-img {
     aspect-ratio: 3/2; background: var(--surface);
     border: 1.5px solid var(--border); border-radius: 18px;
     display: flex; align-items: center; justify-content: center;
-    color: var(--fg3); font-size: 14px; font-weight: 600; letter-spacing: 1px;
+    color: var(--fg3); font-size: var(--t-micro); font-weight: 600; letter-spacing: 1px;
     overflow: hidden; align-self: start; width: 100%;
   }
   .timeline-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -514,18 +517,18 @@
     justify-content: center;   /* 빈 공간을 콘텐츠 위/아래로 균등 분배 → 모든 카드가 동일 비율 */
   }
   .tech-num {
-    font-size: 20px; font-weight: 900; color: var(--cherry);
+    font-size: var(--t-body-sm); font-weight: 900; color: var(--cherry);
     letter-spacing: 2px; text-transform: uppercase;
     margin-bottom: 14px;
   }
   .tech-name {
     font-family: 'Pretendard Variable','Pretendard',sans-serif;
-    font-size: 37px; font-weight: 700; color: rgba(0,0,0,0.8);
+    font-size: var(--t-h2); font-weight: 700; color: rgba(0,0,0,0.8);
     letter-spacing: 1px; line-height: 1.2;
     margin-bottom: 18px;
   }
   .tech-desc {
-    font-size: 30px; font-weight: 500; color: var(--fg2); line-height: 40px;
+    font-size: var(--t-h3); font-weight: 500; color: var(--fg2); line-height: 40px;
     white-space: pre-line;
     margin-bottom: 14px;
   }
@@ -538,31 +541,31 @@
   .tech-item:nth-child(2) .tech-highlights,
   .tech-item:nth-child(4) .tech-highlights { margin-top: 7px; }   /* 14+7 = 21px (1.5배) */
   .tech-pill {
-    font-size: 24px; font-weight: 700; color: #16A34A;
+    font-size: var(--t-body); font-weight: 700; color: #16A34A;
     background: rgba(22, 163, 74, 0.1); padding: 12px 22px; border-radius: 100px;
     letter-spacing: .2px;
   }
   .home-headline {
-    font-size: 142px; font-weight: 900; line-height: 156px;
+    font-size: var(--t-display); font-weight: 900; line-height: 156px;
     letter-spacing: -2.5px; text-align: center; color: var(--fg);
     margin-bottom: 116px;
   }
   .home-desc {
-    font-size: 36px; font-weight: 500; color: var(--fg2); line-height: 48px;
+    font-size: var(--t-h2); font-weight: 500; color: var(--fg2); line-height: 48px;
     text-align: center; margin-bottom: 115px;
   }
   .btn-primary {
     display: inline-flex; align-items: center; gap: 16px;
     background: var(--fg); color: #fff;
     padding: 32px 72px; border-radius: 100px;
-    font-size: 30px; font-weight: 700;
+    font-size: var(--t-h3); font-weight: 700;
     border: none; cursor: pointer;
     box-shadow: 0 24px 60px rgba(0,0,0,.22);
     transition: background .2s, transform .15s, box-shadow .2s;
     letter-spacing: -.5px;
   }
   .btn-primary:active { background: var(--cherry); transform: scale(.97); box-shadow: 0 10px 32px rgba(197,48,69,.28); }
-  .btn-arrow { font-size: 36px; }
+  .btn-arrow { font-size: var(--t-h2); }
 
   .home-features {
     display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
@@ -573,9 +576,9 @@
     padding: 40px 36px; border: 1.5px solid var(--border);
     display: flex; flex-direction: column; gap: 14px;
   }
-  .feature-num { font-size: 15px; font-weight: 700; color: var(--cherry); letter-spacing: 2px; }
-  .feature-title { font-size: 24px; font-weight: 700; color: var(--fg); }
-  .feature-desc { font-size: 18px; color: var(--fg2); line-height: 1.6; }
+  .feature-num { font-size: var(--t-caption); font-weight: 700; color: var(--cherry); letter-spacing: 2px; }
+  .feature-title { font-size: var(--t-body); font-weight: 700; color: var(--fg); }
+  .feature-desc { font-size: var(--t-caption); color: var(--fg2); line-height: 1.6; }
 
   /* ── BUILDER SHELL ── */
   #screen-builder { background: #ffffff; }
@@ -587,18 +590,18 @@
     display: flex; align-items: center; gap: 12px;
     justify-content: center;
   }
-  .step-item { display: flex; align-items: center; gap: 12px; font-size: 24px; font-weight: 600; color: var(--fg3); white-space: nowrap; }
+  .step-item { display: flex; align-items: center; gap: 12px; font-size: var(--t-body); font-weight: 600; color: var(--fg3); white-space: nowrap; }
   .step-item.active { color: var(--fg); }
   .step-item.done { color: var(--fg3); }
   .step-num {
     width: 48px; height: 48px; border-radius: 50%;
     background: var(--bg); border: 1.5px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    font-size: 21px; font-weight: 700; color: var(--fg3);
+    font-size: var(--t-body-sm); font-weight: 700; color: var(--fg3);
     flex-shrink: 0;
   }
   .step-item.active .step-num { background: var(--cherry); border-color: var(--cherry); color: #fff; }
-  .step-item.done .step-num { background: var(--bg); border-color: var(--border); color: var(--fg3); font-size: 18px; }
+  .step-item.done .step-num { background: var(--bg); border-color: var(--border); color: var(--fg3); font-size: var(--t-caption); }
   .step-divider { width: 40px; height: 1.5px; background: var(--border); }
 
   #builder-main { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; min-height: 0; }
@@ -615,7 +618,7 @@
     display: inline-flex; align-items: center; gap: 12px;
     padding: 24px 56px; border-radius: 18px;
     background: var(--bg); border: 1.5px solid var(--border);
-    font-size: 24px; font-weight: 700; color: var(--fg2);
+    font-size: var(--t-body); font-weight: 700; color: var(--fg2);
     cursor: pointer; transition: all .15s;
   }
   .btn-secondary:active { background: var(--cherry-light); border-color: var(--cherry); color: var(--cherry); transform: scale(.97); }
@@ -623,7 +626,7 @@
     display: inline-flex; align-items: center; gap: 12px;
     padding: 24px 56px; border-radius: 18px;
     background: var(--fg); color: #fff;
-    font-size: 24px; font-weight: 700;
+    font-size: var(--t-body); font-weight: 700;
     border: none; cursor: pointer; transition: all .2s;
     box-shadow: 0 8px 32px rgba(0,0,0,.16);
   }
@@ -634,8 +637,8 @@
 
   /* ── STEP 1 GRID ── */
   .s1-grid-wrap { padding: 60px 64px; flex: 1; display: flex; flex-direction: column; }
-  .step-heading { font-size: 52px; font-weight: 900; letter-spacing: -2px; margin-bottom: 14px; }
-  .step-sub { font-size: 30px; font-weight: 500; color: var(--fg2); margin-bottom: 52px; }
+  .step-heading { font-size: var(--t-page-md); font-weight: 900; letter-spacing: -2px; margin-bottom: 14px; }
+  .step-sub { font-size: var(--t-h3); font-weight: 500; color: var(--fg2); margin-bottom: 52px; }
   .model-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; flex: 1; }
   .model-card {
     background: var(--surface); border-radius: var(--radius-lg);
@@ -652,9 +655,9 @@
   }
   .model-card-img img { width: 100%; height: 100%; object-fit: contain; }
   .model-card-img svg { width: 60px; height: 60px; opacity: .3; }
-  .model-name { font-size: 30px; font-weight: 800; color: var(--fg); margin-bottom: 4px; }
-  .model-layout { font-size: 24px; color: var(--fg2); line-height: 1.6; }
-  .model-meta { font-size: 24px; color: var(--fg2); line-height: 1.6; }
+  .model-name { font-size: var(--t-h3); font-weight: 800; color: var(--fg); margin-bottom: 4px; }
+  .model-layout { font-size: var(--t-body); color: var(--fg2); line-height: 1.6; }
+  .model-meta { font-size: var(--t-body); color: var(--fg2); line-height: 1.6; }
 
   /* ── STEP 1 DETAIL ── */
   .s1-detail { flex: 1; display: flex; overflow: hidden; height: 100%; }
@@ -664,7 +667,7 @@
     display: flex; flex-direction: column; overflow: hidden;
   }
   .sidebar-header { padding: 32px 28px 24px; border-bottom: 1.5px solid var(--border); }
-  .sidebar-label { font-size: 22px; font-weight: 700; color: var(--fg3); letter-spacing: 2px; text-transform: uppercase; }
+  .sidebar-label { font-size: var(--t-body-sm); font-weight: 700; color: var(--fg3); letter-spacing: 2px; text-transform: uppercase; }
   .sidebar-list { flex: 1; overflow-y: auto; padding: 20px 18px; display: flex; flex-direction: column; gap: 10px; }
   /* 라인업 선택 리스트: 9개 모델을 스크롤 없이 화면 높이에 균등 배치 */
   #s1-list { overflow: hidden; gap: 6px; padding: 10px 14px; }
@@ -685,7 +688,7 @@
   .sidebar-item.active .sidebar-item-icon { background: var(--cherry-mid); }
   .sidebar-item-icon svg { width: 24px; height: 24px; opacity: .5; }
   .sidebar-item.active .sidebar-item-icon svg { opacity: 1; color: var(--cherry); }
-  .sidebar-item-name { font-size: 19px; font-weight: 700; color: var(--fg2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .sidebar-item-name { font-size: var(--t-body-sm); font-weight: 700; color: var(--fg2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
   .sidebar-item.active .sidebar-item-name { color: var(--cherry-dark); }
   /* 스위치 분석 사이드바: 화면 높이에 정확히 맞춰 7개 균등 배치 */
   .sidebar-list:has(.s2-switch-item) {
@@ -708,7 +711,7 @@
   }
   /* 텍스트 24px 고정 — 이미지가 어떻게 늘어도 영향 받지 않음 */
   .sidebar-item.s2-switch-item .sidebar-item-name {
-    font-size: 24px !important; line-height: 1.2; flex-shrink: 0;
+    font-size: var(--t-body) !important; line-height: 1.2; flex-shrink: 0;
   }
   /* Step 3 사이드바: 세로 배치 (아이콘 위, 이름 아래) — 스위치 스템 아이콘 사용 */
   .sidebar-item.s3-brush-item {
@@ -716,7 +719,7 @@
     padding: 12px 10px;
   }
   .sidebar-item.s3-brush-item .sidebar-item-name {
-    font-size: 24px !important; text-align: center;
+    font-size: var(--t-body) !important; text-align: center;
   }
   .s3-stem-icon {
     width: 56px; height: 56px;
@@ -740,7 +743,7 @@
     display: flex; flex-direction: column; gap: 28px;
   }
   .section-label {
-    font-size: 24px; font-weight: 700; color: var(--fg);
+    font-size: var(--t-body); font-weight: 700; color: var(--fg);
     letter-spacing: 0; text-transform: uppercase;
     display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
   }
@@ -751,7 +754,7 @@
     width: 200px; height: 80px;
     border-radius: 16px;
     border: 2px solid var(--border); background: var(--bg);
-    font-size: 30px; font-weight: 700; cursor: pointer; transition: all .15s;
+    font-size: var(--t-h3); font-weight: 700; cursor: pointer; transition: all .15s;
     color: var(--fg2);
     display: flex; align-items: center; justify-content: center;
     padding: 0;
@@ -760,7 +763,7 @@
 
   .spec-list { display: flex; flex-direction: column; gap: 16px; }
   .spec-item {
-    display: flex; align-items: center; gap: 20px; font-size: 26px;
+    display: flex; align-items: center; gap: 20px; font-size: var(--t-body);
     white-space: nowrap;
   }
   .spec-item > div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -777,10 +780,10 @@
   .switch-header { display: flex; flex-direction: column; gap: 8px; padding-bottom: 28px; border-bottom: 1.5px solid var(--border); }
   .switch-name-row { display: flex; align-items: center; gap: 16px; }
   .switch-color-bar { width: 10px; height: 52px; border-radius: 6px; flex-shrink: 0; }
-  .switch-name { font-size: 52px; font-weight: 900; letter-spacing: -2px; white-space: nowrap; }
+  .switch-name { font-size: var(--t-page-md); font-weight: 900; letter-spacing: -2px; white-space: nowrap; }
   .switch-badge {
     padding: 12px 28px; border-radius: 100px;
-    font-size: 30px; font-weight: 700;
+    font-size: var(--t-h3); font-weight: 700;
     background: var(--bg); color: var(--fg2);
     border: 1.5px solid var(--border);
   }
@@ -790,7 +793,7 @@
     display: flex; align-items: center; justify-content: center; gap: 14px;
     width: 100%; padding: 28px;
     background: var(--bg); border: 1.5px solid var(--border);
-    border-radius: 20px; font-size: 24px; font-weight: 700; color: var(--fg);
+    border-radius: 20px; font-size: var(--t-body); font-weight: 700; color: var(--fg);
     cursor: pointer; transition: all .15s;
   }
   .audio-btn:active { background: var(--cherry-light); border-color: var(--cherry); color: var(--cherry); transform: scale(.97); }
@@ -801,11 +804,11 @@
     background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); padding: 32px;
     display: flex; flex-direction: column; gap: 20px;
   }
-  .card-label { font-size: 37px; font-weight: 700; color: var(--fg); display: flex; justify-content: space-between; align-items: center; }
-  .card-label .badge { background: var(--bg); border: 1.5px solid var(--border); border-radius: 100px; padding: 10px 24px; font-size: 30px; color: var(--fg); font-weight: 700; }
+  .card-label { font-size: var(--t-h2); font-weight: 700; color: var(--fg); display: flex; justify-content: space-between; align-items: center; }
+  .card-label .badge { background: var(--bg); border: 1.5px solid var(--border); border-radius: 100px; padding: 10px 24px; font-size: var(--t-h3); color: var(--fg); font-weight: 700; }
   .freq-play-btn {
     padding: 16px 28px; border-radius: 16px; background: var(--cherry); color: #fff;
-    font-size: 21px; font-weight: 700; border: none; cursor: pointer;
+    font-size: var(--t-body-sm); font-weight: 700; border: none; cursor: pointer;
     display: flex; align-items: center; gap: 10px;
     box-shadow: 0 8px 24px rgba(197,48,69,.25); transition: filter .15s;
     animation: freqPlayPulse 1.8s ease-in-out infinite;
@@ -831,7 +834,7 @@
   .freq-y-axis {
     position: absolute; left: 0; top: 32px; bottom: 60px; width: 48px;
     display: flex; flex-direction: column; justify-content: space-between;
-    font-size: 20px; font-weight: 600; color: #94a3b8; text-align: right;
+    font-size: var(--t-body-sm); font-weight: 600; color: #94a3b8; text-align: right;
     pointer-events: none;
   }
   .freq-y-axis span { padding-right: 8px; line-height: 1; transform: translateY(-50%); }
@@ -840,7 +843,7 @@
   .freq-unit-label {
     position: absolute; top: 4px; left: 0; width: 48px;
     padding-right: 8px; text-align: right;
-    font-size: 20px; color: #94a3b8; font-weight: 700;
+    font-size: var(--t-body-sm); color: #94a3b8; font-weight: 700;
   }
   .freq-plot {
     position: absolute; left: 52px; right: 6px; top: 32px; bottom: 60px;
@@ -851,20 +854,20 @@
   .freq-x-axis {
     position: absolute; left: 52px; right: 6px; bottom: 32px;
     display: flex; justify-content: space-between;
-    font-size: 20px; font-weight: 600; color: #94a3b8;
+    font-size: var(--t-body-sm); font-weight: 600; color: #94a3b8;
     pointer-events: none;
   }
   .freq-bars-wrap .freq-x-axis { left: 6px; right: 6px; }
   .freq-unit-x {
     position: absolute; right: 6px; bottom: 4px;
-    font-size: 20px; font-weight: 600; color: #94a3b8;
+    font-size: var(--t-body-sm); font-weight: 600; color: #94a3b8;
     pointer-events: none;
   }
   .freq-peak-pill {
     position: absolute; transform: translate(-50%, -130%);
     background: #fff; border: 1.5px solid var(--border);
     border-radius: 100px; padding: 8px 16px;
-    font-size: 22px; font-weight: 800; white-space: nowrap;
+    font-size: var(--t-body-sm); font-weight: 800; white-space: nowrap;
     display: flex; align-items: center; gap: 8px;
     box-shadow: 0 4px 10px rgba(0,0,0,.06);
     z-index: 2; pointer-events: none;
@@ -889,8 +892,8 @@
   }
   .freq-info-icon svg { width: 32px; height: 32px; }
   .freq-info-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .freq-info-title { font-size: 26px; font-weight: 800; color: var(--fg); line-height: 1.2; }
-  .freq-info-desc { font-size: 24px; color: var(--fg3); line-height: 1.4; white-space: pre-line; }
+  .freq-info-title { font-size: var(--t-body); font-weight: 800; color: var(--fg); line-height: 1.2; }
+  .freq-info-desc { font-size: var(--t-body); color: var(--fg3); line-height: 1.4; white-space: pre-line; }
 
   .force-card {
     background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); padding: 32px;
@@ -898,29 +901,29 @@
   }
   /* 포스커브 설명 — 스위치 설명 한 줄(.sdc-summary)과 동일 글꼴/사이즈 */
   /* margin-top: -8px → 제목과의 간격을 .force-card gap(16px)의 절반(8px)로 축소 */
-  .force-curve-desc { font-size: 30px; color: var(--fg2); line-height: 1.6; margin-top: -8px; }
+  .force-curve-desc { font-size: var(--t-h3); color: var(--fg2); line-height: 1.6; margin-top: -8px; }
   #s2-svg { width: 100%; height: 480px; display: block; }
 
   .switch-detail-card {
     background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border);
     padding: 36px; display: flex; flex-direction: column; gap: 24px;
   }
-  .sdc-summary { font-size: 30px; color: var(--fg2); line-height: 1.6; }
+  .sdc-summary { font-size: var(--t-h3); color: var(--fg2); line-height: 1.6; }
   .sdc-specs { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
   .sdc-spec { background: var(--bg); border-radius: 16px; padding: 20px 16px; text-align: center; }
-  .sdc-spec-label { font-size: 22px; font-weight: 700; color: var(--fg3); letter-spacing: 0; text-transform: none; margin-bottom: 8px; }
-  .sdc-spec-value { font-size: 28px; font-weight: 800; color: var(--fg); }
+  .sdc-spec-label { font-size: var(--t-body-sm); font-weight: 700; color: var(--fg3); letter-spacing: 0; text-transform: none; margin-bottom: 8px; }
+  .sdc-spec-value { font-size: var(--t-h3); font-weight: 800; color: var(--fg); }
   /* specs(4열 1fr)와 동일 그리드 → 장점은 1~2열, 유의사항은 3~4열(=총이동거리 박스 좌측에 정렬) */
   .sdc-pros-cons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
   .sdc-pros-cons > div:nth-child(1) { grid-column: 1 / 3; }
   .sdc-pros-cons > div:nth-child(2) { grid-column: 3 / 5; overflow: visible; }
   .sdc-pros-cons > div:nth-child(2) .sdc-list li { white-space: nowrap; }
-  .sdc-col-title { font-size: 26px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .sdc-col-title { font-size: var(--t-body); font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
   .sdc-col-title.pro { color: #16a34a; }
   .sdc-col-title.con { color: #dc2626; }
   .sdc-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
   /* 동그라미 구분자 제거 + 제목 글자("장"/"유") 시작점과 세로정렬 (아이콘 24px + gap 8px = 32px) */
-  .sdc-list li { font-size: 26px; color: var(--fg2); padding-left: 32px; line-height: 1.5; white-space: nowrap; }
+  .sdc-list li { font-size: var(--t-body); color: var(--fg2); padding-left: 32px; line-height: 1.5; white-space: nowrap; }
 
   .tech-card {
     background: var(--cherry-light); border: 1.5px solid var(--cherry-mid);
@@ -929,8 +932,8 @@
   }
   .tech-icon { width: 52px; height: 52px; border-radius: 14px; background: var(--cherry); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .tech-icon svg { width: 28px; height: 28px; }
-  .tech-body-title { font-size: 21px; font-weight: 800; color: var(--cherry-dark); margin-bottom: 10px; }
-  .tech-body-desc { font-size: 19px; color: var(--fg2); line-height: 1.65; }
+  .tech-body-title { font-size: var(--t-body-sm); font-weight: 800; color: var(--cherry-dark); margin-bottom: 10px; }
+  .tech-body-desc { font-size: var(--t-body-sm); color: var(--fg2); line-height: 1.65; }
 
   /* Sidebar switch items */
   .sw-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
@@ -943,7 +946,7 @@
     display: flex; align-items: center; gap: 12px;
     padding: 16px 28px; border-radius: 100px;
     background: var(--surface); border: 1.5px solid var(--border);
-    font-size: 28px; font-weight: 700; color: var(--fg2);
+    font-size: var(--t-h3); font-weight: 700; color: var(--fg2);
     cursor: pointer; z-index: 10; transition: all .15s;
     box-shadow: 0 6px 20px rgba(0,0,0,.12);
   }
@@ -998,7 +1001,7 @@
     flex-shrink: 0; position: relative; overflow: hidden;
   }
   .key:active { transform: translateY(4px); box-shadow: 0 0 0 #b0b8c5; }
-  .key-label { font-size: 16px; font-weight: 800; color: #555; line-height: 1; pointer-events: none; transition: opacity .2s; }
+  .key-label { font-size: var(--t-caption); font-weight: 800; color: #555; line-height: 1; pointer-events: none; transition: opacity .2s; }
   .key.mapped .key-label { opacity: 0; }
   .key-dot {
     position: absolute; inset: 0;
@@ -1068,9 +1071,9 @@
   }
   .review-info-card-stack { flex-direction: column; align-items: stretch; gap: 18px; }
   .ric-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
-  .ric-label { font-size: 30px; font-weight: 700; color: var(--fg3); letter-spacing: 2px; text-transform: uppercase; }
-  .ric-title { font-size: 46px; font-weight: 800; color: var(--fg); line-height: 1.2; }
-  .ric-sub { font-size: 36px; color: var(--fg2); font-weight: 600; margin-top: 4px; }
+  .ric-label { font-size: var(--t-h3); font-weight: 700; color: var(--fg3); letter-spacing: 2px; text-transform: uppercase; }
+  .ric-title { font-size: var(--t-h1); font-weight: 800; color: var(--fg); line-height: 1.2; }
+  .ric-sub { font-size: var(--t-h2); color: var(--fg2); font-weight: 600; margin-top: 4px; }
   .ric-img-wrap {
     flex: 1.2; border-radius: 16px;
     background: linear-gradient(145deg, #f8f9fb, #ecedf0);
@@ -1142,16 +1145,16 @@
     width: 100px; height: 100px; border-radius: 50%;
     background: var(--cherry-light); color: var(--cherry);
     display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 36px; font-size: 48px;
+    margin: 0 auto 36px; font-size: var(--t-h1);
   }
   .modal-icon svg { width: 52px; height: 52px; }
-  .modal-title { font-size: 40px; font-weight: 900; color: var(--fg); margin-bottom: 16px; letter-spacing: -1px; }
-  .modal-desc { font-size: 22px; color: var(--fg2); line-height: 1.7; margin-bottom: 44px; }
-  .modal-desc strong { color: var(--cherry); font-size: 26px; }
+  .modal-title { font-size: var(--t-h2); font-weight: 900; color: var(--fg); margin-bottom: 16px; letter-spacing: -1px; }
+  .modal-desc { font-size: var(--t-body-sm); color: var(--fg2); line-height: 1.7; margin-bottom: 44px; }
+  .modal-desc strong { color: var(--cherry); font-size: var(--t-body); }
   .modal-btns { display: flex; gap: 16px; }
   .modal-btn {
     flex: 1; padding: 26px; border-radius: 20px;
-    font-size: 24px; font-weight: 700; cursor: pointer; border: none; transition: all .15s;
+    font-size: var(--t-body); font-weight: 700; cursor: pointer; border: none; transition: all .15s;
   }
   .modal-btn.secondary { background: var(--bg); color: var(--fg2); }
   .modal-btn.primary { background: var(--cherry); color: #fff; }
@@ -1164,7 +1167,7 @@
   }
   .modal-full-btn {
     width: 100%; padding: 30px; border-radius: 22px;
-    background: var(--fg); color: #fff; font-size: 26px; font-weight: 700;
+    background: var(--fg); color: #fff; font-size: var(--t-body); font-weight: 700;
     border: none; cursor: pointer; transition: background .15s;
   }
   .modal-full-btn:active { background: var(--cherry); transform: scale(.97); }
@@ -1183,12 +1186,12 @@
     border-radius: 6px;
   }
   .load-percent-text {
-    font-size: 56px; font-weight: 900; color: var(--cherry);
+    font-size: var(--t-page-md); font-weight: 900; color: var(--cherry);
     margin: 12px 0 24px; letter-spacing: -1px;
     font-variant-numeric: tabular-nums;
   }
   .load-status-text {
-    font-size: 24px; color: var(--fg3); margin-top: 16px;
+    font-size: var(--t-body); color: var(--fg3); margin-top: 16px;
   }
   .load-spinner {
     width: 60px; height: 60px; margin: 0 auto 24px;
@@ -1204,15 +1207,15 @@
   .help-modal .modal-title { text-align: left; }
   .help-list { display: flex; flex-direction: column; gap: 18px; margin-bottom: 0; }
   .help-item { background: var(--bg); border-radius: 22px; padding: 28px 30px; border: 1.5px solid var(--border); }
-  .help-item-title { font-size: 22px; font-weight: 800; color: var(--fg); margin-bottom: 8px; }
-  .help-item-desc { font-size: 19px; color: var(--fg2); line-height: 1.6; }
+  .help-item-title { font-size: var(--t-body-sm); font-weight: 800; color: var(--fg); margin-bottom: 8px; }
+  .help-item-desc { font-size: var(--t-body-sm); color: var(--fg2); line-height: 1.6; }
   .help-item-desc strong { font-weight: 700; }
   .modal-close {
     position: absolute; top: 40px; right: 40px;
     width: 52px; height: 52px; border-radius: 50%;
     background: var(--bg); border: 1.5px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 26px; color: var(--fg3);
+    cursor: pointer; font-size: var(--t-body); color: var(--fg3);
     transition: all .15s;
   }
   .modal-close:active { background: var(--cherry-light); color: var(--cherry); border-color: var(--cherry-mid); transform: scale(.97); }
@@ -1968,7 +1971,7 @@ function renderStep1(main) {
                 <div class="s1-model-img" style="width:100%;flex:1 1 0;min-height:0;border-radius:10px;overflow:hidden;padding:2px">
                   <img src="${nookkiForModel(mdl)}" style="width:100%;height:100%;object-fit:contain;display:block" alt="${mdl.name}">
                 </div>
-                <div class="sidebar-item-name" style="font-size:22px">${mdl.name}</div>
+                <div class="sidebar-item-name" style="font-size: var(--t-body-sm)">${mdl.name}</div>
               </button>
             `).join('')}
           </div>
@@ -2014,22 +2017,22 @@ function renderStep1(main) {
               <div class="section-label"><div class="dot"></div> 모델 상세 설명</div>
               <div style="margin-top:20px;display:flex;flex-direction:column;gap:24px">
                 <div>
-                  <div style="font-size:26px;font-weight:700;color:#16A34A;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+                  <div style="font-size: var(--t-body);font-weight:700;color:#16A34A;margin-bottom:14px;display:flex;align-items:center;gap:10px">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 장점
                   </div>
-                  <div style="font-size:26px;font-weight:400;color:var(--fg2);line-height:40px;white-space:pre-line">${(Array.isArray(m.pros) ? m.pros : [m.pros]).join('\n')}</div>
+                  <div style="font-size: var(--t-body);font-weight:400;color:var(--fg2);line-height:40px;white-space:pre-line">${(Array.isArray(m.pros) ? m.pros : [m.pros]).join('\n')}</div>
                 </div>
                 <div>
-                  <div style="font-size:26px;font-weight:700;color:var(--fg);margin-bottom:14px;display:flex;align-items:center;gap:10px">
+                  <div style="font-size: var(--t-body);font-weight:700;color:var(--fg);margin-bottom:14px;display:flex;align-items:center;gap:10px">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> 추천 사용자
                   </div>
-                  <div style="font-size:26px;font-weight:400;color:var(--fg2);line-height:35px;white-space:pre-line">${m.recommendUser || ''}</div>
+                  <div style="font-size: var(--t-body);font-weight:400;color:var(--fg2);line-height:35px;white-space:pre-line">${m.recommendUser || ''}</div>
                 </div>
                 <div>
-                  <div style="font-size:26px;font-weight:900;color:var(--fg);margin-bottom:14px;display:flex;align-items:center;gap:10px">
+                  <div style="font-size: var(--t-body);font-weight:900;color:var(--fg);margin-bottom:14px;display:flex;align-items:center;gap:10px">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/></svg> 조명
                   </div>
-                  <div style="font-size:26px;font-weight:400;color:var(--fg2);line-height:40px;white-space:pre-line">${m.lighting.replace(/, /g,'\n')}</div>
+                  <div style="font-size: var(--t-body);font-weight:400;color:var(--fg2);line-height:40px;white-space:pre-line">${m.lighting.replace(/, /g,'\n')}</div>
                 </div>
               </div>
             </div>
@@ -3239,26 +3242,26 @@ function showHelpModal() {
   openModal(`
     <div class="help-modal">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
-        <div class="modal-title" style="margin:0;font-size:40px">키 영역별 추천 스위치</div>
+        <div class="modal-title" style="margin:0;font-size: var(--t-h2)">키 영역별 추천 스위치</div>
         <button class="modal-close" onclick="closeModal()" style="position:static;flex-shrink:0">✕</button>
       </div>
       ${kbPreview}
       <div class="help-list">
         <div class="help-item">
-          <div class="help-item-title" style="font-size:36px">문자 · 숫자 키</div>
-          <div class="help-item-desc" style="font-size:32px">타이핑 — <strong style="color:#d97706">Brown</strong> · <strong style="color:#94a3b8">Clear</strong></div>
+          <div class="help-item-title" style="font-size: var(--t-h2)">문자 · 숫자 키</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">타이핑 — <strong style="color:#d97706">Brown</strong> · <strong style="color:#94a3b8">Clear</strong></div>
         </div>
         <div class="help-item">
-          <div class="help-item-title" style="font-size:36px">방향 · 게이밍 키</div>
-          <div class="help-item-desc" style="font-size:32px">빠른 연타 — <strong style="color:#ef4444">Red</strong></div>
+          <div class="help-item-title" style="font-size: var(--t-h2)">방향 · 게이밍 키</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">빠른 연타 — <strong style="color:#ef4444">Red</strong></div>
         </div>
         <div class="help-item">
-          <div class="help-item-title" style="font-size:36px">모디파이어</div>
-          <div class="help-item-desc" style="font-size:32px">저소음 — <strong style="color:#fb7185">Silent Red</strong></div>
+          <div class="help-item-title" style="font-size: var(--t-h2)">모디파이어</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">저소음 — <strong style="color:#fb7185">Silent Red</strong></div>
         </div>
         <div class="help-item">
-          <div class="help-item-title" style="font-size:36px">엔터 · 스페이스</div>
-          <div class="help-item-desc" style="font-size:32px">강한 피드백 — <strong style="color:#3b82f6">Blue</strong> · <strong style="color:#555555">Black</strong></div>
+          <div class="help-item-title" style="font-size: var(--t-h2)">엔터 · 스페이스</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">강한 피드백 — <strong style="color:#3b82f6">Blue</strong> · <strong style="color:#555555">Black</strong></div>
         </div>
       </div>
     </div>`);
@@ -3269,8 +3272,8 @@ function showQrModal() {
     <div class="modal-icon" style="background:#e8f5e9">
       <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
-    <div class="modal-title" style="font-size:40px">견적서 생성 완료</div>
-    <div class="modal-desc" style="font-size:36px">QR 코드를 스마트폰으로 촬영하여<br>부스 내 전문가 상담을 진행해 주세요.</div>
+    <div class="modal-title" style="font-size: var(--t-h2)">견적서 생성 완료</div>
+    <div class="modal-desc" style="font-size: var(--t-h2)">QR 코드를 스마트폰으로 촬영하여<br>부스 내 전문가 상담을 진행해 주세요.</div>
     <div class="qr-box">
       <svg width="200" height="200" viewBox="0 0 10 10" fill="#111">
         <rect x="1" y="1" width="3" height="3"/>
@@ -3286,7 +3289,7 @@ function showQrModal() {
         <rect x="7" y="7" width="1" height="1"/>
       </svg>
     </div>
-    <button class="modal-full-btn" style="font-size:36px" onclick="location.reload()">처음으로 돌아가기</button>`);
+    <button class="modal-full-btn" style="font-size: var(--t-h2)" onclick="location.reload()">처음으로 돌아가기</button>`);
 }
 
 /* Hash-driven auto-navigation for screenshot capture */
