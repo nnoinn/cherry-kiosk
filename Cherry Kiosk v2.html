@@ -806,7 +806,7 @@
   .audio-play-icon svg { fill: white; width: 20px; height: 20px; margin-left: var(--s-1); }
 
   .wave-card {
-    background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); padding: var(--s-5);
+    background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); padding: var(--s-8);
     display: flex; flex-direction: column; gap: var(--s-5);
   }
   .card-label { font-size: var(--t-h2); font-weight: 700; color: var(--fg); display: flex; justify-content: space-between; align-items: center; }
@@ -885,6 +885,8 @@
   }
   .freq-info-grid {
     display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-3);
+    /* wave-card padding 32px 기준에서 좌우로 12px씩 튀어나와 24px 더 넓게 — 두 정보 카드만 폭 확장 */
+    margin-left: -12px; margin-right: -12px;
   }
   .freq-info-card {
     background: var(--bg); border-radius: var(--r-md); padding: 18px 20px;
