@@ -22,3 +22,10 @@ Thumbs.db
 *.log
 *.tmp
 *.bak
+
+# Node (검증용 일회성 설치 — 배포는 정적 파일만)
+node_modules/
+package-lock.json
+package.json
+.react-app*.js
+.react-app*.jsx

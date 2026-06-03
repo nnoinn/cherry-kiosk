@@ -132,6 +132,8 @@
     background: #ffffff;
     transform-origin: top center;
   }
+  /* React 마운트 루트 — #kiosk를 꽉 채워 .screen(position:absolute; inset:0)의 기준이 됨 */
+  #root { position: absolute; inset: 0; }
 
   /* ── TRANSITIONS ── */
   .screen {
@@ -1286,6 +1288,30 @@ const HomeIcon = () => (
     <path d="M10 20v-6h4v6" />
   </svg>
 );
+const CtaArrowIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12h14M13 5l7 7-7 7" />
+  </svg>
+);
+
+/* ───── DATA ───── */
+const historyEvents = [
+  { y:'1953', d:"미국에서 'Cherry Electrical Products Corporation' 설립. 마이크로스위치 생산 시작." },
+  { y:'1963', d:'유럽 시장 진출. 합작 회사를 통해\n독일에 첫 발 내딛음.' },
+  { y:'1967', d:'독일 바이로이트로 시설 이전.\n키보드 초기 모델 생산 시작.' },
+  { y:'1973', d:'컴퓨터 키보드 제조 시작.\n최초의 키보드 스위치 특허 획득.' },
+  { y:'1979', d:'독일 아우어바흐(Auerbach)에 본사 및 공장을 신축.' },
+  { y:'1983', d:'MX 키보드 스위치\n출시. 수십억 개가 생산된 스위치의 표준.' },
+  { y:'1988', d:'가장 오래된 키보드 시리즈 중\n하나인 G80-3000 출시.\n산업·사무 표준으로 자리매김.' },
+  { y:'1994', d:'건강보험 카드 키보드 출시.\n헬스케어 시장으로 영역 확장.' },
+  { y:'1998', d:"친환경 제품 라인 'Cherry Greenline' 도입.\n'블루 엔젤' 인증 획득 시작." },
+  { y:'2014', d:'1,680만 컬러 구현이 가능한\nMX RGB 스위치 출시 후\n게이밍 키보드 시장 본격 진출.' },
+  { y:'2018', d:'슬림한 디자인을 위한\nMX LOW PROFILE 출시.' },
+  { y:'2019', d:'독일 아우어바흐에 신규 공장 및 본사 사옥을 오픈.' },
+  { y:'2020', d:'하드웨어·소프트웨어 기업\nTheobroma Systems 인수.\n의료용 e-Health 단말기 공개.' },
+  { y:'2021', d:'기업 공개(IPO) 진행. 초슬림형\nMX ULTRA LP 스위치 출시.' },
+  { y:'2022', d:'스웨덴의 e스포츠 전문 기업\nXtrfy(엑스트리파이) 인수 합병.' },
+];
 
 /* ───── SCREENS ───── */
 function Landing({ onStart }) {
@@ -1333,8 +1359,100 @@ function Home({ onNav }) {
   );
 }
 
+function HistoryScreen({ onHome, onBuilder }) {
+  const screenRef = useRef(null);
+  const timelineRef = useRef(null);
+  const cherryRef = useRef(null);
+
+  // 체리 로고가 스크롤 진행도(0..1)에 따라 점선 위를 따라 이동
+  useEffect(() => {
+    const screen = screenRef.current;
+    const tl = timelineRef.current;
+    const cherry = cherryRef.current;
+    if (!screen || !tl || !cherry) return;
+    const update = () => {
+      const cherryH = cherry.offsetHeight || 70;
+      const tlH = tl.offsetHeight;
+      const scrollMax = screen.scrollHeight - screen.clientHeight;
+      const progress = scrollMax > 0 ? Math.max(0, Math.min(1, screen.scrollTop / scrollMax)) : 0;
+      const minTop = 24;
+      const maxTop = tlH - cherryH - 8;
+      cherry.style.top = (minTop + (maxTop - minTop) * progress) + 'px';
+    };
+    screen.addEventListener('scroll', update, { passive: true });
+    const t = setTimeout(update, 100);
+    return () => { screen.removeEventListener('scroll', update); clearTimeout(t); };
+  }, []);
+
+  return (
+    <div className="screen active" id="screen-history" ref={screenRef}>
+      <div className="content-header">
+        <button className="home-btn" onClick={onHome} aria-label="홈으로"><HomeIcon /></button>
+        <div className="content-header-title">CHERRY 역사</div>
+        <div></div>
+      </div>
+      <div className="content-page">
+        <div className="origin-hero">
+          <h1 className="origin-title">ORIGINAL CHERRY</h1>
+        </div>
+
+        <div className="origin-block">
+          <p className="lead">CHERRY는 1953년 Walter Lorain Cherry가 설립했습니다.</p>
+          <p className="body">{'미국의 기업가 정신과 독일의 엔지니어링 기술이 결합된 CHERRY의 역사와\n미래는 오늘날 품질·혁신·디자인·지속가능성의 대명사로 자리잡았습니다.\n현재 본사는 독일 아우어바흐(Auerbach in der Oberpfalz)에 있으며,\nCEO Rogier Volmer와 COO Dr.Udo Streller가 이끌고 있습니다.'}</p>
+        </div>
+
+        <div className="story-header">
+          <div className="story-eyebrow">TO BE CONTINUED…</div>
+          <h2 className="story-title">The success story</h2>
+        </div>
+        <div className="timeline" id="history-timeline" ref={timelineRef}>
+          <div className="timeline-cherry" id="timeline-cherry" ref={cherryRef}>
+            <img src="images/logo.svg" alt="CHERRY" />
+          </div>
+          {historyEvents.map((e, i) => (
+            <div className={'timeline-row ' + (i % 2 === 0 ? 'right' : 'left')} key={e.y}>
+              <div className="timeline-content">
+                <div className="timeline-year">{e.y}</div>
+                <div className="timeline-desc">{e.d}</div>
+              </div>
+              <div className="timeline-dot"></div>
+              <div className="timeline-img"><img src={'images/history/' + e.y + '.png'} alt={e.y} loading="lazy" /></div>
+            </div>
+          ))}
+        </div>
+
+        <div className="origin-block team-cherry-block">
+          <h2 className="team-cherry-title">Team CHERRY</h2>
+          <p className="team-cherry-q">CHERRY는 누가 이끌고 있을까요?</p>
+          <p className="team-cherry-body">{'2008년 Peter Cherry의 회사 매각 이후, ZF Friedrichshafen AG와의 파트너십을 거쳐 2016년부터 CHERRY는 GENUI Partners가 운영하고 있습니다.\n이후 2020년에는 Argand Partners가 주요 투자자로 합류했으며,\n현재 CHERRY Europe GmbH는 독일 Auerbach에 본사를 두고\nRogier Volmer(CEO)와 Dr. Udo Streller(COO)가 경영을 맡고 있습니다.'}</p>
+        </div>
+
+        <div className="overview-grid bottom">
+          <div className="overview-card">
+            <div className="overview-num">80억+</div>
+            <div className="overview-label">누적 스위치 판매량</div>
+          </div>
+          <div className="overview-card">
+            <div className="overview-num">6,000만+</div>
+            <div className="overview-label">사용 중인 키보드</div>
+          </div>
+          <div className="overview-card">
+            <div className="overview-num">70년+</div>
+            <div className="overview-label">업력</div>
+          </div>
+        </div>
+      </div>
+      <div className="content-cta-footer">
+        <button className="btn-cta-custom" onClick={onBuilder}>
+          커스텀하러가기
+          <CtaArrowIcon />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const SCREEN_NAMES = {
-  history: '역사 페이지',
   tech: '기술력 페이지',
   builder: '커스텀 견적',
 };
@@ -1369,7 +1487,10 @@ function App() {
     <React.Fragment>
       {screen === 'landing' && <Landing onStart={() => setScreen('home')} />}
       {screen === 'home' && <Home onNav={(s) => setScreen(s)} />}
-      {['history', 'tech', 'builder'].includes(screen) && (
+      {screen === 'history' && (
+        <HistoryScreen onHome={() => setScreen('home')} onBuilder={() => setScreen('builder')} />
+      )}
+      {['tech', 'builder'].includes(screen) && (
         <StubScreen name={SCREEN_NAMES[screen]} onHome={() => setScreen('home')} />
       )}
     </React.Fragment>
