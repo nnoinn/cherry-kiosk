@@ -1340,6 +1340,141 @@ const techItems = [
   },
 ];
 
+const modelNookkiMap = {
+  'KC 500 MX LP': 'images/model_nookki/KC 500 MX LP_white.png',
+  'KC 200 MX':    'images/model_nookki/KC 200 MX.png',
+  'KW 550 MX LP': 'images/model_nookki/KW 550 MX LP.png',
+  'KW X ULP':     'images/model_nookki/KW X ULP.png',
+  'K5V2 Compact': 'images/model_nookki/K5V2 Compact.png',
+  'MX 10.0N RGB': 'images/model_nookki/MX 10.0N RGB.png',
+  'MX 8.2 TKL WL':'images/model_nookki/MX 8.2 TKL WL.png',
+  'MX 3.0S WL':   'images/model_nookki/MX 3.0S WL.png',
+  'MX-LP 2.1 WL': 'images/model_nookki/MX-LP 2.1 COMPACT WL.png',
+};
+const nookkiForModel = m => modelNookkiMap[m.name] || m.img;
+
+const models = [
+  { id:'m0', name:'KC 500 MX LP', series:'KC', layout:'풀사이즈(100%)', housing:'양극산화 금속판', connect:'유선(USB-A)', keycap:'PBT / 더블샷 (이색사출)', polling:'1ms', img:'images/KC 500 MX LP.jpg',
+    pros:['초슬림 로우프로파일 기계식 키보드 (19.1mm)','하이엔드 PBT 키캡으로 내구성 우수'],
+    recommendUser:'오피스 업무 중심의 전문가, 개발자, 프로그래머',
+    lighting:'백라이트, 잠금 상태키 빨간색 LED 내장',
+    colors:['블랙','화이트','그레이'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/KC 500 MX LP_black.webp',
+      '화이트':'images/keyboard_housing/KC 500 MX LP_white.webp',
+      '그레이':'images/keyboard_housing/KC 500 MX LP_grey(default).webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/KC500 MX LP_BLACK.glb',
+      '화이트':'models/model_color/KC500 MX LP_WHITE.glb',
+      '그레이':'models/model_color/KC 500 MX LP_GREY.glb',
+    } },
+  { id:'m1', name:'KW 550 MX LP', series:'KW', layout:'컴팩트(96%)', housing:'고품질 플라스틱', connect:'유선(USB-C)\n무선(2.4G) / BT(3채널)', keycap:'PBT / 더블샷 (이색사출)', polling:'1ms', img:'images/KW 550 MX LP.jpg',
+    pros:['멀티디바이스 지원 (최대 4개)','무선 로우프로파일 기계식 키보드','컴팩트 96% 레이아웃으로 데스크 공간 절약','하이엔드 PBT 키캡으로 내구성 우수'],
+    recommendUser:'다중기기 사용자, 노트북+데스크톱 병행하는 회사원',
+    lighting:'모든 키에 LED 내장(10단계 밝기 조절), 토글 키 추가 컬러 LED, 충전 상태 알려주는 RGB LED',
+    colors:['블랙','화이트'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/KW 550 MX LP_balck(default).webp',
+      '화이트':'images/keyboard_housing/KW 550 MX LP_white.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/KW 550 MX LP_BLack.glb',
+      '화이트':'models/model_color/KW 550 MX LP_White.glb',
+    } },
+  { id:'m2', name:'KC 200 MX', series:'KC', layout:'풀사이즈(100%)', housing:'양극산화 금속판', connect:'유선(USB-A)', keycap:'ABS / 레이저 에칭 + UV 코팅', polling:'1ms', img:'images/KC 200 MX.jpg',
+    pros:['볼륨 및 계산기용 추가 키 4개','안티고스팅 및 N키 롤오버'],
+    recommendUser:'데이터 입력이 많은 회계/사무직, 계산기 필요한 사용자',
+    lighting:'잠금 상태키 하얀색 LED 내장',
+    colors:['블랙','오렌지','화이트'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/KC 200 MX_black(default).webp',
+      '오렌지':'images/keyboard_housing/KC 200 MX_orange.webp',
+      '화이트':'images/keyboard_housing/KC 200 MX_white.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/KC 200 MX_Black.glb',
+      '오렌지':'models/model_color/KC 200 MX_Orange.glb',
+      '화이트':'models/model_color/KC 200 MX_White.glb',
+    } },
+  { id:'m3', name:'KW X ULP', series:'KW', layout:'풀사이즈(100%)', housing:'브러쉬드 메탈', connect:'유선(USB-A, C)\n무선(2.4G) / BT(5.2채널)', keycap:'PC / 레이저 에칭 + UV 코팅', polling:'-', img:'images/KW X ULP.jpg',
+    pros:['울트라 슬림 무선 기계식 프리미엄 키보드','멀티디바이스 지원 (최대 4개)','안티고스팅 및 N키 롤오버','AES-128 암호화로 무선 보안 강화'],
+    recommendUser:'프리미엄 무선 키보드를 원하는 비즈니스 전문가, 휴대성 중시',
+    lighting:'모든 키에 LED 내장(10단계 밝기 조절), 토글 키 추가 컬러 LED, 충전 상태 알려주는 RGB LED',
+    colors:['블랙'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/KW X ULP_black(default).webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/KW X ULP.glb',
+    } },
+  { id:'m4', name:'K5V2 Compact', series:'XTRFY', layout:'컴팩트(65%)', housing:'반투명 플라스틱', connect:'유선(USB-C)', keycap:'ABS', polling:'1ms', img:'images/K5V2 Compact.jpg',
+    pros:['컴팩트 핫스왑 게이밍 키보드','슈퍼스캔 기술로 0.5ms 응답속도','고도의 사용자 정의 기능(스테빌라이저,키캡,케이블,프레임)','금속 플레이트 구조 및 고품질 부품으로 뛰어난 내구성','흡음 폼이 있는 이중 레이어'],
+    recommendUser:'키보드 커스터마이징을 즐기는 매니아, 게이밍 하이엔드 유저',
+    lighting:'스트립 형식의 RGB LED 조명',
+    colors:['블랙','화이트'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/K5V2 Compact_black(default).webp',
+      '화이트':'images/keyboard_housing/K5V2 Compact_white.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/K5V2 Compact_Black.glb',
+      '화이트':'models/model_color/K5V2 Compact_White.glb',
+    } },
+  { id:'m5', name:'MX 10.0N RGB', series:'MX', layout:'풀사이즈(100%)', housing:'금속(메탈)', connect:'유선(USB-A)', keycap:'ABS / 레이저 에칭 + UV 코팅', polling:'-', img:'images/MX 10.0N RGB.jpg',
+    pros:['초슬림 22mm 프리미엄 게이밍 키보드','키당 1억 회 이상의 내구성','안티고스팅 N키 롤오버','온보드 메모리 내장','높이 조절이 가능한 혁신적인 메탈 스탠드'],
+    recommendUser:'저프로파일 원하는 게이밍 유저, 프로게이머',
+    lighting:'각 키마다 최대 1680만 색상 표현 가능한 RGB LED, 다양한 조명 모드, 커스터마이징 가능한 RGB 백라이트',
+    colors:['블랙'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/MX 10.0N RGB_black(default).webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/MX 10.0N RGB.glb',
+    } },
+  { id:'m6', name:'MX 8.2 TKL WL', series:'XTRFY', layout:'TKL(80%)', housing:'고급 알루미늄', connect:'유선(USB-A, C)\n무선(2.4G) / BT(3채널)', keycap:'ABS / 더블샷 (이색사출)', polling:'1ms 미만', img:'images/MX 8.2 TKL WL.jpg',
+    pros:['무선 TKL 게이밍 키보드','<1ms 게이밍 모드 저레이턴시','메탈 케이스 포함 휴대용 디자인','win키 잠금, 안티 고스팅 및 N키 롤오버'],
+    recommendUser:'멀티기기 게이밍 유저, 스트리머, 콘솔+PC 겸용 게이머',
+    lighting:'각 키마다 최대 1600만 색상 표현 가능한 RGB LED',
+    colors:['블랙','화이트'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/MX 8.2 TKL WL_black(default).webp',
+      '화이트':'images/keyboard_housing/MX 8.2 TKL WL_white.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/MX 8.2 TKL WL_Black.glb',
+      '화이트':'models/model_color/MX_8.2_TKL_WL_White.glb',
+    } },
+  { id:'m7', name:'MX 3.0S WL', series:'XTRFY', layout:'풀사이즈(100%)', housing:'압출 알루미늄', connect:'유선(USB-A, C)\n무선(2.4G) / BT(3채널)', keycap:'ABS / 더블샷 (이색사출)', polling:'1ms', img:'images/MX 3.0S WL.jpg',
+    pros:['풀사이즈 무선 게이밍 키보드','<1ms 게이밍 모드 저레이턴시','5개 디바이스 동시 연결','win키 잠금, 안티 고스팅 및 N키 롤오버'],
+    recommendUser:'멀티기기 게이밍 유저, 스트리머, 콘솔+PC 겸용 게이머',
+    lighting:'각 키마다 최대 1600만 색상 표현 가능한 RGB LED',
+    colors:['블랙','화이트','핑크'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/MX 3.0S WL_black(default).webp',
+      '화이트':'images/keyboard_housing/MX 3.0S WL_white.webp',
+      '핑크':'images/keyboard_housing/MX 3.0S WL_pink.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/MX 3.0S WL_Black.glb',
+      '화이트':'models/model_color/MX 3.0S_WL_White.glb',
+      '핑크':'models/model_color/MX 3.0S_WL_Pink.glb',
+    } },
+  { id:'m8', name:'MX-LP 2.1 WL', series:'XTRFY', layout:'컴팩트(65%)', housing:'고품질 플라스틱', connect:'유선(USB-A, C)\n무선(2.4G) / BT(5.2채널)', keycap:'ABS / 레이저 에칭 + UV 코팅', polling:'1ms', img:'images/MX-LP 2.1 WL.jpg',
+    pros:['컴팩트 무선 게이밍 키보드','전체 높이 35% 감소, 반동 속도 40% 향상','고급 노르딕 칩 장착','<1ms 게이밍 모드 저레이턴시','win키 잠금, 안티고스팅 및 N키 롤오버'],
+    recommendUser:'컴팩트 키보드 선호 게이머, 휴대용 게이밍 키보드 필요 유저',
+    lighting:'각 키마다 최대 1600만 색상 표현 가능한 RGB LED, 나만의 조명 효과 생성 및 키보드 내장 메모리에 저장',
+    colors:['블랙','화이트'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/MX-LP 2.1 COMPACT WL_black(default).webp',
+      '화이트':'images/keyboard_housing/MX-LP 2.1 COMPACT WL_white.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/MX-LP 2.1 WL_black.glb',
+      '화이트':'models/model_color/MX-LP 2.1 WL_White.glb',
+    } },
+];
+
 /* ───── SCREENS ───── */
 function Landing({ onStart }) {
   return (
@@ -1514,28 +1649,186 @@ function TechScreen({ onHome, onBuilder }) {
   );
 }
 
-const SCREEN_NAMES = {
-  builder: '커스텀 견적',
-};
-
-function StubScreen({ name, onHome }) {
+function Stepper({ step }) {
+  const labels = ['라인업 선택', '스위치 분석', '커스텀 맵핑'];
   return (
-    <div className="screen active">
+    <div className="stepper" id="stepper">
+      {labels.map((l, i) => {
+        const n = i + 1, active = n === step, done = n < step;
+        return (
+          <React.Fragment key={n}>
+            {i > 0 && <div className="step-divider"></div>}
+            <div className={'step-item ' + (active ? 'active' : done ? 'done' : '')}>
+              <div className="step-num">{done ? '✓' : n}</div>
+              {l}
+            </div>
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
+function Step1({ model, color, onSelectModel, onSelectColor }) {
+  if (!model) {
+    return (
+      <div className="s1-grid-wrap">
+        <div className="step-heading">체리 라인업 셀렉션</div>
+        <div className="step-sub">커스텀의 뼈대가 될 베이스 키보드 모델을 선택하세요.</div>
+        <div className="model-grid">
+          {models.map(m => (
+            <div className="model-card" key={m.id} onClick={() => onSelectModel(m.id)}>
+              <div className="model-card-img"><img src={nookkiForModel(m)} alt={m.name} /></div>
+              <div className="model-name">{m.name}</div>
+              <div className="model-layout">{m.layout}</div>
+              <div className="model-meta">{m.housing}</div>
+              <div className="model-meta">{m.connect.split('\n')[0]}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  const m = model;
+  const housingSrc = (m.housingImages && m.housingImages[color]) || m.img;
+  return (
+    <div className="s1-detail">
+      <div className="sidebar">
+        <div className="sidebar-list" id="s1-list">
+          {models.map(mdl => (
+            <button className={'sidebar-item s1-model-item ' + (mdl.id === m.id ? 'active' : '')} key={mdl.id} onClick={() => onSelectModel(mdl.id)}>
+              <div className="s1-model-img" style={{ width: '100%', flex: '1 1 0', minHeight: 0, borderRadius: 'var(--r-sm)', overflow: 'hidden', padding: '2px' }}>
+                <img src={nookkiForModel(mdl)} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} alt={mdl.name} />
+              </div>
+              <div className="sidebar-item-name" style={{ fontSize: 'var(--t-body-sm)' }}>{mdl.name}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="detail-panel" id="s1-detail-panel">
+        <div className="detail-3d-preview">
+          <img id="s1-housing-img" src={housingSrc} alt={m.name} style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'multiply' }} />
+        </div>
+        <div className="detail-card">
+          <div>
+            <div className="section-label"><div className="dot"></div> 하우징 테마 옵션</div>
+            <div className="color-options" id="s1-colors" style={{ marginTop: '16px' }}>
+              {m.colors.map(c => (
+                <button className={'color-btn ' + (c === color ? 'active' : '')} key={c} onClick={() => onSelectColor(c)}>{c}</button>
+              ))}
+            </div>
+          </div>
+          <hr style={{ border: 'none', borderTop: '1.5px solid var(--border)' }} />
+          <div>
+            <div className="section-label"><div className="dot"></div> 핵심 스펙 데이터</div>
+            <div className="spec-list" style={{ marginTop: '16px' }}>
+              <div className="spec-item">
+                <svg className="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2" /></svg>
+                <div><strong>배열</strong> <span>{m.layout}</span></div>
+              </div>
+              <div className="spec-item">
+                <svg className="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>
+                <div><strong>하우징 소재</strong> <span>{m.housing}</span></div>
+              </div>
+              <div className="spec-item">
+                <svg className="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="2" /><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14" /></svg>
+                <div><strong>연결 방식</strong> <span>{m.connect.replace(/\\n/g, ' / ')}</span></div>
+              </div>
+              <div className="spec-item">
+                <svg className="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18M9 21V9" /></svg>
+                <div><strong>키캡 재질 / 각인</strong> <span>{m.keycap}</span></div>
+              </div>
+            </div>
+          </div>
+          <hr style={{ border: 'none', borderTop: '1.5px solid var(--border)' }} />
+          <div>
+            <div className="section-label"><div className="dot"></div> 모델 상세 설명</div>
+            <div style={{ marginTop: 'var(--s-5)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 700, color: '#16A34A', marginBottom: 'var(--s-4)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg> 장점
+                </div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 400, color: 'var(--fg2)', lineHeight: '40px', whiteSpace: 'pre-line' }}>{(Array.isArray(m.pros) ? m.pros : [m.pros]).join('\n')}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 700, color: 'var(--fg)', marginBottom: 'var(--s-4)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg> 추천 사용자
+                </div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 400, color: 'var(--fg2)', lineHeight: '35px', whiteSpace: 'pre-line' }}>{m.recommendUser || ''}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 900, color: 'var(--fg)', marginBottom: 'var(--s-4)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10" /></svg> 조명
+                </div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 400, color: 'var(--fg2)', lineHeight: '40px', whiteSpace: 'pre-line' }}>{m.lighting.replace(/, /g, '\n')}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// step2·step3은 다음 React 변환 단계에서 구현 예정 — 임시 placeholder
+function BuilderStepPlaceholder({ step }) {
+  const labels = { 2: '스위치 분석', 3: '커스텀 맵핑' };
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 'var(--s-6)', textAlign: 'center' }}>
+      <div style={{ fontSize: 'var(--t-display)', lineHeight: 1 }}>🚧</div>
+      <div style={{ fontSize: 'var(--t-h1)', fontWeight: 800, color: 'var(--fg)' }}>{labels[step]}</div>
+      <div style={{ fontSize: 'var(--t-h3)', color: 'var(--fg2)' }}>다음 React 변환 단계에서 구현됩니다.</div>
+    </div>
+  );
+}
+
+function BuilderScreen({ onHome }) {
+  const [step, setStep] = useState(1);
+  const [model, setModel] = useState(null);
+  const [color, setColor] = useState('블랙');
+
+  const selectModel = (id) => {
+    const m = models.find(x => x.id === id);
+    setModel(m);
+    setColor(m.colors[0]);
+  };
+
+  const handlePrev = () => {
+    if (step === 1 && model) { setModel(null); return; }
+    if (step > 1) setStep(step - 1);
+  };
+  const handleNext = () => {
+    if (step === 1 && !model) return;
+    setStep(step + 1);
+  };
+
+  const hidePrev = (step === 1 && !model);
+  const nextDisabled = (step === 1 && !model);
+
+  return (
+    <div className="screen active" id="screen-builder">
       <div className="content-header">
         <button className="home-btn" onClick={onHome} aria-label="홈으로"><HomeIcon /></button>
-        <div className="content-header-title">{name}</div>
+        <Stepper step={step} />
         <div></div>
       </div>
-      <div style={{
-        flex: 1, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-        padding: 'var(--s-12)', gap: 'var(--s-6)', textAlign: 'center'
-      }}>
-        <div style={{ fontSize: 'var(--t-display)', lineHeight: 1, marginBottom: 'var(--s-6)' }}>🚧</div>
-        <div style={{ fontSize: 'var(--t-h1)', fontWeight: 800, color: 'var(--fg)' }}>{name}</div>
-        <div style={{ fontSize: 'var(--t-h3)', color: 'var(--fg2)' }}>
-          React 변환은 다음 단계에서 진행됩니다.
-        </div>
+      <div id="builder-main">
+        {step === 1
+          ? <Step1 model={model} color={color} onSelectModel={selectModel} onSelectColor={setColor} />
+          : <BuilderStepPlaceholder step={step} />}
+      </div>
+      <div className="kiosk-footer">
+        <button className="btn-secondary" id="btn-prev" onClick={handlePrev} style={{ visibility: hidePrev ? 'hidden' : 'visible' }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6" /></svg>
+          이전으로
+        </button>
+        <button className={'btn-next' + (nextDisabled ? ' disabled' : '')} id="btn-next" onClick={handleNext}>
+          {nextDisabled ? (
+            <React.Fragment>모델을 선택하세요 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg></React.Fragment>
+          ) : (
+            <React.Fragment>다음 단계 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6" /></svg></React.Fragment>
+          )}
+        </button>
       </div>
     </div>
   );
@@ -1555,7 +1848,7 @@ function App() {
         <TechScreen onHome={() => setScreen('home')} onBuilder={() => setScreen('builder')} />
       )}
       {screen === 'builder' && (
-        <StubScreen name={SCREEN_NAMES[screen]} onHome={() => setScreen('home')} />
+        <BuilderScreen onHome={() => setScreen('home')} />
       )}
     </React.Fragment>
   );
