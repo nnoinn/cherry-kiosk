@@ -1313,6 +1313,33 @@ const historyEvents = [
   { y:'2022', d:'스웨덴의 e스포츠 전문 기업\nXtrfy(엑스트리파이) 인수 합병.' },
 ];
 
+const techItems = [
+  {
+    num:'01', name:'골드 크로스포인트 접점 시스템',
+    img:'images/tech/01-goldcrosspoint.png',
+    desc:'높은 전도성과 내구성 덕분에 변함없는 품질을 유지하는 탁월한 수명을 제공합니다.',
+    pills:['1억 회 수명','금 코팅 접점','최고 전도성']
+  },
+  {
+    num:'02', name:'풀 키 / 엔 키 롤오버',
+    img:'images/tech/02-mx-switch.png',
+    desc:'스위치는 각 키가 독립적으로 작동하도록\n보장하고, 모든 키를 동시에 눌러도 입력이\n손실되지 않습니다.',
+    pills:['고스팅 방지','동시 입력 보장','게이밍 최적']
+  },
+  {
+    num:'03', name:'터널 자기저항 센싱',
+    img:'images/tech/03-tmr.png',
+    desc:'더 높은 감도, 더 빠른 반응 속도, 더 낮은 전력 소비, 더 뛰어난 신호 안정성을 제공합니다.',
+    pills:['0.01mm 정밀도','초고속 반응','저전력 무선']
+  },
+  {
+    num:'04', name:'CHERRY 첨단 무선 기술',
+    img:'images/tech/04-rgb.png',
+    desc:'초고속 블루투스 기술을 활용하여 이상적인 조건에서 LLM은 1ms 수준의 연결 간격과 전송 지연을 구현합니다.',
+    pills:['1ms 저지연','LLM 모드','안정적 공존']
+  },
+];
+
 /* ───── SCREENS ───── */
 function Landing({ onStart }) {
   return (
@@ -1452,8 +1479,42 @@ function HistoryScreen({ onHome, onBuilder }) {
   );
 }
 
+function TechScreen({ onHome, onBuilder }) {
+  return (
+    <div className="screen active" id="screen-tech">
+      <div className="content-header">
+        <button className="home-btn" onClick={onHome} aria-label="홈으로"><HomeIcon /></button>
+        <div className="content-header-title">CHERRY 기술력</div>
+        <div></div>
+      </div>
+      <div className="content-page">
+        <div className="tech-list" id="tech-list">
+          {techItems.map((t) => (
+            <div className="tech-item" key={t.num}>
+              <div className="tech-img">{t.img ? <img src={t.img} alt={t.name} /> : null}</div>
+              <div className="tech-text">
+                <div className="tech-num">TECH {t.num}</div>
+                <div className="tech-name">{t.name}</div>
+                <div className="tech-desc">{t.desc}</div>
+                <div className="tech-highlights">
+                  {t.pills.map((p, j) => <span className="tech-pill" key={j}>{p}</span>)}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="content-cta-footer">
+        <button className="btn-cta-custom" onClick={onBuilder}>
+          커스텀하러가기
+          <CtaArrowIcon />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const SCREEN_NAMES = {
-  tech: '기술력 페이지',
   builder: '커스텀 견적',
 };
 
@@ -1490,7 +1551,10 @@ function App() {
       {screen === 'history' && (
         <HistoryScreen onHome={() => setScreen('home')} onBuilder={() => setScreen('builder')} />
       )}
-      {['tech', 'builder'].includes(screen) && (
+      {screen === 'tech' && (
+        <TechScreen onHome={() => setScreen('home')} onBuilder={() => setScreen('builder')} />
+      )}
+      {screen === 'builder' && (
         <StubScreen name={SCREEN_NAMES[screen]} onHome={() => setScreen('home')} />
       )}
     </React.Fragment>
