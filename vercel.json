@@ -3,7 +3,8 @@
   "cleanUrls": false,
   "rewrites": [
     { "source": "/", "destination": "/Cherry Kiosk.html" },
-    { "source": "/v2", "destination": "/Cherry Kiosk v2.html" }
+    { "source": "/v2", "destination": "/Cherry Kiosk v2.html" },
+    { "source": "/react", "destination": "/Cherry Kiosk react.html" }
   ],
   "headers": [
     {
