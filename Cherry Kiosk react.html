@@ -1475,6 +1475,489 @@ const models = [
     } },
 ];
 
+const switches = {
+  red:    { id:'red',    name:'MX Red',        type:'Linear',  force:'45cN', desc:'부드러운 저음역, 선형 타건감', img:'images/MX RED.webp',
+    detail: { opForce:'45cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥1억 회',
+      summary:'걸림 없이 부드럽게 입력되는 순수 리니어 스위치.',
+      pros:['빠른 연타 유리','장시간 사용 시 피로 최소화'],
+      cons:['오타 빈도 증가 가능','타건 피드백 부족']
+    }, color:'#ef4444', stroke:'#ef4444', path:'M0,150 L150,131 L300,106 L370,90 Q390,80 395,55 L400,33' },
+  brown:  { id:'brown',  name:'MX Brown',       type:'Tactile', force:'55cN', desc:'균형 잡힌 톤, 명확한 타이핑 피드백', img:'images/MX BROWN.webp',
+    detail: { opForce:'55cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥1억 회',
+      summary:'중간 범프로 입력 지점을 인지할 수 있는 택타일 스위치.',
+      pros:['타이핑 정확도 향상','게이밍·타이핑 겸용'],
+      cons:['리니어 대비 연타 속도 저하','범프감 호불호']
+    }, color:'#d97706', stroke:'#d97706', path:'M0,150 C40,143 80,128 105,113 C115,107 122,103 125,108 C128,113 132,123 135,130 C140,140 155,140 165,135 C175,130 188,128 195,128 L210,127 L400,67' },
+  blue:   { id:'blue',   name:'MX Blue',        type:'Clicky',  force:'60cN', desc:'경쾌한 고음역, 기계식 찰칵 클릭', img:'images/MX BLUE.webp',
+    detail: { opForce:'60cN', preTravel:'2.2mm', totalTravel:'4.0mm', life:'≥0.5억 회',
+      summary:'클릭음과 강한 피드백으로 키감을 강조한 클릭키 스위치.',
+      pros:['특유의 만족스러운 클릭음','가장 명확한 입력 피드백'],
+      cons:['주변 소음 유발','클릭 구조로 연타 한계']
+    }, color:'#3b82f6', stroke:'#3b82f6', path:'M0,158 C40,150 75,118 105,103 C115,98 122,95 125,100 C128,108 132,135 138,148 C145,158 155,148 165,138 C180,128 192,123 200,122 L400,75' },
+  black:  { id:'black',  name:'MX Black',       type:'Linear',  force:'60cN', desc:'묵직한 반발력, 전문가용 타건감', img:'images/MX BLACK.webp',
+    detail: { opForce:'60cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥1억 회',
+      summary:'무거운 스프링으로 오타를 방지하는 리니어 스위치.',
+      pros:['묵직한 타건감','정밀 입력 환경 최적'],
+      cons:['장시간 사용 시 손가락 피로','가벼운 터치 선호자 부적합']
+    }, color:'#27272a', stroke:'#555', path:'M0,150 L150,108 L300,67 L370,42 Q390,30 395,17 L400,17' },
+  clear:  { id:'clear',  name:'MX Clear',       type:'Tactile', force:'65cN', desc:'강한 택타일 범프, 정밀 타이핑용', img:'images/MX CLEAR.webp',
+    detail: { opForce:'65cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥0.5억 회',
+      summary:'범프와 고하중으로 정확한 입력을 돕는 택타일 스위치.',
+      pros:['뚜렷한 택타일 피드백','정밀 타이핑 최적화'],
+      cons:['장시간 사용 시 손가락 피로','가벼운 터치 선호자 부적합']
+    }, color:'#94a3b8', stroke:'#94a3b8', path:'M0,133 C40,125 80,108 105,98 C115,93 122,90 125,95 C128,103 132,118 135,123 C140,130 155,128 165,122 C175,117 188,113 195,112 L210,110 L400,17' },
+  grey:   { id:'grey',   name:'MX Grey',        type:'Tactile', force:'80cN', desc:'최고 하중, 특수 용도 택타일', img:'images/MX GREY.webp',
+    detail: { opForce:'80cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥0.5억 회',
+      summary:'체리 최고 하중으로 오입력을 차단하는 택타일 스위치.',
+      pros:['대형 키 최적','커스텀 빌드 활용도 우수'],
+      cons:['일반 타이핑에 과도한 하중','빠른 연타·게이밍 부담']
+    }, color:'#6b7280', stroke:'#6b7280', path:'M0,158 C40,148 80,108 110,75 C120,65 128,62 132,68 C138,80 145,98 155,108 C170,120 185,113 195,103 L210,98 L400,17' },
+  silent: { id:'silent', name:'MX Silent Red',  type:'Silent',  force:'45cN', desc:'극저소음 설계, 사무·야간 사용 적합', img:'images/MX SILENT RED.webp',
+    detail: { opForce:'45cN', preTravel:'1.9mm', totalTravel:'3.7mm', life:'≥0.5억 회',
+      summary:'댐퍼 내장으로 소음을 약 30% 저감한 리니어 스위치.',
+      pros:['부드러운 타건감','정숙 환경 최적'],
+      cons:['댐퍼로 인한 무른 바닥감','리니어 특유의 피드백 부재']
+    }, color:'#fb7185', stroke:'#fb7185', path:'M0,150 L150,131 L300,107 L350,98 L365,93 Q372,75 370,67' },
+};
+
+const switchNookkiMap = {
+  red:    'images/switch_nookki/MX RED.png',
+  brown:  'images/switch_nookki/MX BROWN.png',
+  blue:   'images/switch_nookki/MX BLUE.png',
+  black:  'images/switch_nookki/MX BLACK.png',
+  clear:  'images/switch_nookki/MX CLEAR.png',
+  grey:   'images/switch_nookki/MX GREY.png',
+  silent: 'images/switch_nookki/MX SILENT RED.png',
+};
+const nookkiForSwitch = s => switchNookkiMap[s.id] || s.img;
+
+const soundFiles = {
+  red:    'data/sound_of_switchs/MX Red.mp3',
+  brown:  'data/sound_of_switchs/MX Brown.mp3',
+  blue:   'data/sound_of_switchs/MX Blue.mp3',
+  black:  'data/sound_of_switchs/MX Black.mp3',
+  clear:  'data/sound_of_switchs/MX Clear.mp3',
+  grey:   'data/sound_of_switchs/MX Grey.mp3',
+  silent: 'data/sound_of_switchs/MX Silent Red.mp3',
+};
+
+const freqData = {
+  red:    { peak:[250,900],    secondary:[1200,2200], clickLevel:0.15, character:'클릭음 없이 부드럽고 균일한 도각음',
+            cards:[{t:'부드러운 저음', d:'250-900Hz 중심의\n풍부한 사운드'},{t:'낮은 소음', d:'약한 고조파,\n자연스러운 타건음'},{t:'선형 타건감', d:'일정한 타건 패턴,\n균일한 피드백'}] },
+  brown:  { peak:[400,1400],   secondary:[1500,2500], clickLevel:0.35, character:'클릭음은 없고 가볍게 도각이는 중음 중심 사운드',
+            cards:[{t:'또렷한 중음', d:'400-1.4kHz 중심의\n명료한 사운드'},{t:'중간 소음', d:'적당한 고조파,\n자연스러운 타건'},{t:'촉각 피드백', d:'범프 지점 인지,\n정확한 입력'}] },
+  blue:   { peak:[2500,5500],  secondary:[700,1500],  clickLevel:0.95, character:'찰칵거리는 클릭음이 강하게 튀는 사운드',
+            cards:[{t:'경쾌한 고음', d:'2.5-5.5kHz 중심의\n찰칵음'},{t:'높은 클릭음', d:'강한 고조파,\n명확한 찰칵 사운드'},{t:'클릭 피드백', d:'리듬감 있는 타건,\n강한 피드백'}] },
+  black:  { peak:[180,700],    secondary:[800,1600],  clickLevel:0.15, character:'낮고 단단하게 떨어지는 묵직한 리니어 사운드',
+            cards:[{t:'묵직한 저음', d:'180-700Hz 중심의\n단단한 사운드'},{t:'낮은 소음', d:'약한 고조파,\n자연스러운 타건음'},{t:'단단한 리니어', d:'강한 반발력,\n묵직한 타건감'}] },
+  clear:  { peak:[300,1200],   secondary:[1200,2200], clickLevel:0.18, character:'굵고 밀도 있는 중저음 중심 무클릭 사운드',
+            cards:[{t:'굵은 중저음', d:'300-1.2kHz 중심의\n밀도 있는 사운드'},{t:'낮은 소음', d:'무클릭,\n차분한 타건'},{t:'강한 택타일', d:'뚜렷한 범프,\n정밀 타이핑'}] },
+  grey:   { peak:[150,900],    secondary:[900,1800],  clickLevel:0.15, character:'가장 묵직하고 둔탁한 저음형 사운드',
+            cards:[{t:'가장 묵직한 저음', d:'150-900Hz 중심의\n둔탁한 사운드'},{t:'낮은 소음', d:'약한 고조파,\n자연스러운 타건음'},{t:'고하중 택타일', d:'강한 키압,\n깊은 피드백'}] },
+  silent: { peak:[150,500],    secondary:[600,1200],  clickLevel:0.05, character:'댐핑된 둔탁한 저소음 사운드',
+            cards:[{t:'댐핑된 저음', d:'150-500Hz 중심의\n둔탁한 사운드'},{t:'매우 낮은 소음', d:'댐퍼로 고조파 흡수'},{t:'부드러운 슬립', d:'끝맺음이 부드러운 타건'}] },
+};
+
+const ICON_WAVE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h2l2-7 3 14 3-10 2 6 2-3h4"/></svg>';
+const ICON_VOLUME_MUTE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg>';
+const ICON_VOLUME_ACTIVE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
+function pickFreqIcon(idx, cardTitle) {
+  if (idx === 0) return ICON_WAVE;
+  if (idx === 1) return /낮은/.test(cardTitle) ? ICON_VOLUME_MUTE : ICON_VOLUME_ACTIVE;
+  return ICON_WAVE;
+}
+
+/* ───── STEP 2 그래프·오디오 (v2 명령형 로직 — DOM id 기반, useEffect에서 호출) ───── */
+// 활성 스위치는 모듈 스코프에 보관 (v2의 state.activeSwitch 대체). React는 setS2Active로 동기화.
+const s2 = { activeSwitch: 'red' };
+
+let waveRaf = null;
+let audioEl = null, audioCtx = null, audioAnalyser = null, audioSrcNode = null, audioData = null;
+let preloadEl = null, preloadAnalyser = null, preloadSrcNode = null, preloadData = null;
+function ensureAudio() {
+  if (!audioEl) { audioEl = new Audio(); audioEl.preload = 'auto'; }
+  if (!audioCtx) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    audioCtx = new AC();
+    audioAnalyser = audioCtx.createAnalyser();
+    audioAnalyser.fftSize = 1024;
+    audioAnalyser.smoothingTimeConstant = 0.6;
+    audioData = new Uint8Array(audioAnalyser.frequencyBinCount);
+    audioSrcNode = audioCtx.createMediaElementSource(audioEl);
+    audioSrcNode.connect(audioAnalyser);
+    audioAnalyser.connect(audioCtx.destination);
+  }
+  return true;
+}
+function ensurePreload() {
+  if (!ensureAudio()) return false;
+  if (!preloadEl) {
+    preloadEl = new Audio();
+    preloadEl.preload = 'auto';
+    preloadAnalyser = audioCtx.createAnalyser();
+    preloadAnalyser.fftSize = 1024;
+    preloadAnalyser.smoothingTimeConstant = 0.6;
+    preloadData = new Uint8Array(preloadAnalyser.frequencyBinCount);
+    preloadSrcNode = audioCtx.createMediaElementSource(preloadEl);
+    preloadSrcNode.connect(preloadAnalyser);
+  }
+  return true;
+}
+
+let preloadQueueStarted = false;
+function startPreloadQueue() {
+  const order = (s2.activeSwitch ? [s2.activeSwitch] : []).concat(
+    ['red','brown','blue','black','clear','grey','silent'].filter(s => s !== s2.activeSwitch)
+  );
+  let i = 0;
+  (function next() {
+    while (i < order.length && freqGhostFromAudio[order[i]]) i++;
+    if (i >= order.length) return;
+    preloadGhostForSwitch(order[i++], next);
+  })();
+}
+function preloadGhostForSwitch(swId, done) {
+  if (freqGhostFromAudio[swId]) { done && done(); return; }
+  if (!ensurePreload()) { done && done(); return; }
+  const src = soundFiles[swId];
+  if (!src) { done && done(); return; }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  preloadEl.pause();
+  preloadEl.src = src;
+  preloadEl.currentTime = 0;
+  const N = FREQ_BAR_N;
+  const ranges = freqBarRanges();
+  const ghost = new Float32Array(N);
+  let first = true;
+  function poll() {
+    if (preloadEl.paused || preloadEl.ended) {
+      freqGhost[swId] = ghost;
+      freqGhostFromAudio[swId] = true;
+      if (s2.activeSwitch === swId && !waveRaf) renderFreqBars();
+      done && done();
+      return;
+    }
+    preloadAnalyser.getByteFrequencyData(preloadData);
+    const binCount = preloadData.length;
+    const binHz = (audioCtx.sampleRate / 2) / binCount;
+    for (let i2 = 0; i2 < N; i2++) {
+      const [fLo, fHi] = ranges[i2];
+      const binLo = Math.max(0, Math.floor(fLo / binHz));
+      const binHi = Math.min(binCount - 1, Math.max(binLo, Math.ceil(fHi / binHz)));
+      let mx = 0;
+      for (let b = binLo; b <= binHi; b++) if (preloadData[b] > mx) mx = preloadData[b];
+      const v = Math.min(1, (mx / 255) * 1.4);
+      if (first) ghost[i2] = v;
+      else if (v > ghost[i2]) ghost[i2] = v;
+    }
+    first = false;
+    requestAnimationFrame(poll);
+  }
+  const p = preloadEl.play();
+  if (p && p.then) p.then(poll).catch(()=>{ done && done(); });
+  else poll();
+}
+
+function renderFreqGraphs() {
+  const swId = s2.activeSwitch;
+  const sw = switches[swId];
+  const fd = freqData[swId];
+  if (!fd) return;
+  const color = sw.color;
+
+  const peakHz = Math.round(Math.sqrt(fd.peak[0] * fd.peak[1]));
+  const peakLabel = peakHz >= 1000 ? (peakHz/1000).toFixed(1).replace(/\.0$/,'') + 'kHz' : peakHz + 'Hz';
+
+  const fMin = 20, fMax = 20000;
+  const lMin = Math.log10(fMin), lMax = Math.log10(fMax);
+  const xLog = f => (Math.log10(f) - lMin) / (lMax - lMin) * 1000;
+  const yDb = db => (1 - (db + 20) / 40) * 1000;
+
+  const peakCenter = Math.log10(peakHz);
+  const peakWidth = Math.max((Math.log10(fd.peak[1]) - Math.log10(fd.peak[0])) / 2, 0.15);
+  const secCenter = Math.log10(Math.sqrt(fd.secondary[0] * fd.secondary[1]));
+  const secWidth = Math.max((Math.log10(fd.secondary[1]) - Math.log10(fd.secondary[0])) / 2, 0.2);
+  const cl = fd.clickLevel;
+  const respDb = f => {
+    const l = Math.log10(f);
+    let v = 10 * Math.exp(-Math.pow((l - peakCenter) / peakWidth, 2))
+          + 4.5 * Math.exp(-Math.pow((l - secCenter) / secWidth, 2));
+    if (cl >= 0.9) { v += 6 * Math.exp(-Math.pow((l - 3.55) / 0.10, 2)); }
+    else if (cl >= 0.3) { v += 2.6 * Math.exp(-Math.pow((l - 3.15) / 0.22, 2)); }
+    else if (cl <= 0.08) { v -= 2.5 * Math.exp(-Math.pow((l - 2.85) / 0.40, 2)); }
+    v += 0.45 * Math.sin(l * 9 + peakCenter * 4);
+    return v - 4;
+  };
+
+  const pts = [];
+  for (let i = 0; i <= 160; i++) {
+    const f = Math.pow(10, lMin + (i / 160) * (lMax - lMin));
+    pts.push([xLog(f), yDb(respDb(f))]);
+  }
+  const linePath = pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join('');
+  const fillPath = linePath + ` L${pts[pts.length-1][0].toFixed(1)},1000 L${pts[0][0].toFixed(1)},1000 Z`;
+  const yGridLines = [250, 500, 750].map(y => `<line x1="0" y1="${y}" x2="1000" y2="${y}" stroke-dasharray="3 5"/>`).join('');
+  const xGridLines = [xLog(200), xLog(2000)].map(x => `<line x1="${x.toFixed(1)}" y1="0" x2="${x.toFixed(1)}" y2="1000" stroke-dasharray="3 5"/>`).join('');
+
+  const peakX = xLog(peakHz);
+  const peakY = yDb(respDb(peakHz));
+  const gradId = 'freq-line-grad-' + swId;
+
+  const lineEl = document.getElementById('freq-line-svg');
+  if (lineEl) lineEl.innerHTML = `
+    <defs>
+      <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${color}" stop-opacity="0.42"/>
+        <stop offset="22%" stop-color="${color}" stop-opacity="0.12"/>
+        <stop offset="42%" stop-color="${color}" stop-opacity="0"/>
+        <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <g stroke="#a8b0bc" stroke-width="1" vector-effect="non-scaling-stroke" fill="none">${yGridLines}${xGridLines}</g>
+    <path d="${fillPath}" fill="url(#${gradId})"/>
+    <path d="${linePath}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+    <g transform="translate(${peakX.toFixed(1)},${peakY.toFixed(1)})">
+      <circle r="6" fill="${color}" vector-effect="non-scaling-stroke"/>
+      <circle r="14" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.4" vector-effect="non-scaling-stroke"/>
+    </g>
+    <g stroke="#94a3b8" stroke-width="1.5" vector-effect="non-scaling-stroke" fill="none">
+      <line x1="2" y1="0" x2="2" y2="1000"/>
+      <line x1="996" y1="0" x2="996" y2="1000"/>
+      <line x1="0" y1="998" x2="1000" y2="998"/>
+    </g>
+  `;
+
+  const pill = document.getElementById('freq-peak-pill');
+  if (pill) {
+    pill.style.display = '';
+    const leftPct = Math.min(94, Math.max(6, peakX / 10));
+    const topPct = Math.max(2, peakY / 10);
+    pill.style.left = leftPct + '%';
+    pill.style.top = topPct + '%';
+    pill.style.borderColor = color;
+    pill.style.color = color;
+    pill.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L15 9 L22 10 L17 15 L18 22 L12 18 L6 22 L7 15 L2 10 L9 9 Z"/></svg>피크 ${peakLabel}`;
+  }
+
+  renderFreqBars();
+
+  const grid = document.getElementById('freq-info-grid');
+  if (grid) grid.innerHTML = fd.cards.slice(0, 2).map((c,i) => `
+    <div class="freq-info-card">
+      <div class="freq-info-icon" style="color:${color}">${pickFreqIcon(i, c.t)}</div>
+      <div class="freq-info-text">
+        <div class="freq-info-title">${c.t}</div>
+        <div class="freq-info-desc">${c.d}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+const FREQ_BAR_N = 24;
+const FREQ_BAR_MIN = 100, FREQ_BAR_MAX = 10000;
+const freqGhost = {};
+
+function freqBarRanges() {
+  const lMin = Math.log10(FREQ_BAR_MIN), lMax = Math.log10(FREQ_BAR_MAX);
+  const out = [];
+  for (let i = 0; i < FREQ_BAR_N; i++) {
+    const lo = Math.pow(10, lMin + (i / FREQ_BAR_N) * (lMax - lMin));
+    const hi = Math.pow(10, lMin + ((i + 1) / FREQ_BAR_N) * (lMax - lMin));
+    out.push([lo, hi]);
+  }
+  return out;
+}
+
+function buildEnvelopeGhost(swId) {
+  const fd = freqData[swId];
+  if (!fd) return null;
+  const N = FREQ_BAR_N;
+  const ranges = freqBarRanges();
+  const peakCenter = Math.log10(Math.sqrt(fd.peak[0] * fd.peak[1]));
+  const peakWidth = Math.max((Math.log10(fd.peak[1]) - Math.log10(fd.peak[0])) / 2, 0.15);
+  const secCenter = Math.log10(Math.sqrt(fd.secondary[0] * fd.secondary[1]));
+  const secWidth = Math.max((Math.log10(fd.secondary[1]) - Math.log10(fd.secondary[0])) / 2, 0.2);
+  const out = new Float32Array(N);
+  for (let i = 0; i < N; i++) {
+    const c = Math.sqrt(ranges[i][0] * ranges[i][1]);
+    const l = Math.log10(c);
+    let v = Math.exp(-Math.pow((l - peakCenter) / peakWidth, 2))
+          + 0.5 * Math.exp(-Math.pow((l - secCenter) / secWidth, 2));
+    if (fd.clickLevel >= 0.9) v += 0.55 * Math.exp(-Math.pow((l - 3.55) / 0.12, 2));
+    else if (fd.clickLevel >= 0.3) v += 0.22 * Math.exp(-Math.pow((l - 3.15) / 0.22, 2));
+    else if (fd.clickLevel <= 0.08) v *= 0.85;
+    out[i] = Math.min(0.9, v);
+  }
+  return out;
+}
+
+const BAR_MAX_H = 800;
+function paintFreqBars(opts) {
+  const N = FREQ_BAR_N;
+  const VB_W = 1000, BASE_Y = 1000;
+  const gap = 8, gridW = VB_W / N;
+  const w = gridW - gap;
+  const live = opts.live, ghost = opts.ghost, color = opts.color;
+  const progress = Math.max(0, Math.min(1, opts.progress || 0));
+  const activeIdx = Math.ceil(N * progress);
+  const TOP = BASE_Y - BAR_MAX_H;
+  const gIdGhost = 'bg' + (color || '').replace('#','');
+  const gIdLive  = 'bl' + (color || '').replace('#','');
+
+  let defs = `<defs>
+    <linearGradient id="${gIdGhost}" gradientUnits="userSpaceOnUse" x1="0" y1="${TOP}" x2="0" y2="${BASE_Y}">
+      <stop offset="0%" stop-color="${color}" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="${color}" stop-opacity="0.26"/>
+    </linearGradient>
+    <linearGradient id="${gIdLive}" gradientUnits="userSpaceOnUse" x1="0" y1="${TOP}" x2="0" y2="${BASE_Y}">
+      <stop offset="0%" stop-color="${color}" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="${color}" stop-opacity="1.0"/>
+    </linearGradient>
+  </defs>`;
+
+  const x1k = 500;
+  let svgInner = defs +
+    `<g stroke="#a8b0bc" stroke-width="1" vector-effect="non-scaling-stroke" fill="none">` +
+      `<line x1="0" y1="250" x2="1000" y2="250" stroke-dasharray="3 5"/>` +
+      `<line x1="0" y1="500" x2="1000" y2="500" stroke-dasharray="3 5"/>` +
+      `<line x1="0" y1="750" x2="1000" y2="750" stroke-dasharray="3 5"/>` +
+      `<line x1="${x1k}" y1="0" x2="${x1k}" y2="1000" stroke-dasharray="3 5"/>` +
+    `</g>` +
+    `<line x1="0" y1="998" x2="1000" y2="998" stroke="#94a3b8" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/>`;
+
+  if (ghost) {
+    for (let i = 0; i < N; i++) {
+      const v = ghost[i] || 0;
+      if (v < 0.015) continue;
+      const h = v * BAR_MAX_H;
+      const x = i * gridW + gap/2;
+      const y = BASE_Y - h;
+      svgInner += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="url(#${gIdGhost})"/>`;
+    }
+  }
+
+  if (live && ghost) {
+    for (let i = 0; i < activeIdx && i < N; i++) {
+      const lv = live[i] || 0;
+      const gv = ghost[i] || 0;
+      const v = Math.min(lv, gv);
+      if (v < 0.015) continue;
+      const h = v * BAR_MAX_H;
+      const x = i * gridW + gap/2;
+      const y = BASE_Y - h;
+      svgInner += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="url(#${gIdLive})"/>`;
+    }
+  }
+
+  const svg = document.getElementById('freq-bars-svg');
+  if (svg) svg.innerHTML = svgInner;
+}
+
+function renderFreqBars() {
+  const swId = s2.activeSwitch;
+  const sw = switches[swId];
+  if (!sw) return;
+  paintFreqBars({ color: sw.color, ghost: freqGhost[swId] || null, live: null, progress: 0 });
+  if (!freqGhostFromAudio[swId]) {
+    if (!preloadQueueStarted) { preloadQueueStarted = true; startPreloadQueue(); }
+    else { preloadGhostForSwitch(swId); }
+  }
+}
+
+const freqGhostFromAudio = {};
+function renderFreqBarsFromAudio() {
+  if (!audioAnalyser || !audioData) return;
+  audioAnalyser.getByteFrequencyData(audioData);
+  const swId = s2.activeSwitch;
+  const sw = switches[swId];
+  if (!sw) return;
+  const N = FREQ_BAR_N;
+  const binCount = audioData.length;
+  const binHz = (audioCtx.sampleRate / 2) / binCount;
+  const ranges = freqBarRanges();
+  if (!freqGhost[swId]) freqGhost[swId] = new Float32Array(N);
+  const ghost = freqGhost[swId];
+  const firstAudio = !freqGhostFromAudio[swId];
+  const live = new Array(N);
+  for (let i = 0; i < N; i++) {
+    const [fLo, fHi] = ranges[i];
+    const binLo = Math.max(0, Math.floor(fLo / binHz));
+    const binHi = Math.min(binCount - 1, Math.max(binLo, Math.ceil(fHi / binHz)));
+    let max = 0;
+    for (let b = binLo; b <= binHi; b++) if (audioData[b] > max) max = audioData[b];
+    const v = Math.min(1, (max / 255) * 1.4);
+    live[i] = v;
+    if (firstAudio) ghost[i] = v;
+    else if (v > ghost[i]) ghost[i] = v;
+  }
+  freqGhostFromAudio[swId] = true;
+  const dur = audioEl && audioEl.duration && isFinite(audioEl.duration) ? audioEl.duration : 1;
+  const progress = Math.min(1, audioEl ? audioEl.currentTime / dur : 1);
+  paintFreqBars({ color: sw.color, ghost, live, progress });
+}
+
+function playWave() {
+  const swId = s2.activeSwitch;
+  const src = soundFiles[swId];
+  if (!src) return;
+  if (!ensureAudio()) return;
+  if (waveRaf) { cancelAnimationFrame(waveRaf); waveRaf = null; }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  audioEl.pause();
+  audioEl.src = src;
+  audioEl.currentTime = 0;
+  const playPromise = audioEl.play();
+  if (playPromise && playPromise.catch) playPromise.catch(()=>{});
+  function loop() {
+    if (audioEl.paused || audioEl.ended) { renderFreqBars(false); waveRaf = null; return; }
+    renderFreqBarsFromAudio();
+    waveRaf = requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+function stopWave() {
+  if (waveRaf) { cancelAnimationFrame(waveRaf); waveRaf = null; }
+  if (audioEl) { audioEl.pause(); audioEl.currentTime = 0; }
+}
+
+function startWave() {
+  stopWave();
+  renderFreqGraphs();
+}
+
+// 포스 커브 SVG — updateStep2의 s2-svg 부분을 분리
+function drawForceCurve() {
+  const sw = switches[s2.activeSwitch];
+  if (!sw) return;
+  const el = document.getElementById('s2-svg');
+  if (!el) return;
+  const yTicks = [0, 20, 40, 60, 80, 100, 120];
+  const xTicks = [0, 1, 2, 3, 4];
+  el.innerHTML = `
+    <g stroke="#e5e7eb" stroke-width="1">
+      ${yTicks.map(v => { const y = 200 - v * 5/3; return `<line x1="0" y1="${y}" x2="400" y2="${y}"/>`; }).join('')}
+      ${xTicks.map(v => { const x = v * 100; return `<line x1="${x}" y1="0" x2="${x}" y2="200"/>`; }).join('')}
+    </g>
+    <g font-size="14" font-weight="600" fill="#94a3b8" font-family="'Pretendard Variable','Pretendard',sans-serif">
+      ${yTicks.map(v => { const y = 200 - v * 5/3; return `<text x="-8" y="${y + 5}" text-anchor="end">${v}</text>`; }).join('')}
+      ${xTicks.map(v => { const x = v * 100; return `<text x="${x}" y="220" text-anchor="middle">${v}</text>`; }).join('')}
+      <text x="-8" y="-14" text-anchor="end">(cN)</text>
+      <text x="402" y="248" text-anchor="end">(mm)</text>
+      <text x="-38" y="100" text-anchor="middle" transform="rotate(-90 -38 100)" fill="#64748b" font-size="17">작동력</text>
+      <text x="200" y="248" text-anchor="middle" fill="#64748b" font-size="17">키눌림 거리</text>
+    </g>
+    <g stroke="#cbd5e1" stroke-width="1.2">
+      <line x1="0" y1="0" x2="0" y2="200"/>
+      <line x1="0" y1="200" x2="400" y2="200"/>
+    </g>
+    ${Object.values(switches).filter(s => s.id !== s2.activeSwitch).map(s => `
+      <path d="${s.path}" fill="none" stroke="${s.stroke}" stroke-width="2" opacity="0.18" stroke-linecap="round" stroke-linejoin="round"/>
+    `).join('')}
+    <path d="${sw.path}" fill="none" stroke="${sw.stroke}" stroke-width="3.5" opacity="1" stroke-linecap="round" stroke-linejoin="round"/>`;
+}
+
 /* ───── SCREENS ───── */
 function Landing({ onStart }) {
   return (
@@ -1770,9 +2253,107 @@ function Step1({ model, color, onSelectModel, onSelectColor }) {
   );
 }
 
-// step2·step3은 다음 React 변환 단계에서 구현 예정 — 임시 placeholder
+function Step2({ activeSwitch, onSelectSwitch }) {
+  const sw = switches[activeSwitch];
+  const d = sw.detail;
+
+  // 활성 스위치 변경 시: 모듈 state 동기화 → 포스커브 + 주파수 그래프(라인·바·info·pill) 그림.
+  // 빈 SVG/div(children 없음)는 React가 내부를 건드리지 않으므로 명령형 innerHTML이 유지됨.
+  useEffect(() => {
+    s2.activeSwitch = activeSwitch;
+    drawForceCurve();
+    startWave();
+    return () => stopWave();
+  }, [activeSwitch]);
+
+  return (
+    <div className="s2-layout">
+      <div className="sidebar">
+        <div className="sidebar-list" id="s2-list">
+          {Object.values(switches).map(s => (
+            <button className={'sidebar-item s2-switch-item ' + (s.id === activeSwitch ? 'active' : '')} key={s.id} onClick={() => onSelectSwitch(s.id)}>
+              <div className="s2-img-wrap"><img src={nookkiForSwitch(s)} alt={s.name} /></div>
+              <div className="sidebar-item-name">{s.name}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="s2-detail">
+        <div className="switch-header">
+          <div className="switch-name-row">
+            <div className="switch-color-bar" id="s2-color-bar" style={{ background: sw.color }}></div>
+            <div className="switch-name" id="s2-name">{sw.name}</div>
+            <div className="switch-badge" id="s2-type">{sw.type}</div>
+          </div>
+          <div className="switch-desc" id="s2-desc">{sw.desc}</div>
+        </div>
+
+        <div className="switch-detail-card" id="s2-detail-card">
+          <div className="sdc-specs">
+            <div className="sdc-spec"><div className="sdc-spec-label">작동력</div><div className="sdc-spec-value">{d.opForce}</div></div>
+            <div className="sdc-spec"><div className="sdc-spec-label">선행이동거리</div><div className="sdc-spec-value">{d.preTravel}</div></div>
+            <div className="sdc-spec"><div className="sdc-spec-label">총이동거리</div><div className="sdc-spec-value">{d.totalTravel}</div></div>
+            <div className="sdc-spec"><div className="sdc-spec-label">수명</div><div className="sdc-spec-value">{d.life}</div></div>
+          </div>
+          <div className="sdc-summary">{d.summary}</div>
+          <div className="sdc-pros-cons">
+            <div>
+              <div className="sdc-col-title pro"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg> 장점</div>
+              <ul className="sdc-list pro">{d.pros.map((p, i) => <li key={i}>{p}</li>)}</ul>
+            </div>
+            <div>
+              <div className="sdc-col-title con"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="4" x2="12" y2="13" /><circle cx="12" cy="19" r="2" fill="currentColor" stroke="none" /></svg> 유의사항</div>
+              <ul className="sdc-list con">{d.cons.map((c, i) => <li key={i}>{c}</li>)}</ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="wave-card">
+          <div className="card-label">
+            타건음 주파수 분석
+            <button className="freq-play-btn" onClick={() => playWave()}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 18v-6a9 9 0 0 1 18 0v6" /><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" /></svg>
+              타건음 재생
+            </button>
+          </div>
+          <div className="freq-graphs">
+            <div className="freq-line-wrap">
+              <div className="freq-unit-label">(dB)</div>
+              <div className="freq-y-axis"><span>+20</span><span>+10</span><span>0</span><span>-10</span><span>-20</span></div>
+              <div className="freq-plot">
+                <svg id="freq-line-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
+                <div className="freq-peak-pill" id="freq-peak-pill"></div>
+              </div>
+              <div className="freq-x-axis"><span>20</span><span>200</span><span>2k</span><span>20k</span></div>
+              <div className="freq-unit-x">(Hz)</div>
+            </div>
+            <div className="freq-bars-wrap">
+              <div className="freq-plot">
+                <svg id="freq-bars-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
+              </div>
+              <div className="freq-x-axis"><span>100</span><span>1k</span><span>10k</span></div>
+              <div className="freq-unit-x">(Hz)</div>
+            </div>
+          </div>
+          <div className="freq-info-grid" id="freq-info-grid"></div>
+        </div>
+
+        <div className="force-card">
+          <div className="card-label">
+            포스 커브
+            <div className="badge" id="s2-force">{sw.force}</div>
+          </div>
+          <div className="force-curve-desc">키를 누르는 힘과 깊이의 관계</div>
+          <svg id="s2-svg" viewBox="-50 -30 470 280" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// step3은 다음 React 변환 단계에서 구현 예정 — 임시 placeholder
 function BuilderStepPlaceholder({ step }) {
-  const labels = { 2: '스위치 분석', 3: '커스텀 맵핑' };
+  const labels = { 3: '커스텀 맵핑' };
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 'var(--s-6)', textAlign: 'center' }}>
       <div style={{ fontSize: 'var(--t-display)', lineHeight: 1 }}>🚧</div>
@@ -1786,6 +2367,7 @@ function BuilderScreen({ onHome }) {
   const [step, setStep] = useState(1);
   const [model, setModel] = useState(null);
   const [color, setColor] = useState('블랙');
+  const [activeSwitch, setActiveSwitch] = useState('red');
 
   const selectModel = (id) => {
     const m = models.find(x => x.id === id);
@@ -1813,9 +2395,9 @@ function BuilderScreen({ onHome }) {
         <div></div>
       </div>
       <div id="builder-main">
-        {step === 1
-          ? <Step1 model={model} color={color} onSelectModel={selectModel} onSelectColor={setColor} />
-          : <BuilderStepPlaceholder step={step} />}
+        {step === 1 && <Step1 model={model} color={color} onSelectModel={selectModel} onSelectColor={setColor} />}
+        {step === 2 && <Step2 activeSwitch={activeSwitch} onSelectSwitch={setActiveSwitch} />}
+        {step === 3 && <BuilderStepPlaceholder step={step} />}
       </div>
       <div className="kiosk-footer">
         <button className="btn-secondary" id="btn-prev" onClick={handlePrev} style={{ visibility: hidePrev ? 'hidden' : 'visible' }}>
