@@ -132,8 +132,10 @@
     background: #ffffff;
     transform-origin: top center;
   }
-  /* React 마운트 루트 — #kiosk를 꽉 채워 .screen(position:absolute; inset:0)의 기준이 됨 */
-  #root { position: absolute; inset: 0; }
+  /* React 마운트 루트 — display:contents로 레이아웃·합성에서 투명하게 만들어
+     .screen이 #kiosk 직속 자식처럼 동작(v2와 동일한 2겹 합성 구조). 박스를 만들지
+     않으므로 #root가 추가 합성 레이어를 끼우지 않음 → react가 더 어둡게 보이던 차이 제거. */
+  #root { display: contents; }
 
   /* ── TRANSITIONS ── */
   .screen {
@@ -1269,6 +1271,8 @@
 <div id="stage-wrap"><div id="kiosk">
 
   <div id="root"></div>
+  <!-- 모달 레이어 — React 외부 정적 DOM, openModal/closeModal로 명령형 제어 (v2와 동일) -->
+  <div id="modal-layer"><div id="modal-box" class="modal-box"></div></div>
 </div></div>
 
 <script type="text/babel" data-presets="react">
@@ -1958,6 +1962,212 @@ function drawForceCurve() {
     <path d="${sw.path}" fill="none" stroke="${sw.stroke}" stroke-width="3.5" opacity="1" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
 
+/* ───── STEP 3 데이터·키보드·맵핑·모달 (v2 명령형 로직) ───── */
+const s3 = {
+  brush: 'red',
+  model: null,
+  mapping: { base:null, alphas:null, wasd:null, mods:null, spacebar:null, esc:null, fn:null, arrows:null, numpad:null, nav:null, media:null },
+};
+
+const G = {l:'',w:'wg',z:'_gap'};
+const kbRowsFull = [
+  [{l:'Esc',w:'w1',z:'esc'}, {l:'',w:'w05',z:'_gap'}, {l:'',w:'w05',z:'_gap'}, {l:'F1',w:'w1',z:'fn'},{l:'F2',w:'w1',z:'fn'},{l:'F3',w:'w1',z:'fn'},{l:'F4',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F5',w:'w1',z:'fn'},{l:'F6',w:'w1',z:'fn'},{l:'F7',w:'w1',z:'fn'},{l:'F8',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F9',w:'w1',z:'fn'},{l:'F10',w:'w1',z:'fn'},{l:'F11',w:'w1',z:'fn'},{l:'F12',w:'w1',z:'fn'}, G, {l:'PrtSc',w:'w1',z:'nav'},{l:'ScrLk',w:'w1',z:'nav'},{l:'Pause',w:'w1',z:'nav'}, G, {l:'Vol-',w:'w1',z:'media'},{l:'Mute',w:'w1',z:'media'},{l:'Vol+',w:'w1',z:'media'},{l:'Calc',w:'w1',z:'media'}],
+  [{l:'~',w:'w1',z:'alphas'},{l:'1',w:'w1',z:'alphas'},{l:'2',w:'w1',z:'alphas'},{l:'3',w:'w1',z:'alphas'},{l:'4',w:'w1',z:'alphas'},{l:'5',w:'w1',z:'alphas'},{l:'6',w:'w1',z:'alphas'},{l:'7',w:'w1',z:'alphas'},{l:'8',w:'w1',z:'alphas'},{l:'9',w:'w1',z:'alphas'},{l:'0',w:'w1',z:'alphas'},{l:'-',w:'w1',z:'alphas'},{l:'=',w:'w1',z:'alphas'},{l:'Bksp',w:'w2',z:'mods'}, G, {l:'Ins',w:'w1',z:'nav'},{l:'Home',w:'w1',z:'nav'},{l:'PgUp',w:'w1',z:'nav'}, G, {l:'Num',w:'w1',z:'numpad'},{l:'/',w:'w1',z:'numpad'},{l:'*',w:'w1',z:'numpad'},{l:'-',w:'w1',z:'numpad'}],
+  [{l:'Tab',w:'w15',z:'mods'},{l:'Q',w:'w1',z:'alphas'},{l:'W',w:'w1',z:'wasd'},{l:'E',w:'w1',z:'alphas'},{l:'R',w:'w1',z:'alphas'},{l:'T',w:'w1',z:'alphas'},{l:'Y',w:'w1',z:'alphas'},{l:'U',w:'w1',z:'alphas'},{l:'I',w:'w1',z:'alphas'},{l:'O',w:'w1',z:'alphas'},{l:'P',w:'w1',z:'alphas'},{l:'[',w:'w1',z:'alphas'},{l:']',w:'w1',z:'alphas'},{l:'\\',w:'w15',z:'mods'}, G, {l:'Del',w:'w1',z:'nav'},{l:'End',w:'w1',z:'nav'},{l:'PgDn',w:'w1',z:'nav'}, G, {l:'7',w:'w1',z:'numpad'},{l:'8',w:'w1',z:'numpad'},{l:'9',w:'w1',z:'numpad'},{l:'+',w:'w1',z:'numpad',h:2}],
+  [{l:'Caps',w:'w175',z:'mods'},{l:'A',w:'w1',z:'wasd'},{l:'S',w:'w1',z:'wasd'},{l:'D',w:'w1',z:'wasd'},{l:'F',w:'w1',z:'alphas'},{l:'G',w:'w1',z:'alphas'},{l:'H',w:'w1',z:'alphas'},{l:'J',w:'w1',z:'alphas'},{l:'K',w:'w1',z:'alphas'},{l:'L',w:'w1',z:'alphas'},{l:';',w:'w1',z:'alphas'},{l:"'",w:'w1',z:'alphas'},{l:'Enter',w:'w225',z:'mods'}, G, {l:'',w:'w1',z:'_gap'},{l:'',w:'w1',z:'_gap'},{l:'',w:'w1',z:'_gap'}, G, {l:'4',w:'w1',z:'numpad'},{l:'5',w:'w1',z:'numpad'},{l:'6',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}],
+  [{l:'Shift',w:'w225',z:'mods'},{l:'Z',w:'w1',z:'alphas'},{l:'X',w:'w1',z:'alphas'},{l:'C',w:'w1',z:'alphas'},{l:'V',w:'w1',z:'alphas'},{l:'B',w:'w1',z:'alphas'},{l:'N',w:'w1',z:'alphas'},{l:'M',w:'w1',z:'alphas'},{l:',',w:'w1',z:'alphas'},{l:'.',w:'w1',z:'alphas'},{l:'/',w:'w1',z:'alphas'},{l:'Shift',w:'w275',z:'mods'}, G, {l:'',w:'w1',z:'_gap'},{l:'↑',w:'w1',z:'arrows'},{l:'',w:'w1',z:'_gap'}, G, {l:'1',w:'w1',z:'numpad'},{l:'2',w:'w1',z:'numpad'},{l:'3',w:'w1',z:'numpad'},{l:'Ent',w:'w1',z:'numpad',h:2}],
+  [{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w625',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'}, G, {l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'},{l:'→',w:'w1',z:'arrows'}, G, {l:'0',w:'w2',z:'numpad'},{l:'.',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}],
+];
+const kbRowsTKL = [
+  [{l:'Esc',w:'w1',z:'esc'}, {l:'',w:'w05',z:'_gap'}, {l:'',w:'w05',z:'_gap'}, {l:'F1',w:'w1',z:'fn'},{l:'F2',w:'w1',z:'fn'},{l:'F3',w:'w1',z:'fn'},{l:'F4',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F5',w:'w1',z:'fn'},{l:'F6',w:'w1',z:'fn'},{l:'F7',w:'w1',z:'fn'},{l:'F8',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F9',w:'w1',z:'fn'},{l:'F10',w:'w1',z:'fn'},{l:'F11',w:'w1',z:'fn'},{l:'F12',w:'w1',z:'fn'}, G, {l:'PrtSc',w:'w1',z:'nav'},{l:'ScrLk',w:'w1',z:'nav'},{l:'Pause',w:'w1',z:'nav'}],
+  [{l:'~',w:'w1',z:'alphas'},{l:'1',w:'w1',z:'alphas'},{l:'2',w:'w1',z:'alphas'},{l:'3',w:'w1',z:'alphas'},{l:'4',w:'w1',z:'alphas'},{l:'5',w:'w1',z:'alphas'},{l:'6',w:'w1',z:'alphas'},{l:'7',w:'w1',z:'alphas'},{l:'8',w:'w1',z:'alphas'},{l:'9',w:'w1',z:'alphas'},{l:'0',w:'w1',z:'alphas'},{l:'-',w:'w1',z:'alphas'},{l:'=',w:'w1',z:'alphas'},{l:'Bksp',w:'w2',z:'mods'}, G, {l:'Ins',w:'w1',z:'nav'},{l:'Home',w:'w1',z:'nav'},{l:'PgUp',w:'w1',z:'nav'}],
+  [{l:'Tab',w:'w15',z:'mods'},{l:'Q',w:'w1',z:'alphas'},{l:'W',w:'w1',z:'wasd'},{l:'E',w:'w1',z:'alphas'},{l:'R',w:'w1',z:'alphas'},{l:'T',w:'w1',z:'alphas'},{l:'Y',w:'w1',z:'alphas'},{l:'U',w:'w1',z:'alphas'},{l:'I',w:'w1',z:'alphas'},{l:'O',w:'w1',z:'alphas'},{l:'P',w:'w1',z:'alphas'},{l:'[',w:'w1',z:'alphas'},{l:']',w:'w1',z:'alphas'},{l:'\\',w:'w15',z:'mods'}, G, {l:'Del',w:'w1',z:'nav'},{l:'End',w:'w1',z:'nav'},{l:'PgDn',w:'w1',z:'nav'}],
+  [{l:'Caps',w:'w175',z:'mods'},{l:'A',w:'w1',z:'wasd'},{l:'S',w:'w1',z:'wasd'},{l:'D',w:'w1',z:'wasd'},{l:'F',w:'w1',z:'alphas'},{l:'G',w:'w1',z:'alphas'},{l:'H',w:'w1',z:'alphas'},{l:'J',w:'w1',z:'alphas'},{l:'K',w:'w1',z:'alphas'},{l:'L',w:'w1',z:'alphas'},{l:';',w:'w1',z:'alphas'},{l:"'",w:'w1',z:'alphas'},{l:'Enter',w:'w225',z:'mods'}, G, {l:'',w:'w1',z:'_gap'},{l:'',w:'w1',z:'_gap'},{l:'',w:'w1',z:'_gap'}],
+  [{l:'Shift',w:'w225',z:'mods'},{l:'Z',w:'w1',z:'alphas'},{l:'X',w:'w1',z:'alphas'},{l:'C',w:'w1',z:'alphas'},{l:'V',w:'w1',z:'alphas'},{l:'B',w:'w1',z:'alphas'},{l:'N',w:'w1',z:'alphas'},{l:'M',w:'w1',z:'alphas'},{l:',',w:'w1',z:'alphas'},{l:'.',w:'w1',z:'alphas'},{l:'/',w:'w1',z:'alphas'},{l:'Shift',w:'w275',z:'mods'}, G, {l:'',w:'w1',z:'_gap'},{l:'↑',w:'w1',z:'arrows'},{l:'',w:'w1',z:'_gap'}],
+  [{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w625',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'}, G, {l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'},{l:'→',w:'w1',z:'arrows'}],
+];
+const kbRowsCompact96 = [
+  [{l:'Esc',w:'w1',z:'esc'}, {l:'',w:'w05',z:'_gap'}, {l:'F1',w:'w1',z:'fn'},{l:'F2',w:'w1',z:'fn'},{l:'F3',w:'w1',z:'fn'},{l:'F4',w:'w1',z:'fn'}, {l:'',w:'w03',z:'_gap'}, {l:'F5',w:'w1',z:'fn'},{l:'F6',w:'w1',z:'fn'},{l:'F7',w:'w1',z:'fn'},{l:'F8',w:'w1',z:'fn'}, {l:'',w:'w03',z:'_gap'}, {l:'F9',w:'w1',z:'fn'},{l:'F10',w:'w1',z:'fn'},{l:'F11',w:'w1',z:'fn'},{l:'F12',w:'w1',z:'fn'},{l:'Nav',w:'w1',z:'nav'}, G, {l:'Vol-',w:'w1',z:'media'},{l:'Mute',w:'w1',z:'media'},{l:'Vol+',w:'w1',z:'media'},{l:'Calc',w:'w1',z:'media'}],
+  [{l:'~',w:'w1',z:'alphas'},{l:'1',w:'w1',z:'alphas'},{l:'2',w:'w1',z:'alphas'},{l:'3',w:'w1',z:'alphas'},{l:'4',w:'w1',z:'alphas'},{l:'5',w:'w1',z:'alphas'},{l:'6',w:'w1',z:'alphas'},{l:'7',w:'w1',z:'alphas'},{l:'8',w:'w1',z:'alphas'},{l:'9',w:'w1',z:'alphas'},{l:'0',w:'w1',z:'alphas'},{l:'-',w:'w1',z:'alphas'},{l:'=',w:'w1',z:'alphas'},{l:'Bksp',w:'w2',z:'mods'}, G, {l:'Num',w:'w1',z:'numpad'},{l:'/',w:'w1',z:'numpad'},{l:'*',w:'w1',z:'numpad'},{l:'-',w:'w1',z:'numpad'}],
+  [{l:'Tab',w:'w15',z:'mods'},{l:'Q',w:'w1',z:'alphas'},{l:'W',w:'w1',z:'wasd'},{l:'E',w:'w1',z:'alphas'},{l:'R',w:'w1',z:'alphas'},{l:'T',w:'w1',z:'alphas'},{l:'Y',w:'w1',z:'alphas'},{l:'U',w:'w1',z:'alphas'},{l:'I',w:'w1',z:'alphas'},{l:'O',w:'w1',z:'alphas'},{l:'P',w:'w1',z:'alphas'},{l:'[',w:'w1',z:'alphas'},{l:']',w:'w1',z:'alphas'},{l:'\\',w:'w15',z:'mods'}, G, {l:'7',w:'w1',z:'numpad'},{l:'8',w:'w1',z:'numpad'},{l:'9',w:'w1',z:'numpad'},{l:'+',w:'w1',z:'numpad',h:2}],
+  [{l:'Caps',w:'w175',z:'mods'},{l:'A',w:'w1',z:'wasd'},{l:'S',w:'w1',z:'wasd'},{l:'D',w:'w1',z:'wasd'},{l:'F',w:'w1',z:'alphas'},{l:'G',w:'w1',z:'alphas'},{l:'H',w:'w1',z:'alphas'},{l:'J',w:'w1',z:'alphas'},{l:'K',w:'w1',z:'alphas'},{l:'L',w:'w1',z:'alphas'},{l:';',w:'w1',z:'alphas'},{l:"'",w:'w1',z:'alphas'},{l:'Enter',w:'w225',z:'mods'}, G, {l:'4',w:'w1',z:'numpad'},{l:'5',w:'w1',z:'numpad'},{l:'6',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}],
+  [{l:'Shift',w:'w225',z:'mods'},{l:'Z',w:'w1',z:'alphas'},{l:'X',w:'w1',z:'alphas'},{l:'C',w:'w1',z:'alphas'},{l:'V',w:'w1',z:'alphas'},{l:'B',w:'w1',z:'alphas'},{l:'N',w:'w1',z:'alphas'},{l:'M',w:'w1',z:'alphas'},{l:',',w:'w1',z:'alphas'},{l:'.',w:'w1',z:'alphas'},{l:'/',w:'w1',z:'alphas'},{l:'Shift',w:'w175',z:'mods'},{l:'↑',w:'w1',z:'arrows'}, G, {l:'1',w:'w1',z:'numpad'},{l:'2',w:'w1',z:'numpad'},{l:'3',w:'w1',z:'numpad'},{l:'Ent',w:'w1',z:'numpad',h:2}],
+  [{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w625',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'},{l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'}, G, {l:'→',w:'w1',z:'arrows'},{l:'0',w:'w1',z:'numpad'},{l:'.',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}],
+];
+const kbRowsCompact65 = [
+  [{l:'Esc',w:'w1',z:'esc'},{l:'1',w:'w1',z:'alphas'},{l:'2',w:'w1',z:'alphas'},{l:'3',w:'w1',z:'alphas'},{l:'4',w:'w1',z:'alphas'},{l:'5',w:'w1',z:'alphas'},{l:'6',w:'w1',z:'alphas'},{l:'7',w:'w1',z:'alphas'},{l:'8',w:'w1',z:'alphas'},{l:'9',w:'w1',z:'alphas'},{l:'0',w:'w1',z:'alphas'},{l:'-',w:'w1',z:'alphas'},{l:'=',w:'w1',z:'alphas'},{l:'Bksp',w:'w2',z:'mods'},{l:'Del',w:'w1',z:'nav'}],
+  [{l:'Tab',w:'w15',z:'mods'},{l:'Q',w:'w1',z:'alphas'},{l:'W',w:'w1',z:'wasd'},{l:'E',w:'w1',z:'alphas'},{l:'R',w:'w1',z:'alphas'},{l:'T',w:'w1',z:'alphas'},{l:'Y',w:'w1',z:'alphas'},{l:'U',w:'w1',z:'alphas'},{l:'I',w:'w1',z:'alphas'},{l:'O',w:'w1',z:'alphas'},{l:'P',w:'w1',z:'alphas'},{l:'[',w:'w1',z:'alphas'},{l:']',w:'w1',z:'alphas'},{l:'\\',w:'w15',z:'mods'},{l:'PgUp',w:'w1',z:'nav'}],
+  [{l:'Caps',w:'w175',z:'mods'},{l:'A',w:'w1',z:'wasd'},{l:'S',w:'w1',z:'wasd'},{l:'D',w:'w1',z:'wasd'},{l:'F',w:'w1',z:'alphas'},{l:'G',w:'w1',z:'alphas'},{l:'H',w:'w1',z:'alphas'},{l:'J',w:'w1',z:'alphas'},{l:'K',w:'w1',z:'alphas'},{l:'L',w:'w1',z:'alphas'},{l:';',w:'w1',z:'alphas'},{l:"'",w:'w1',z:'alphas'},{l:'Enter',w:'w225',z:'mods'},{l:'PgDn',w:'w1',z:'nav'}],
+  [{l:'Shift',w:'w225',z:'mods'},{l:'Z',w:'w1',z:'alphas'},{l:'X',w:'w1',z:'alphas'},{l:'C',w:'w1',z:'alphas'},{l:'V',w:'w1',z:'alphas'},{l:'B',w:'w1',z:'alphas'},{l:'N',w:'w1',z:'alphas'},{l:'M',w:'w1',z:'alphas'},{l:',',w:'w1',z:'alphas'},{l:'.',w:'w1',z:'alphas'},{l:'/',w:'w1',z:'alphas'},{l:'Shift',w:'w175',z:'mods'},{l:'↑',w:'w1',z:'arrows'},{l:'End',w:'w1',z:'nav'}],
+  [{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w579',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'},{l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'},{l:'→',w:'w1',z:'arrows'}],
+];
+
+function getActiveLayout() {
+  const layoutStr = (s3.model && s3.model.layout) || '';
+  if (layoutStr.includes('TKL')) return { rows: kbRowsTKL, splitIdx: [12, 10, 10, 9, 9, 4], single: false };
+  if (layoutStr.includes('컴팩트(65%)')) return { rows: kbRowsCompact65, splitIdx: [10, 10, 9, 9, 4], single: false };
+  if (layoutStr.includes('컴팩트(96%)')) return { rows: kbRowsCompact96, splitIdx: [11, 10, 10, 9, 9, 4], single: false };
+  return { rows: kbRowsFull, splitIdx: [12, 10, 10, 9, 9, 4], single: false };
+}
+
+// 키보드 키 HTML 생성 — onclick 대신 data-zone만, 클릭은 kb-wrap 이벤트 위임으로 처리
+function buildKeyboardHTML() {
+  const layout = getActiveLayout();
+  const rows = layout.rows;
+  const SPLIT_IDX = layout.splitIdx;
+  const mediaIcons = {
+    'Vol-': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>',
+    'Mute': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
+    'Vol+': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+    'Calc': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="16" y1="14" x2="16" y2="14.01"/><line x1="8" y1="18" x2="16" y2="18"/></svg>',
+  };
+  const stemSvg = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+    '<rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#ffffff" stroke="rgba(20,22,28,.6)" stroke-width="1"/>' +
+    '<circle cx="12" cy="12" r="6.8" fill="rgba(20,22,28,.06)" stroke="rgba(20,22,28,.2)" stroke-width=".5"/>' +
+    '<path d="M10.6 7.4 H13.4 V10.6 H16.6 V13.4 H13.4 V16.6 H10.6 V13.4 H7.4 V10.6 H10.6 Z" fill="currentColor" stroke="rgba(0,0,0,.35)" stroke-width=".4"/>' +
+    '</svg>';
+  const renderKey = (k) => {
+    if (k.z === '_gap' && k.w === 'wg') return '<div class="key wg"></div>';
+    if (k.z === '_gap') return '<div class="key ' + k.w + '" style="visibility:hidden"></div>';
+    const zClass = 'zone-'+k.z;
+    const tallClass = k.h === 2 ? ' tall-key' : '';
+    const label = mediaIcons[k.l] || k.l;
+    return '<div class="key ' + k.w + ' ' + zClass + tallClass + '" data-zone="' + k.z + '">' +
+      '<div class="key-label">' + label + '</div>' +
+      '<div class="key-dot" data-dot="' + k.z + '">' + stemSvg + '</div></div>';
+  };
+  const trimGaps = (arr) => { let s = 0; while (s < arr.length && arr[s].z === '_gap') s++; return arr.slice(s); };
+  if (layout.single) {
+    const allRows = rows.map(row => '<div class="kb-row">' + row.map(renderKey).join('') + '</div>').join('');
+    return `<div class="kb-half kb-single"><div class="kb-shell"><div class="kb-plate">${allRows}</div></div></div>`;
+  }
+  const leftRows = rows.map((row, ri) => '<div class="kb-row">' + trimGaps(row.slice(0, SPLIT_IDX[ri])).map(renderKey).join('') + '</div>').join('');
+  const rightRows = rows.map((row, ri) => '<div class="kb-row">' + trimGaps(row.slice(SPLIT_IDX[ri])).map(renderKey).join('') + '</div>').join('');
+  return `
+    <div class="kb-half"><div class="kb-shell"><div class="kb-plate">${leftRows}</div></div></div>
+    <div class="kb-half"><div class="kb-shell"><div class="kb-plate">${rightRows}</div></div></div>
+  `;
+}
+
+function paintZone(zone) {
+  if (!zone || zone === '_gap') return;
+  s3.mapping[zone] = s3.brush;
+  updateKeyboard();
+}
+function resetMapping() {
+  Object.keys(s3.mapping).forEach(z => { s3.mapping[z] = null; });
+  updateKeyboard();
+}
+function updateKeyboard() {
+  document.querySelectorAll('.key[data-zone]').forEach(el => {
+    const zone = el.getAttribute('data-zone');
+    if (zone === '_gap') return;
+    const swId = s3.mapping[zone] || s3.mapping.base;
+    const dot = el.querySelector('.key-dot');
+    if (!dot) return;
+    const oldSw = el.dataset.sw || '';
+    const newSw = swId || '';
+    if (swId) {
+      const sw = switches[swId];
+      el.classList.add('mapped');
+      dot.style.color = sw.color;
+      if (newSw !== oldSw) { dot.style.animation = 'none'; void dot.offsetHeight; dot.style.animation = ''; }
+    } else {
+      el.classList.remove('mapped');
+      dot.style.color = '';
+    }
+    el.dataset.sw = newSw;
+  });
+}
+
+function renderZoneOverlays() {
+  document.querySelectorAll('.zone-overlay-svg').forEach(el => el.remove());
+  const skipZones = new Set(['alphas']);
+  document.querySelectorAll('.kb-plate').forEach(plate => {
+    const zones = {};
+    plate.querySelectorAll('.key[data-zone]').forEach(key => {
+      const z = key.dataset.zone;
+      if (z === '_gap' || skipZones.has(z)) return;
+      if (!zones[z]) zones[z] = [];
+      zones[z].push({ x: key.offsetLeft, y: key.offsetTop, w: key.offsetWidth, h: key.offsetHeight });
+    });
+    if (Object.keys(zones).length === 0) return;
+    const W = plate.offsetWidth, H = plate.offsetHeight, inflate = 5;
+    const buildRects = (rects) => rects.map(r =>
+      `<rect x="${r.x-inflate}" y="${r.y-inflate}" width="${r.w+inflate*2}" height="${r.h+inflate*2}" rx="14" fill="rgb(0,0,0)"/>`
+    ).join('');
+    let inner = '<defs><filter id="zoneOutline"><feMorphology operator="erode" radius="2" in="SourceGraphic" result="eroded"/><feComposite in="SourceGraphic" in2="eroded" operator="out"/></filter></defs>';
+    Object.entries(zones).forEach(([zone, rects]) => {
+      inner += `<g opacity="0.07">${buildRects(rects)}</g>`;
+      inner += `<g opacity="0.72" filter="url(#zoneOutline)">${buildRects(rects)}</g>`;
+    });
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.classList.add('zone-overlay-svg');
+    svg.setAttribute('width', W);
+    svg.setAttribute('height', H);
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.style.cssText = 'position:absolute;left:0;top:0;pointer-events:none;overflow:visible;';
+    svg.innerHTML = inner;
+    plate.insertBefore(svg, plate.firstChild);
+  });
+}
+
+/* 모달 — #kiosk 안 정적 #modal-layer 를 명령형 제어 (window 노출: 모달 내부 인라인 onclick용) */
+function openModal(html) {
+  document.getElementById('modal-box').innerHTML = html;
+  document.getElementById('modal-layer').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal-layer').classList.remove('open');
+}
+window.closeModal = closeModal;
+
+function showHelpModal() {
+  const zoneRecColors = { alphas:'#d97706', wasd:'#ef4444', arrows:'#ef4444', mods:'#fb7185', spacebar:'#3b82f6', esc:'#94a3b8', nav:'#94a3b8' };
+  const W_UNITS = { w1:1, w125:1.25, w15:1.5, w175:1.75, w2:2, w225:2.25, w625:6.25, wg:0.5 };
+  const layout = getActiveLayout();
+  const previewRows = layout && layout.rows ? layout.rows : [];
+  const kbPreview = previewRows.length ? `
+    <div style="display:flex;flex-direction:column;gap: var(--s-1);background:#f5f7fa;padding: var(--s-3);border-radius: var(--r-md);border:1.5px solid var(--border);margin-bottom:20px">
+      ${previewRows.map(row => `
+        <div style="display:flex;gap:3px">
+          ${row.map(k => {
+            const u = W_UNITS[k.w] || 1;
+            if (k.z === '_gap') return `<div style="flex:${u} 0 0;height:22px"></div>`;
+            const color = zoneRecColors[k.z] || '#cbd5e1';
+            return `<div style="flex:${u} 0 0;height:22px;background:${color};border-radius: var(--r-xs);opacity:.92"></div>`;
+          }).join('')}
+        </div>
+      `).join('')}
+    </div>` : '';
+  openModal(`
+    <div class="help-modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <div class="modal-title" style="margin:0;font-size: var(--t-h2)">키 영역별 추천 스위치</div>
+        <button class="modal-close" onclick="closeModal()" style="position:static;flex-shrink:0">✕</button>
+      </div>
+      ${kbPreview}
+      <div class="help-list">
+        <div class="help-item">
+          <div class="help-item-title" style="font-size: var(--t-h2)">문자 · 숫자 키</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">타이핑 — <strong style="color:#d97706">Brown</strong> · <strong style="color:#94a3b8">Clear</strong></div>
+        </div>
+        <div class="help-item">
+          <div class="help-item-title" style="font-size: var(--t-h2)">방향 · 게이밍 키</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">빠른 연타 — <strong style="color:#ef4444">Red</strong></div>
+        </div>
+        <div class="help-item">
+          <div class="help-item-title" style="font-size: var(--t-h2)">모디파이어</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">저소음 — <strong style="color:#fb7185">Silent Red</strong></div>
+        </div>
+        <div class="help-item">
+          <div class="help-item-title" style="font-size: var(--t-h2)">엔터 · 스페이스</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">강한 피드백 — <strong style="color:#3b82f6">Blue</strong> · <strong style="color:#555555">Black</strong></div>
+        </div>
+      </div>
+    </div>`);
+}
+
 /* ───── SCREENS ───── */
 function Landing({ onStart }) {
   return (
@@ -2351,13 +2561,74 @@ function Step2({ activeSwitch, onSelectSwitch }) {
   );
 }
 
-// step3은 다음 React 변환 단계에서 구현 예정 — 임시 placeholder
+function Step3({ brush, onSelectBrush, model }) {
+  const kbRef = useRef(null);
+
+  // 모델(레이아웃) 변경/마운트 시 키보드 그림 + 매핑 반영 + zone overlay
+  useEffect(() => {
+    s3.model = model;
+    s3.brush = brush;
+    if (kbRef.current) kbRef.current.innerHTML = buildKeyboardHTML();
+    updateKeyboard();
+    const t = setTimeout(renderZoneOverlays, 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line
+  }, [model]);
+
+  // brush 변경 시 모듈 동기화 (키 클릭 시 최신 brush 사용)
+  useEffect(() => { s3.brush = brush; }, [brush]);
+
+  const handleKbClick = (e) => {
+    const key = e.target.closest('.key[data-zone]');
+    if (!key) return;
+    paintZone(key.getAttribute('data-zone'));
+  };
+
+  return (
+    <div className="s3-layout">
+      <div className="sidebar">
+        <div className="sidebar-list" id="s3-list">
+          {Object.values(switches).map(s => (
+            <button className={'sidebar-item s3-brush-item ' + (s.id === brush ? 'active' : '')} key={s.id} onClick={() => onSelectBrush(s.id)}>
+              <div className="s3-stem-icon" style={{ color: s.color }}>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#ffffff" stroke="rgba(20,22,28,.6)" strokeWidth="1" />
+                  <circle cx="12" cy="12" r="6.8" fill="rgba(20,22,28,.06)" stroke="rgba(20,22,28,.2)" strokeWidth=".5" />
+                  <path d="M10.6 7.4 H13.4 V10.6 H16.6 V13.4 H13.4 V16.6 H10.6 V13.4 H7.4 V10.6 H10.6 Z" fill="currentColor" stroke="rgba(0,0,0,.35)" strokeWidth=".4" />
+                </svg>
+              </div>
+              <div className="sidebar-item-name">{s.name}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="s3-detail">
+        <div>
+          <div className="step-heading">커스텀 스위치 맵핑</div>
+          <div className="step-sub">스위치를 선택하여 하단 기판을 터치하여 체결하세요.</div>
+        </div>
+        <div className="keyboard-wrap" id="kb-wrap" onClick={handleKbClick}>
+          <button className="s3-reset-btn" onClick={resetMapping} aria-label="맵핑 초기화">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" /></svg>
+          </button>
+          <button className="s3-tip-btn" onClick={() => showHelpModal()}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6" /><path d="M10 22h4" /><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" /></svg>
+            추천 팁
+          </button>
+          <div ref={kbRef} style={{ display: 'contents' }}></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 빌더 리뷰는 다음 React 변환 단계에서 구현 예정 — 임시 placeholder
 function BuilderStepPlaceholder({ step }) {
-  const labels = { 3: '커스텀 맵핑' };
+  const labels = { 4: '빌드 완성 (리뷰)' };
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 'var(--s-6)', textAlign: 'center' }}>
       <div style={{ fontSize: 'var(--t-display)', lineHeight: 1 }}>🚧</div>
-      <div style={{ fontSize: 'var(--t-h1)', fontWeight: 800, color: 'var(--fg)' }}>{labels[step]}</div>
+      <div style={{ fontSize: 'var(--t-h1)', fontWeight: 800, color: 'var(--fg)' }}>{labels[step] || '준비 중'}</div>
       <div style={{ fontSize: 'var(--t-h3)', color: 'var(--fg2)' }}>다음 React 변환 단계에서 구현됩니다.</div>
     </div>
   );
@@ -2368,12 +2639,21 @@ function BuilderScreen({ onHome }) {
   const [model, setModel] = useState(null);
   const [color, setColor] = useState('블랙');
   const [activeSwitch, setActiveSwitch] = useState('red');
+  const [brush, setBrush] = useState('red');
+
+  // 빌더 마운트(진입) 시 step3 모듈 상태 초기화 — v2 go('builder') 리셋과 동치
+  useEffect(() => {
+    s3.mapping = { base:null, alphas:null, wasd:null, mods:null, spacebar:null, esc:null, fn:null, arrows:null, numpad:null, nav:null, media:null };
+    s3.brush = 'red';
+    s3.model = null;
+  }, []);
 
   const selectModel = (id) => {
     const m = models.find(x => x.id === id);
     setModel(m);
     setColor(m.colors[0]);
   };
+  const selectBrush = (id) => { setBrush(id); s3.brush = id; };
 
   const handlePrev = () => {
     if (step === 1 && model) { setModel(null); return; }
@@ -2381,6 +2661,8 @@ function BuilderScreen({ onHome }) {
   };
   const handleNext = () => {
     if (step === 1 && !model) return;
+    if (step === 2) { setBrush(activeSwitch); s3.brush = activeSwitch; setStep(3); return; }
+    if (step === 3) return; // 리뷰는 다음 단계에서 구현
     setStep(step + 1);
   };
 
@@ -2397,7 +2679,7 @@ function BuilderScreen({ onHome }) {
       <div id="builder-main">
         {step === 1 && <Step1 model={model} color={color} onSelectModel={selectModel} onSelectColor={setColor} />}
         {step === 2 && <Step2 activeSwitch={activeSwitch} onSelectSwitch={setActiveSwitch} />}
-        {step === 3 && <BuilderStepPlaceholder step={step} />}
+        {step === 3 && <Step3 brush={brush} onSelectBrush={selectBrush} model={model} />}
       </div>
       <div className="kiosk-footer">
         <button className="btn-secondary" id="btn-prev" onClick={handlePrev} style={{ visibility: hidePrev ? 'hidden' : 'visible' }}>
