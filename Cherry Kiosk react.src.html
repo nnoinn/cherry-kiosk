@@ -1,0 +1,3016 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHERRY Kiosk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* ── Colors ── */
+    --cherry: #c53045;
+    --cherry-dark: #a02638;
+    --cherry-light: #fdf0f2;
+    --cherry-mid: #f5c6cc;
+    /* Semantic gray — 모두 --gray-* 원시 토큰을 참조(단일 출처).
+       Slate 팔레트 기준으로 기존 hex 대비 매우 미세한 cooler shift 발생. */
+    --fg:      var(--gray-900);  /* 본문 주 텍스트 */
+    --fg2:     var(--gray-600);  /* 보조 텍스트 */
+    --fg3:     var(--gray-400);  /* 흐린 텍스트, 캡션 */
+    --border:  var(--gray-200);  /* 경계선 */
+    --surface: #ffffff;           /* 카드 배경 (순백 유지) */
+    --bg:      #f4f5f7;           /* 페이지 배경 (warm tint 유지) */
+    --radius: 24px;
+    --radius-lg: 36px;
+
+    /* ── Typography ── */
+    --font-family: 'Pretendard Variable', 'Pretendard', 'Noto Sans KR', sans-serif;
+    --font-display:   160px;  /* Landing "Cherry" */
+    --font-heading-1:  96px;  /* Page title (History, Tech) */
+    --font-heading-2:  64px;  /* Section heading */
+    --font-heading-3:  44px;  /* Card title / Sub-heading */
+    --font-heading-4:  38px;  /* Small heading */
+    --font-title:      28px;  /* List title / Sidebar label */
+    --font-body-lg:    22px;  /* Body large */
+    --font-body:       18px;  /* Body default */
+    --font-caption:    14px;  /* Eyebrow / Caption */
+    --line-height-tight: 1.1;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.7;
+    --letter-spacing-tight: -1.5px;
+    --letter-spacing-normal: 0;
+    --letter-spacing-wide: 2px;
+
+    /* ═══════════════════════════════════════════════════════════════
+       DESIGN TOKENS v2 — 신규 추가, 아직 미적용 상태.
+       다음 단계에서 코드의 px 값을 var()로 점진적으로 치환할 예정.
+       기존 --font-*, --line-height-*, --letter-spacing-* 토큰은
+       실제 코드에서 사용되지 않는 죽은 코드(0 reference)이지만,
+       1단계에서는 손대지 않고 새 토큰은 --t-/--fw-/--s-/--gray-/--r-
+       네임스페이스로 분리해 추가만 함.
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* ── Typography scale (12 tier, 실측 후 확장) ── */
+    --t-hero:      160px;  /* 랜딩 CHERRY */
+    --t-display:   142px;  /* home hero */
+    --t-page-xl:    96px;  /* 콘텐츠 페이지 헤더 (역사·기술) */
+    --t-page-lg:    64px;  /* 큰 카드 타이틀 (hub-card) */
+    --t-page-md:    52px;  /* step-heading, switch-name */
+    --t-h1:         46px;  /* 화면 메인 타이틀, 모달 큰 제목 */
+    --t-h2:         36px;  /* 카드·섹션 메인 타이틀 (37/38/40 흡수) */
+    --t-h3:         30px;  /* 부제목·강조 본문·설명문 (28/32 흡수) */
+    --t-body:       26px;  /* 기본 본문 (24 흡수) */
+    --t-body-sm:    22px;  /* 보조 본문 (19/20/21 흡수) */
+    --t-caption:    18px;  /* 캡션·뱃지 (15/16/17 흡수) */
+    --t-micro:      14px;  /* 미세 표기 (그래프 숫자) */
+
+    /* ── Font weight ── */
+    --fw-regular:   500;
+    --fw-medium:    600;
+    --fw-bold:      700;
+    --fw-extrabold: 800;
+    --fw-black:     900;
+
+    /* ── Spacing (4px base, 28·36은 의도적으로 생략해 24/32/40으로 정렬) ── */
+    --s-1:   4px;
+    --s-2:   8px;
+    --s-3:  12px;
+    --s-4:  16px;
+    --s-5:  20px;
+    --s-6:  24px;
+    --s-8:  32px;
+    --s-10: 40px;
+    --s-12: 48px;
+    --s-14: 56px;
+    --s-16: 64px;
+    --s-20: 80px;
+    --s-24: 96px;
+
+    /* ── Gray scale (Slate 기반 원시 토큰) ── */
+    --gray-50:  #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+
+    /* ── Radius ── */
+    --r-xs:    8px;   /* 3·6·7·8 흡수 */
+    --r-sm:   12px;   /* 10·12 흡수 */
+    --r-md:   16px;   /* 14·16·18 흡수 */
+    --r-lg:   24px;   /* 20·22·24·28 흡수 */
+    --r-xl:   36px;   /* 32·36·38.4 흡수 */
+    --r-2xl:  48px;
+    --r-pill: 100px;  /* 기존 100px 사용 컨텍스트 모두 pill-shape이라 안전 */
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: #0a0a0a;
+    font-family: 'Pretendard Variable', 'Pretendard', 'Noto Sans KR', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  /* ── STAGE: 1080×1920, letterboxed ── */
+  #stage-wrap {
+    width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #kiosk {
+    width: 1080px; height: 1920px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    transform-origin: top center;
+  }
+  /* React 마운트 루트 — display:contents로 레이아웃·합성에서 투명하게 만들어
+     .screen이 #kiosk 직속 자식처럼 동작(v2와 동일한 2겹 합성 구조). 박스를 만들지
+     않으므로 #root가 추가 합성 레이어를 끼우지 않음 → react가 더 어둡게 보이던 차이 제거. */
+  #root { display: contents; }
+
+  /* ── TRANSITIONS ── */
+  .screen {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    opacity: 0; pointer-events: none;
+    transition: opacity .35s cubic-bezier(.4,0,.2,1), transform .35s cubic-bezier(.4,0,.2,1);
+    transform: translateY(18px);
+  }
+  .screen.active {
+    opacity: 1; pointer-events: all; transform: translateY(0);
+  }
+
+  /* ── LANDING ── */
+  #screen-landing {
+    background: #ffffff;
+    cursor: pointer;
+  }
+  .landing-top-logo {
+    position: absolute; top: 4%; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: center; gap: var(--s-2);
+    font-size: var(--t-h2); font-weight: 900; color: var(--cherry); letter-spacing: 2px;
+    z-index: 5;
+  }
+  .landing-cherry-icon { width: 104px; height: 104px; margin-top: -4px; }
+  .landing-bg-kb {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .landing-keycap {
+    position: absolute;
+    width: 120px; height: 110px;
+    border: 2px solid #d8d8d8;
+    border-radius: var(--r-md);
+    background: transparent;
+    box-shadow: inset 0 -8px 0 -2px #e8e8e8;
+  }
+  .landing-keycap::before {
+    content: ''; position: absolute;
+    top: 8px; left: 8px; right: 8px; bottom: 18px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: var(--r-xs);
+  }
+  .landing-content {
+    position: absolute; top: 38%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .landing-title-cherry {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: var(--t-hero); font-weight: 900; color: var(--fg); letter-spacing: -2px; line-height: 1;
+    transform: scaleX(1.2); transform-origin: center;
+  }
+  .landing-title-kb {
+    font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
+    font-size: var(--t-page-xl); font-weight: 700; color: var(--fg); letter-spacing: 4px; margin-top: var(--s-4);
+    transform: scaleX(1.2); transform-origin: center;
+  }
+  .landing-cta {
+    position: absolute; top: 58%; left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--cherry); color: #fff;
+    border-radius: var(--r-lg); padding: 34px 120px;
+    font-size: var(--t-page-md); font-weight: 800;
+    box-shadow: 0 12px 40px rgba(197,48,69,.25);
+    transition: background .2s, transform .15s;
+    border: none; cursor: pointer; z-index: 5;
+    white-space: nowrap;
+  }
+  .landing-cta:active { background: var(--cherry-dark); transform: translateX(-50%) scale(.97); }
+  .landing-dots {
+    position: absolute; bottom: 5%;
+    left: 50%; transform: translateX(-50%);
+    display: flex; gap: var(--s-5); align-items: center;
+  }
+  .landing-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--border);
+    background: transparent;
+  }
+  .landing-dot.active { border-color: var(--cherry); }
+
+  /* ── HEADER ── */
+  .kiosk-header {
+    background: var(--surface);
+    border-bottom: 1.5px solid var(--border);
+    padding: 32px 48px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; z-index: 20;
+  }
+  .header-brand { display: flex; align-items: center; gap: var(--s-5); cursor: pointer; }
+  .header-logo {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--cherry); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: var(--t-h3); font-weight: 900; font-style: italic;
+  }
+  .header-title { font-size: var(--t-h3); font-weight: 700; letter-spacing: -1px; }
+  .header-title span { font-weight: 300; color: var(--fg3); }
+
+  /* ── HOME BUTTON (top-left on every screen except landing/main) ── */
+  .home-btn {
+    position: absolute; top: 28px; left: 28px;
+    width: 72px; height: 72px; border-radius: 0;
+    background: transparent; border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 30;
+    transition: all .15s; color: var(--fg2);
+    box-shadow: none; padding: 0;
+  }
+  .home-btn:active { color: var(--cherry); transform: scale(.97); }
+  .home-btn svg { width: 50px; height: 50px; }
+
+  /* ── HOME ── */
+  #screen-home { background: #ffffff; }
+  .home-body {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center;
+    padding: 200px 0 0;
+  }
+  .home-eyebrow {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--cherry-light); color: var(--cherry);
+    white-space: nowrap;
+    padding: 0 40px; height: 64px;
+    border-radius: var(--r-pill);
+    font-size: var(--t-body); font-weight: 700; margin-bottom: var(--s-14);
+  }
+
+  /* ── HOME HUB ── */
+  .home-hub { padding: 200px 0 0; justify-content: flex-start; }
+  .hub-cards {
+    display: flex; flex-direction: column; gap: var(--s-10);
+    width: 855px; margin-top: 0;
+  }
+  .hub-card {
+    background: var(--surface); border-radius: var(--r-xl);
+    border: 1.6px solid var(--border); cursor: pointer;
+    width: 855px; height: 180px;
+    padding: 50px 67px 50px 64px;
+    display: grid; grid-template-columns: 1fr 80px;
+    align-items: center; gap: 0;
+    text-align: left; position: relative; overflow: hidden;
+    transition: all .15s; font-family: inherit;
+    box-sizing: border-box;
+  }
+  .hub-card:active { transform: scale(.98); border-color: var(--cherry); }
+  .hub-card:active .hub-card-cta { background: var(--cherry-dark); }
+  .hub-card-body { display: flex; flex-direction: column; gap: var(--s-3); }
+  .hub-card-title { font-size: var(--t-h1); font-weight: 900; color: var(--fg); letter-spacing: -1.5px; line-height: 48.4px; }
+  .hub-card-desc { font-size: var(--t-h3); font-weight: 400; color: var(--fg2); line-height: 37.2px; }
+  .hub-card-cta {
+    display: flex; align-items: center; justify-content: center;
+    width: 80px; height: 80px;
+    background: var(--cherry); border: none;
+    border-radius: var(--r-lg);
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .hub-card-cta svg { width: 32px; height: 32px; }
+
+  /* ── CONTENT PAGES (history / tech) ── */
+  #screen-history { background: #ffffff; overflow-y: auto; }
+  #screen-tech { background: #ffffff; overflow: hidden; }
+  #screen-tech .content-page { padding: 24px 28px 24px; }
+  .content-header {
+    position: sticky; top: 0; z-index: 25;
+    background: var(--surface);
+    border-bottom: 1.5px solid var(--border);
+    padding: 32px 48px;
+    display: grid; grid-template-columns: 96px 1fr 96px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .content-header .home-btn {
+    position: static; width: 72px; height: 72px;
+    margin: 0;
+  }
+  .content-header-title {
+    font-size: var(--t-h3); font-weight: 700; color: var(--fg);
+    letter-spacing: -.6px;
+    display: flex; align-items: center; justify-content: center;
+    height: 72px;
+    text-align: center;
+  }
+  /* ── CONTENT CTA FOOTER ── */
+  .content-cta-footer {
+    background: #fff;
+    border-top: 1.5px solid var(--border);
+    padding: 32px 56px;
+    display: flex; align-items: center; justify-content: flex-end;
+    flex-shrink: 0;
+    position: sticky; bottom: 0; z-index: 25;
+  }
+  .btn-cta-custom {
+    display: inline-flex; align-items: center; gap: var(--s-4);
+    padding: 26px 56px; border-radius: var(--r-md);
+    background: var(--cherry); color: #fff;
+    font-size: var(--t-body); font-weight: 800; letter-spacing: -.4px;
+    border: none; cursor: pointer; transition: all .2s;
+    box-shadow: 0 10px 32px rgba(190, 18, 60, .28);
+  }
+  .btn-cta-custom:active { background: var(--cherry-dark); transform: scale(.97); }
+  .btn-cta-custom svg { width: 24px; height: 24px; }
+
+  .content-page {
+    flex: 1; padding: 64px 80px 120px;
+    display: flex; flex-direction: column;
+  }
+
+  /* legacy page-progress kept for any reference but unused */
+  .page-progress { display: none; }
+  .content-hero { margin-bottom: var(--s-16); text-align: center; }
+  .content-eyebrow {
+    display: inline-block; font-size: var(--t-caption); font-weight: 800; letter-spacing: 6px;
+    color: var(--cherry); margin-bottom: var(--s-6);
+  }
+  .content-title {
+    font-family: 'Pretendard Variable','Pretendard',sans-serif;
+    font-size: var(--t-page-xl); font-weight: 900; color: var(--fg);
+    letter-spacing: -3px; line-height: 1.05; margin-bottom: var(--s-8);
+  }
+  .content-lede {
+    font-size: var(--t-body); color: var(--fg2); line-height: 1.7;
+  }
+
+  /* Overview stats */
+  .overview-grid {
+    display: grid; grid-template-columns: repeat(3, 280px); gap: var(--s-10);
+    margin-bottom: var(--s-14); justify-content: center;
+  }
+  .overview-card {
+    background: var(--surface); border-radius: var(--r-xl);
+    border: 1.6px solid var(--border); padding: 37px 28px;
+    text-align: center;
+    width: 280px; height: 128px;
+    display: flex; flex-direction: column; justify-content: center; gap: var(--s-2);
+    box-sizing: border-box;
+  }
+  .overview-num {
+    font-family: 'Pretendard Variable','Pretendard',sans-serif;
+    font-size: var(--t-h2); font-weight: 900; color: var(--cherry);
+    letter-spacing: -1px; line-height: 52px;
+    white-space: nowrap;
+  }
+  .overview-label {
+    font-size: var(--t-body); font-weight: 400; color: var(--fg2);
+    white-space: nowrap;
+  }
+  .overview-grid.bottom { margin-top: var(--s-14); margin-bottom: 0; }
+
+  /* ORIGINAL CHERRY hero (text only) */
+  .origin-hero { text-align: center; margin-bottom: var(--s-16); }
+  .origin-title {
+    font-family: 'Pretendard Variable','Pretendard',sans-serif;
+    font-size: var(--t-page-xl); font-weight: 600; color: var(--fg2);
+    letter-spacing: 3px; line-height: 96.8px;
+  }
+
+  /* ORIGINAL CHERRY intro block */
+  .origin-block {
+    max-width: 956px; margin: 0 auto 96px;
+    display: flex; flex-direction: column; gap: var(--s-8);
+    text-align: center;
+  }
+  .origin-block .lead {
+    font-size: var(--t-h3); font-weight: 500; color: var(--fg2); line-height: 42.55px;
+  }
+  .origin-block .body {
+    font-size: var(--t-h3); font-weight: 400; color: var(--fg2); line-height: 42px;
+    white-space: pre-line;
+  }
+
+  /* Team CHERRY block */
+  .team-cherry-block { margin-top: var(--s-24); }
+  .team-cherry-title {
+    font-family: 'Pretendard Variable','Pretendard',sans-serif;
+    font-size: var(--t-page-xl); font-weight: 600; color: var(--fg2);
+    letter-spacing: 2px; line-height: 61.6px; margin: 0 0 40px;
+  }
+  .team-cherry-q {
+    font-size: var(--t-h3); color: var(--fg2); line-height: 42.55px;
+    font-weight: 500; margin: 0 0 40px;
+  }
+  .team-cherry-body {
+    font-size: var(--t-h3); font-weight: 400; color: var(--fg2); line-height: 42px;
+    white-space: pre-line;
+  }
+
+  /* Story header */
+  .story-header { text-align: center; margin-bottom: var(--s-6); }
+  .story-eyebrow {
+    font-size: var(--t-body); font-weight: 700; color: var(--fg3);
+    letter-spacing: 3px; margin-bottom: var(--s-4);
+  }
+  .story-title {
+    font-family: 'Pretendard Variable','Pretendard',sans-serif;
+    font-size: var(--t-page-lg); font-weight: 700; color: var(--fg2);
+    letter-spacing: -2px;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative; padding: 80px 0 16px;
+  }
+  .timeline::before {
+    /* 로고(체리) 초기 위치(top:24px, 높이 110px → 중심 ≈ 79px)부터 점선 시작.
+       스크롤 안 한 첫 화면에서 로고 위에 점선이 안 보이고, 점선 끝에서 로고가 출발. */
+    content:''; position: absolute; top: 79px; bottom: 0; left: 50%;
+    width: 3px; transform: translateX(-50%);
+    background-image: linear-gradient(to bottom, var(--cherry) 50%, transparent 50%);
+    background-size: 3px 12px;
+  }
+  .timeline-cherry {
+    position: absolute; left: 50%; top: 24px;
+    width: 88px; height: 110px;
+    transform: translateX(-50%);
+    z-index: 5; transition: top .05s linear;
+    pointer-events: none;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,.12));
+  }
+  .timeline-cherry svg, .timeline-cherry img { width: 100%; height: 100%; object-fit: contain; }
+  .timeline-row {
+    display: grid; grid-template-columns: 1fr 80px 1fr;
+    align-items: start; margin-bottom: var(--s-14); position: relative;
+  }
+  .timeline-row:last-child { margin-bottom: 0; }
+  .timeline-dot { display: none; }
+  .timeline-content { display: flex; flex-direction: column; gap: var(--s-4); padding-top: var(--s-6); align-self: start; }
+  .timeline-row.left .timeline-content { grid-column: 1; grid-row: 1; padding-right: var(--s-8); text-align: right; align-items: flex-end; }
+  .timeline-row.left .timeline-img {
+    grid-column: 3; grid-row: 1;
+    width: calc(100% - 20px);
+    justify-self: end;
+    margin: 0;
+  }
+  .timeline-row.right .timeline-content { grid-column: 3; grid-row: 1; padding-left: var(--s-8); text-align: left; align-items: flex-start; }
+  .timeline-row.right .timeline-img {
+    grid-column: 1; grid-row: 1;
+    width: calc(100% - 20px);
+    justify-self: start;
+    margin: 0;
+  }
+  .timeline-year {
+    font-family: 'Pretendard Variable','Pretendard',sans-serif;
+    font-size: var(--t-page-lg); font-weight: 800; color: var(--fg);
+    letter-spacing: -1.5px; line-height: 64px;
+  }
+  .timeline-desc {
+    font-size: var(--t-h3); font-weight: 500; color: var(--fg2); line-height: 42px;
+    max-width: 480px; white-space: pre-line;
+  }
+  .timeline-img {
+    aspect-ratio: 3/2; background: var(--surface);
+    border: 1.5px solid var(--border); border-radius: var(--r-md);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--fg3); font-size: var(--t-micro); font-weight: 600; letter-spacing: 1px;
+    overflow: hidden; align-self: start; width: 100%;
+  }
+  .timeline-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .timeline-img.empty { background: var(--surface); border-style: dashed; }
+
+  /* Tech list (Content 2) */
+  .tech-list { display: flex; flex-direction: column; gap: var(--s-6); flex: 1; }
+  .tech-item {
+    background: var(--surface); border-radius: var(--r-xl);
+    border: 1.6px solid var(--border); overflow: hidden;
+    display: grid; grid-template-columns: 380px 1fr; gap: 0;
+    min-height: 320px;
+    flex: 1;
+  }
+  .tech-img {
+    background: var(--bg);
+    border-right: 2.4px solid var(--border);
+    height: 100%; overflow: hidden;
+  }
+  .tech-img img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  /* TMR 이미지(item 03)만 좌측 앵커로 → 시각적으로 이미지가 우측으로 이동해 TMR 글씨 중앙정렬 */
+  .tech-item:nth-child(3) .tech-img img { object-position: 30% center; }
+  .tech-text {
+    padding: 6% 20px 36px 48px;  /* top 6% · right 20px (축소) · bottom 36px · left 48px (좌측 고정) */
+    display: flex; flex-direction: column; gap: 0;
+    justify-content: center;   /* 빈 공간을 콘텐츠 위/아래로 균등 분배 → 모든 카드가 동일 비율 */
+  }
+  .tech-num {
+    font-size: var(--t-body-sm); font-weight: 900; color: var(--cherry);
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: var(--s-4);
+  }
+  .tech-name {
+    font-family: 'Pretendard Variable','Pretendard',sans-serif;
+    font-size: var(--t-h2); font-weight: 700; color: rgba(0,0,0,0.8);
+    letter-spacing: 1px; line-height: 1.2;
+    margin-bottom: var(--s-5);
+  }
+  .tech-desc {
+    font-size: var(--t-h3); font-weight: 500; color: var(--fg2); line-height: 40px;
+    white-space: pre-line;
+    margin-bottom: var(--s-4);
+  }
+  .tech-highlights {
+    display: flex; flex-wrap: wrap; gap: var(--s-3);
+  }
+  /* 초록 키워드(pill)와 위 텍스트 간격 차등 — 현재 desc margin-bottom 14px 기준 */
+  .tech-item:nth-child(1) .tech-highlights,
+  .tech-item:nth-child(3) .tech-highlights { margin-top: var(--s-4); }  /* 14+14 = 28px (2배) */
+  .tech-item:nth-child(2) .tech-highlights,
+  .tech-item:nth-child(4) .tech-highlights { margin-top: var(--s-2); }   /* 14+7 = 21px (1.5배) */
+  .tech-pill {
+    font-size: var(--t-body); font-weight: 700; color: #16A34A;
+    background: rgba(22, 163, 74, 0.1); padding: 12px 22px; border-radius: var(--r-pill);
+    letter-spacing: .2px;
+  }
+  .home-headline {
+    font-size: var(--t-display); font-weight: 900; line-height: 156px;
+    letter-spacing: -2.5px; text-align: center; color: var(--fg);
+    margin-bottom: 116px;
+  }
+  .home-desc {
+    font-size: var(--t-h2); font-weight: 500; color: var(--fg2); line-height: 48px;
+    text-align: center; margin-bottom: 115px;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: var(--s-4);
+    background: var(--fg); color: #fff;
+    padding: 32px 72px; border-radius: var(--r-pill);
+    font-size: var(--t-h3); font-weight: 700;
+    border: none; cursor: pointer;
+    box-shadow: 0 24px 60px rgba(0,0,0,.22);
+    transition: background .2s, transform .15s, box-shadow .2s;
+    letter-spacing: -.5px;
+  }
+  .btn-primary:active { background: var(--cherry); transform: scale(.97); box-shadow: 0 10px 32px rgba(197,48,69,.28); }
+  .btn-arrow { font-size: var(--t-h2); }
+
+  .home-features {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: var(--s-6);
+    width: 100%; margin-top: var(--s-20);
+  }
+  .feature-card {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 40px 36px; border: 1.5px solid var(--border);
+    display: flex; flex-direction: column; gap: var(--s-4);
+  }
+  .feature-num { font-size: var(--t-caption); font-weight: 700; color: var(--cherry); letter-spacing: 2px; }
+  .feature-title { font-size: var(--t-body); font-weight: 700; color: var(--fg); }
+  .feature-desc { font-size: var(--t-caption); color: var(--fg2); line-height: 1.6; }
+
+  /* ── BUILDER SHELL ── */
+  #screen-builder { background: #ffffff; }
+  /* builder header: 좌측 260px(사이드바 폭) + 우측 영역(1fr) — stepper는 우측 영역 정중앙 */
+  #screen-builder .content-header {
+    grid-template-columns: 260px 1fr 0px;
+  }
+  .stepper {
+    display: flex; align-items: center; gap: var(--s-3);
+    justify-content: center;
+  }
+  .step-item { display: flex; align-items: center; gap: var(--s-3); font-size: var(--t-body); font-weight: 600; color: var(--fg3); white-space: nowrap; }
+  .step-item.active { color: var(--fg); }
+  .step-item.done { color: var(--fg3); }
+  .step-num {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--bg); border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: var(--t-body-sm); font-weight: 700; color: var(--fg3);
+    flex-shrink: 0;
+  }
+  .step-item.active .step-num { background: var(--cherry); border-color: var(--cherry); color: #fff; }
+  .step-item.done .step-num { background: var(--bg); border-color: var(--border); color: var(--fg3); font-size: var(--t-caption); }
+  .step-divider { width: 40px; height: 1.5px; background: var(--border); }
+
+  #builder-main { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; min-height: 0; }
+
+  /* ── FOOTER ── */
+  .kiosk-footer {
+    background: var(--surface);
+    border-top: 1.5px solid var(--border);
+    padding: 28px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0; z-index: 20;
+  }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: var(--s-3);
+    padding: 24px 56px; border-radius: var(--r-md);
+    background: var(--bg); border: 1.5px solid var(--border);
+    font-size: var(--t-body); font-weight: 700; color: var(--fg2);
+    cursor: pointer; transition: all .15s;
+  }
+  .btn-secondary:active { background: var(--cherry-light); border-color: var(--cherry); color: var(--cherry); transform: scale(.97); }
+  .btn-next {
+    display: inline-flex; align-items: center; gap: var(--s-3);
+    padding: 24px 56px; border-radius: var(--r-md);
+    background: var(--fg); color: #fff;
+    font-size: var(--t-body); font-weight: 700;
+    border: none; cursor: pointer; transition: all .2s;
+    box-shadow: 0 8px 32px rgba(0,0,0,.16);
+  }
+  .btn-next:active { background: var(--cherry); transform: scale(.97); }
+  .btn-next.cherry { background: var(--cherry); }
+  .btn-next.cherry:active { background: var(--cherry-dark); transform: scale(.97); }
+  .btn-next.disabled { background: var(--border); color: var(--fg3); cursor: not-allowed; box-shadow: none; }
+
+  /* ── STEP 1 GRID ── */
+  .s1-grid-wrap { padding: 60px 64px; flex: 1; display: flex; flex-direction: column; }
+  .step-heading { font-size: var(--t-page-md); font-weight: 900; letter-spacing: -2px; margin-bottom: var(--s-4); }
+  .step-sub { font-size: var(--t-h3); font-weight: 500; color: var(--fg2); margin-bottom: var(--s-12); }
+  .model-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--s-6); flex: 1; }
+  .model-card {
+    background: var(--surface); border-radius: var(--radius-lg);
+    border: 2px solid var(--border); cursor: pointer;
+    padding: 32px 28px; display: flex; flex-direction: column;
+    transition: all .2s; position: relative; overflow: hidden;
+  }
+  .model-card:active { border-color: var(--cherry); transform: scale(.98); box-shadow: 0 10px 32px rgba(0,0,0,.1); }
+  .model-card-img {
+    width: 100%; aspect-ratio: 16/9;
+    background: #fff; border-radius: var(--r-md);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: var(--s-4); overflow: hidden; padding: 0;
+  }
+  .model-card-img img { width: 100%; height: 100%; object-fit: contain; }
+  .model-card-img svg { width: 60px; height: 60px; opacity: .3; }
+  .model-name { font-size: var(--t-h3); font-weight: 800; color: var(--fg); margin-bottom: var(--s-1); }
+  .model-layout { font-size: var(--t-body); color: var(--fg2); line-height: 1.6; }
+  .model-meta { font-size: var(--t-body); color: var(--fg2); line-height: 1.6; }
+
+  /* ── STEP 1 DETAIL ── */
+  .s1-detail { flex: 1; display: flex; overflow: hidden; height: 100%; }
+  .sidebar {
+    width: 260px; flex-shrink: 0;
+    background: var(--surface); border-right: 1.5px solid var(--border);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .sidebar-header { padding: 32px 28px 24px; border-bottom: 1.5px solid var(--border); }
+  .sidebar-label { font-size: var(--t-body-sm); font-weight: 700; color: var(--fg3); letter-spacing: 2px; text-transform: uppercase; }
+  .sidebar-list { flex: 1; overflow-y: auto; padding: 20px 18px; display: flex; flex-direction: column; gap: var(--s-3); }
+  /* 라인업 선택 리스트: 9개 모델을 스크롤 없이 화면 높이에 균등 배치 */
+  #s1-list { overflow: hidden; gap: var(--s-2); padding: 10px 14px; }
+  #s1-list .s1-model-item {
+    flex: 1 1 0; min-height: 0;
+    padding: 6px 10px; gap: var(--s-1); margin-bottom: 0;
+    justify-content: center;
+  }
+  .sidebar-item {
+    padding: 14px 14px; border-radius: var(--r-md);
+    border: 2px solid transparent; background: transparent;
+    cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: var(--s-2);
+    transition: all .15s; text-align: center; width: 100%;
+  }
+  .sidebar-item:active { background: var(--cherry-light); transform: scale(.98); }
+  .sidebar-item.active { background: var(--cherry-light); border-color: var(--cherry); }
+  .sidebar-item-icon { width: 44px; height: 44px; border-radius: var(--r-sm); background: var(--bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .sidebar-item.active .sidebar-item-icon { background: var(--cherry-mid); }
+  .sidebar-item-icon svg { width: 24px; height: 24px; opacity: .5; }
+  .sidebar-item.active .sidebar-item-icon svg { opacity: 1; color: var(--cherry); }
+  .sidebar-item-name { font-size: var(--t-body-sm); font-weight: 700; color: var(--fg2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .sidebar-item.active .sidebar-item-name { color: var(--cherry-dark); }
+  /* 스위치 분석 사이드바: 화면 높이에 정확히 맞춰 7개 균등 배치 */
+  .sidebar-list:has(.s2-switch-item) {
+    gap: var(--s-2); padding: 8px 14px;
+    overflow: hidden;
+  }
+  .sidebar-item.s2-switch-item {
+    padding: 6px 10px; gap: var(--s-1);
+    flex: 1 1 0; min-height: 0;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .sidebar-item.s2-switch-item .s2-img-wrap {
+    flex: 1; width: 100%;
+    border-radius: var(--r-sm); overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sidebar-item.s2-switch-item .s2-img-wrap img {
+    max-width: 100%; max-height: 100%; width: auto; height: auto;
+    object-fit: contain; display: block;
+  }
+  /* 텍스트 24px 고정 — 이미지가 어떻게 늘어도 영향 받지 않음 */
+  .sidebar-item.s2-switch-item .sidebar-item-name {
+    font-size: var(--t-body) !important; line-height: 1.2; flex-shrink: 0;
+  }
+  /* Step 3 사이드바: 세로 배치 (아이콘 위, 이름 아래) — 스위치 스템 아이콘 사용 */
+  .sidebar-item.s3-brush-item {
+    flex-direction: column; align-items: center; gap: var(--s-2);
+    padding: 12px 10px;
+  }
+  .sidebar-item.s3-brush-item .sidebar-item-name {
+    font-size: var(--t-body) !important; text-align: center;
+  }
+  .s3-stem-icon {
+    width: 56px; height: 56px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .s3-stem-icon svg { width: 100%; height: 100%; filter: drop-shadow(0 2px 5px rgba(0,0,0,.18)); }
+
+  .detail-panel { flex: 1; padding: var(--s-12); overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-8); }
+  .detail-3d-preview {
+    width: 100%; height: 360px; flex-shrink: 0;
+    border-radius: var(--radius-lg); background: #ffffff;
+    border: 1.5px solid var(--border);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; gap: var(--s-4);
+    padding: 20px 40px;
+    box-sizing: border-box;
+  }
+  .detail-card {
+    background: var(--surface); border-radius: var(--radius);
+    border: 1.5px solid var(--border); padding: var(--s-10);
+    display: flex; flex-direction: column; gap: var(--s-8);
+  }
+  .section-label {
+    font-size: var(--t-body); font-weight: 700; color: var(--fg);
+    letter-spacing: 0; text-transform: uppercase;
+    display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4);
+  }
+  .section-label .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cherry); }
+
+  .color-options { display: flex; gap: var(--s-5); flex-wrap: wrap; }
+  .color-btn {
+    width: 200px; height: 80px;
+    border-radius: var(--r-md);
+    border: 2px solid var(--border); background: var(--bg);
+    font-size: var(--t-h3); font-weight: 700; cursor: pointer; transition: all .15s;
+    color: var(--fg2);
+    display: flex; align-items: center; justify-content: center;
+    padding: 0;
+  }
+  .color-btn.active { border-color: var(--cherry); background: var(--cherry-light); color: var(--cherry); }
+
+  .spec-list { display: flex; flex-direction: column; gap: var(--s-4); }
+  .spec-item {
+    display: flex; align-items: center; gap: var(--s-5); font-size: var(--t-body);
+    white-space: nowrap;
+  }
+  .spec-item > div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .spec-item .spec-icon { width: 32px; height: 32px; flex-shrink: 0; color: var(--fg); }
+  .spec-item strong { color: var(--fg); font-weight: 700; }
+  .spec-item span { color: var(--fg2); font-weight: 400; margin-left: var(--s-2); }
+  .spec-item.highlight strong, .spec-item.highlight span { color: var(--cherry-dark); }
+  .spec-item.highlight .spec-icon { color: var(--cherry); }
+
+  /* ── STEP 2 ── */
+  .s2-layout { flex: 1; display: flex; overflow: hidden; height: 100%; }
+  .s2-detail { flex: 1; padding: var(--s-12); overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-6); }
+
+  .switch-header { display: flex; flex-direction: column; gap: var(--s-2); padding-bottom: var(--s-8); border-bottom: 1.5px solid var(--border); }
+  .switch-name-row { display: flex; align-items: center; gap: var(--s-4); }
+  .switch-color-bar { width: 10px; height: 52px; border-radius: var(--r-xs); flex-shrink: 0; }
+  .switch-name { font-size: var(--t-page-md); font-weight: 900; letter-spacing: -2px; white-space: nowrap; }
+  .switch-badge {
+    padding: 12px 28px; border-radius: var(--r-pill);
+    font-size: var(--t-h3); font-weight: 700;
+    background: var(--bg); color: var(--fg2);
+    border: 1.5px solid var(--border);
+  }
+  .switch-desc { display: none; }
+
+  .audio-btn {
+    display: flex; align-items: center; justify-content: center; gap: var(--s-4);
+    width: 100%; padding: var(--s-8);
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: var(--r-lg); font-size: var(--t-body); font-weight: 700; color: var(--fg);
+    cursor: pointer; transition: all .15s;
+  }
+  .audio-btn:active { background: var(--cherry-light); border-color: var(--cherry); color: var(--cherry); transform: scale(.97); }
+  .audio-play-icon { width: 44px; height: 44px; border-radius: 50%; background: var(--cherry); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .audio-play-icon svg { fill: white; width: 20px; height: 20px; margin-left: var(--s-1); }
+
+  .wave-card {
+    background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); padding: var(--s-8);
+    display: flex; flex-direction: column; gap: var(--s-5);
+  }
+  .card-label { font-size: var(--t-h2); font-weight: 700; color: var(--fg); display: flex; justify-content: space-between; align-items: center; }
+  .card-label .badge { background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-pill); padding: 10px 24px; font-size: var(--t-h3); color: var(--fg); font-weight: 700; }
+  .freq-play-btn {
+    padding: 16px 28px; border-radius: var(--r-md); background: var(--cherry); color: #fff;
+    font-size: var(--t-body-sm); font-weight: 700; border: none; cursor: pointer;
+    display: flex; align-items: center; gap: var(--s-3);
+    box-shadow: 0 8px 24px rgba(197,48,69,.25); transition: filter .15s;
+    animation: freqPlayPulse 1.8s ease-in-out infinite;
+  }
+  .freq-play-btn:active { filter: brightness(0.92); transform: scale(.97); animation: none; }
+  /* 테두리 반짝 — 클릭 유도용 펄스 글로우 */
+  @keyframes freqPlayPulse {
+    0%, 100% {
+      box-shadow: 0 8px 24px rgba(197,48,69,.30),
+                  0 0 0 0 rgba(197,48,69,.55);
+    }
+    50% {
+      box-shadow: 0 10px 28px rgba(197,48,69,.45),
+                  0 0 0 10px rgba(197,48,69,0);
+    }
+  }
+  .freq-graphs {
+    display: grid; grid-template-columns: 2.6fr 1fr; gap: var(--s-5);
+    background: #ffffff; border-radius: var(--r-md); padding: 22px 20px 14px;
+    position: relative;
+  }
+  .freq-line-wrap, .freq-bars-wrap { position: relative; height: 308px; }
+  .freq-y-axis {
+    position: absolute; left: 0; top: 32px; bottom: 60px; width: 48px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    font-size: var(--t-body-sm); font-weight: 600; color: var(--fg3); text-align: right;
+    pointer-events: none;
+  }
+  .freq-y-axis span { padding-right: var(--s-2); line-height: 1; transform: translateY(-50%); }
+  .freq-y-axis span:first-child { transform: translateY(0); }
+  .freq-y-axis span:last-child  { transform: translateY(-100%); }
+  .freq-unit-label {
+    position: absolute; top: 4px; left: 0; width: 48px;
+    padding-right: var(--s-2); text-align: right;
+    font-size: var(--t-body-sm); color: var(--fg3); font-weight: 700;
+  }
+  .freq-plot {
+    position: absolute; left: 52px; right: 6px; top: 32px; bottom: 60px;
+    background: transparent;
+  }
+  .freq-bars-wrap .freq-plot { left: 6px; }
+  .freq-plot > svg { width: 100%; height: 100%; display: block; }
+  .freq-x-axis {
+    position: absolute; left: 52px; right: 6px; bottom: 32px;
+    display: flex; justify-content: space-between;
+    font-size: var(--t-body-sm); font-weight: 600; color: var(--fg3);
+    pointer-events: none;
+  }
+  .freq-bars-wrap .freq-x-axis { left: 6px; right: 6px; }
+  .freq-unit-x {
+    position: absolute; right: 6px; bottom: 4px;
+    font-size: var(--t-body-sm); font-weight: 600; color: var(--fg3);
+    pointer-events: none;
+  }
+  .freq-peak-pill {
+    position: absolute; transform: translate(-50%, -130%);
+    background: #fff; border: 1.5px solid var(--border);
+    border-radius: var(--r-pill); padding: 8px 16px;
+    font-size: var(--t-body-sm); font-weight: 800; white-space: nowrap;
+    display: flex; align-items: center; gap: var(--s-2);
+    box-shadow: 0 4px 10px rgba(0,0,0,.06);
+    z-index: 2; pointer-events: none;
+  }
+  .freq-peak-pill::before {
+    content: ''; width: 0; height: 0;
+    border: 6px solid transparent; border-top-color: currentColor;
+    border-bottom: 0;
+    position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+  }
+  .freq-info-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-3);
+    /* wave-card padding 32px 기준에서 좌우로 12px씩 튀어나와 24px 더 넓게 — 두 정보 카드만 폭 확장 */
+    margin-left: -12px; margin-right: -12px;
+  }
+  .freq-info-card {
+    background: var(--bg); border-radius: var(--r-md); padding: 18px 20px;
+    display: flex; align-items: center; gap: var(--s-4);
+  }
+  .freq-info-icon {
+    width: 56px; height: 56px; border-radius: var(--r-md); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border: 1.5px solid var(--border);
+  }
+  .freq-info-icon svg { width: 32px; height: 32px; }
+  .freq-info-text { display: flex; flex-direction: column; gap: var(--s-1); min-width: 0; }
+  .freq-info-title { font-size: var(--t-body); font-weight: 800; color: var(--fg); line-height: 1.2; }
+  .freq-info-desc { font-size: var(--t-body); color: var(--fg3); line-height: 1.4; white-space: pre-line; }
+
+  .force-card {
+    background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); padding: var(--s-8);
+    display: flex; flex-direction: column; gap: var(--s-4);
+  }
+  /* 포스커브 설명 — 스위치 설명 한 줄(.sdc-summary)과 동일 글꼴/사이즈 */
+  /* margin-top: -8px → 제목과의 간격을 .force-card gap(16px)의 절반(8px)로 축소 */
+  .force-curve-desc { font-size: var(--t-h3); color: var(--fg2); line-height: 1.6; margin-top: -8px; }
+  #s2-svg { width: 100%; height: 480px; display: block; }
+
+  .switch-detail-card {
+    background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border);
+    padding: var(--s-8); display: flex; flex-direction: column; gap: var(--s-6);
+  }
+  .sdc-summary { font-size: var(--t-h3); color: var(--fg2); line-height: 1.6; }
+  .sdc-specs { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--s-3); }
+  .sdc-spec { background: var(--bg); border-radius: var(--r-md); padding: 20px 8px; text-align: center; }
+  .sdc-spec-label { font-size: var(--t-body-sm); font-weight: 700; color: var(--fg3); letter-spacing: 0; text-transform: none; margin-bottom: var(--s-2); }
+  .sdc-spec-value { font-size: var(--t-h3); font-weight: 800; color: var(--fg); }
+  /* specs(4열 1fr)와 동일 그리드 → 장점은 1~2열, 유의사항은 3~4열(=총이동거리 박스 좌측에 정렬) */
+  .sdc-pros-cons { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-3); }
+  .sdc-pros-cons > div:nth-child(1) { grid-column: 1 / 3; }
+  .sdc-pros-cons > div:nth-child(2) { grid-column: 3 / 5; overflow: visible; }
+  .sdc-pros-cons > div:nth-child(2) .sdc-list li { white-space: nowrap; }
+  .sdc-col-title { font-size: var(--t-body); font-weight: 800; margin-bottom: var(--s-3); display: flex; align-items: center; gap: var(--s-2); }
+  .sdc-col-title.pro { color: #16a34a; }
+  .sdc-col-title.con { color: #dc2626; }
+  .sdc-list { list-style: none; display: flex; flex-direction: column; gap: var(--s-3); }
+  /* 동그라미 구분자 제거 + 제목 글자("장"/"유") 시작점과 세로정렬 (아이콘 24px + gap 8px = 32px) */
+  .sdc-list li { font-size: var(--t-body); color: var(--fg2); padding-left: var(--s-8); line-height: 1.5; white-space: nowrap; }
+
+  .tech-card {
+    background: var(--cherry-light); border: 1.5px solid var(--cherry-mid);
+    border-radius: var(--radius); padding: var(--s-8);
+    display: flex; gap: var(--s-5);
+  }
+  .tech-icon { width: 52px; height: 52px; border-radius: var(--r-md); background: var(--cherry); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .tech-icon svg { width: 28px; height: 28px; }
+  .tech-body-title { font-size: var(--t-body-sm); font-weight: 800; color: var(--cherry-dark); margin-bottom: var(--s-3); }
+  .tech-body-desc { font-size: var(--t-body-sm); color: var(--fg2); line-height: 1.65; }
+
+  /* Sidebar switch items */
+  .sw-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── STEP 3 ── */
+  .s3-layout { flex: 1; display: flex; overflow: hidden; height: 100%; }
+  .s3-detail { flex: 1; padding: 44px 36px; overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-6); position: relative; }
+  .s3-tip-btn {
+    position: absolute; top: 20px; right: 20px;
+    display: flex; align-items: center; gap: var(--s-3);
+    padding: 16px 28px; border-radius: var(--r-pill);
+    background: var(--surface); border: 1.5px solid var(--border);
+    font-size: var(--t-h3); font-weight: 700; color: var(--fg2);
+    cursor: pointer; z-index: 10; transition: all .15s;
+    box-shadow: 0 6px 20px rgba(0,0,0,.12);
+  }
+  .s3-tip-btn svg { width: 32px; height: 32px; flex-shrink: 0; }
+  .s3-tip-btn:active { background: var(--cherry-light); border-color: var(--cherry); color: var(--cherry); transform: scale(.97); }
+
+  /* 맵핑 초기화 — 키보드 영역 좌상단, 배경 없이 아이콘만 (추천 팁과 동일 높이) */
+  .s3-reset-btn {
+    position: absolute; top: 20px; left: 20px;
+    display: flex; align-items: center; justify-content: center;
+    width: 68px; height: 68px;
+    background: transparent; border: none; padding: 0;
+    cursor: pointer; z-index: 10;
+    color: var(--fg2); transition: color .15s, transform .15s;
+  }
+  .s3-reset-btn svg { width: 44px; height: 44px; }
+  .s3-reset-btn:active { color: var(--cherry); transform: scale(.92); }
+
+  .keyboard-wrap {
+    flex: 1; min-height: 0;
+    background: linear-gradient(145deg, #f0f2f5, #e4e8ef);
+    border-radius: var(--radius-lg); border: 1.5px solid var(--border);
+    display: flex; flex-direction: column; align-items: stretch; justify-content: center;
+    gap: var(--s-4); padding: 24px 12px; overflow: hidden;
+    position: relative;
+  }
+  /* zoom shrinks both visual rendering and layout box, so two halves fit in column width. */
+  .kb-half { flex-shrink: 0; zoom: 0.68; display: flex; justify-content: center; }
+  /* Right (bottom) keyboard right-aligns its rows so the right edges line up
+     like a clean cut from the original full-width keyboard. */
+  .kb-half:last-child { justify-content: center; }
+  .kb-half:last-child .kb-row { justify-content: flex-end; }
+  /* Compact 65% 단일 블록: 분할 없이 한 덩어리로 렌더되므로 행은 좌측 정렬 */
+  .kb-half.kb-single .kb-row { justify-content: flex-start; }
+
+  /* keyboard */
+  .kb-shell {
+    background: #e8e8e8; border-radius: var(--r-lg);
+    padding: var(--s-5); box-shadow: 0 24px 64px rgba(0,0,0,.2);
+    border-bottom: 12px solid #d0d0d0;
+  }
+  .kb-plate { background: #f0f0f0; border-radius: var(--r-md); padding: var(--s-3); display: flex; flex-direction: column; gap: var(--s-2); position: relative; }
+  .kb-row { display: flex; gap: var(--s-2); height: 72px; align-items: flex-start; }
+
+  .key {
+    height: 72px; border-radius: var(--r-sm);
+    background: linear-gradient(180deg, #fff 0%, #f1f5f9 100%);
+    box-shadow: 0 4px 0 #b0b8c5, 0 5px 10px rgba(0,0,0,.12);
+    border: 1px solid #dde2ea;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; transition: transform .1s, box-shadow .1s;
+    flex-shrink: 0; position: relative; overflow: hidden;
+  }
+  .key:active { transform: translateY(4px); box-shadow: 0 0 0 #b0b8c5; }
+  .key-label { font-size: var(--t-caption); font-weight: 800; color: #555; line-height: 1; pointer-events: none; transition: opacity .2s; }
+  .key.mapped .key-label { opacity: 0; }
+  .key-dot {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none; opacity: 0; color: transparent;
+    z-index: 2;
+  }
+  .key-dot svg { width: 60px; height: 60px; filter: drop-shadow(0 2px 5px rgba(0,0,0,.3)); }
+  .key.mapped .key-dot { animation: stemMount .42s cubic-bezier(.34,1.56,.5,1) forwards; }
+  @keyframes stemMount {
+    0%   { opacity: 0; transform: translateY(-32px) scale(.6); }
+    60%  { opacity: 1; transform: translateY(4px) scale(1.06); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .key.tall-key { height: calc(72px * 2 + 6px); align-self: flex-start; position: relative; z-index: 3; }
+  .key.tall-key .key-dot svg { height: 60px; }
+  .key.zone-hl {
+    box-shadow: 0 0 0 2px rgba(197,48,69,.5), 0 4px 0 #b0b8c5, 0 5px 14px rgba(197,48,69,.2);
+    border-color: transparent;
+  }
+  .zone-overlay {
+    position: absolute; border-radius: var(--r-md); pointer-events: none; z-index: 0;
+    transition: opacity .3s;
+  }
+  .key.mapped {
+    background: linear-gradient(180deg, #ddd 0%, #ccc 100%);
+    border-color: #bbb; box-shadow: 0 4px 0 #aaa, 0 5px 10px rgba(0,0,0,.1);
+  }
+  .key.mapped .key-label { color: #666; }
+  .key.mapped.zone-hl { box-shadow: 0 0 0 2px rgba(197,48,69,.7), 0 4px 0 #111, 0 5px 16px rgba(197,48,69,.35); }
+
+  /* widths (1u=38px, gap=4px) */
+  .w1   { width: 72px; }
+  .w125 { width: 91px; }
+  .w15  { width: 111px; }
+  .w175 { width: 131px; }
+  .w2   { width: 150px; }
+  .w225 { width: 170px; }
+  .w275 { width: 210px; }
+  .w625 { width: 480px; }
+  .w05  { width: 36px; }
+  .w03  { width: 18px; }
+  .w45  { width: 324px; } /* 4.5 units — 96% 컴팩트 리뷰 페이지 스페이스바 (deprecated) */
+  .w456 { width: 328px; } /* 4.56 units — (deprecated) 65% 리뷰 스페이스바 이전 값 */
+  .w579 { width: 417px; } /* 5.79 units — 65% 컴팩트 스페이스바, M키 우측 테두리(702px)에 끝나고 → 가 End/PgDn 우측(1215≈1217) 에 정렬 */
+  .w582 { width: 419px; } /* 5.82 units — 96% 리뷰 페이지 스페이스바, row 4 ↑ 와 row 5 ↓ 세로 정렬용 */
+  .wg   { width: 24px; background: none !important; border: none !important; box-shadow: none !important; pointer-events: none !important; }
+  .w1h2 { height: 150px !important; }
+  .w1h0 { width: 72px; visibility: hidden; pointer-events: none; }
+
+  /* ── STEP 3 REVIEW ── */
+  .s3-review { flex: 1; padding: 56px 48px; display: flex; flex-direction: column; gap: var(--s-8); overflow-y: auto; }
+  .review-3d {
+    flex: 1; min-height: 500px; border-radius: var(--radius-lg);
+    background: linear-gradient(145deg, #f0f2f5, #e4e8ef);
+    border: 1.5px solid var(--border);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--s-5);
+    position: relative; overflow: hidden;
+  }
+
+  /* ── REVIEW 페이지 — 가로형 2박스 스택 ── */
+  .review-info-stack { display: flex; flex-direction: column; gap: var(--s-5); }
+  .review-info-card {
+    background: var(--surface); border-radius: var(--radius); padding: 28px 32px;
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; gap: var(--s-8);
+  }
+  .review-info-card-stack { flex-direction: column; align-items: stretch; gap: var(--s-5); }
+  .ric-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--s-2); }
+  .ric-label { font-size: var(--t-h3); font-weight: 700; color: var(--fg3); letter-spacing: 2px; text-transform: uppercase; }
+  .ric-title { font-size: var(--t-h1); font-weight: 800; color: var(--fg); line-height: 1.2; }
+  .ric-sub { font-size: var(--t-h2); color: var(--fg2); font-weight: 600; margin-top: var(--s-1); }
+  .ric-img-wrap {
+    flex: 1.2; border-radius: var(--r-md);
+    background: linear-gradient(145deg, #f8f9fb, #ecedf0);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  /* 박스 height를 고정하지 않고 이미지의 실제 비율 그대로 표시 → 위아래 빈 공간 0, 키보드 잘림 0. */
+  .ric-img { width: 100%; height: auto; display: block; }
+
+  /* 리뷰 페이지 통합 키보드 — 빌드 화면 키보드를 단일 블록 + 작은 스케일로 표시 */
+  .ric-kb-wrap {
+    width: 100%;
+    display: flex; justify-content: center; align-items: flex-start;
+    overflow-x: auto;
+    padding: 4px 0;
+  }
+  .ric-kb-single { zoom: 0.42; }
+  .ric-kb-single .kb-shell { background: transparent; }
+  .ric-kb-single .kb-plate { padding: var(--s-3); gap: var(--s-3); }
+  .ric-kb-single .kb-row { height: 72px; gap: var(--s-1); }
+  .ric-kb-single .key { pointer-events: none; }
+  /* 3섹션 그리드 — main(메인 알파+모디파이어) | nav(내비) | numpad(넘패드 또는 미디어).
+     각 섹션은 고정 폭이라 모든 행의 같은 섹션끼리 좌표가 일치 → 세로 정렬됨. */
+  .ric-kb-single .kb-plate-grid {
+    display: flex; flex-direction: column; gap: var(--s-3);
+  }
+  .ric-kb-single .kb-row-grid {
+    display: grid;
+    /* 풀배열: main 15units / nav 3units / numpad 4units. numpad 와의 간격을 좁힘. */
+    grid-template-columns: 1160px 240px 320px;
+    column-gap: 12px;
+    align-items: flex-start;
+    height: 72px;
+  }
+  /* 96% 는 nav 컬럼이 없으므로 2-section 그리드.
+     스페이스바 줄여서 row 5 main 이 row 4 main 과 같은 폭이 되도록 함.
+     numpad 까지 거리가 가까워지도록 column-gap 도 축소. */
+  .ric-kb-single .kb-row-grid.compact96 {
+    grid-template-columns: 1200px 308px;
+    column-gap: 12px;
+  }
+  /* TKL — numpad 컬럼 없음, main+nav 만 표시 */
+  .ric-kb-single .kb-row-grid.tkl {
+    grid-template-columns: 1160px 240px;
+  }
+  .ric-kb-single .kb-section {
+    display: flex; gap: var(--s-1); align-items: flex-start;
+  }
+  .ric-kb-single .kb-section-numpad { justify-self: end; }
+
+  /* ── MODALS ── */
+  #modal-layer {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,.6); backdrop-filter: blur(16px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100; opacity: 0; pointer-events: none;
+    transition: opacity .25s;
+  }
+  #modal-layer.open { opacity: 1; pointer-events: all; }
+  .modal-box {
+    background: var(--surface); border-radius: var(--r-2xl);
+    padding: 64px 56px; max-width: 680px; width: 100%;
+    box-shadow: 0 48px 100px rgba(0,0,0,.35);
+    transform: scale(.93); transition: transform .3s cubic-bezier(.2,.8,.2,1);
+    text-align: center;
+  }
+  #modal-layer.open .modal-box { transform: scale(1); }
+  .modal-icon {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: var(--cherry-light); color: var(--cherry);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 36px; font-size: var(--t-h1);
+  }
+  .modal-icon svg { width: 52px; height: 52px; }
+  .modal-title { font-size: var(--t-h2); font-weight: 900; color: var(--fg); margin-bottom: var(--s-4); letter-spacing: -1px; }
+  .modal-desc { font-size: var(--t-body-sm); color: var(--fg2); line-height: 1.7; margin-bottom: var(--s-12); }
+  .modal-desc strong { color: var(--cherry); font-size: var(--t-body); }
+  .modal-btns { display: flex; gap: var(--s-4); }
+  .modal-btn {
+    flex: 1; padding: var(--s-6); border-radius: var(--r-lg);
+    font-size: var(--t-body); font-weight: 700; cursor: pointer; border: none; transition: all .15s;
+  }
+  .modal-btn.secondary { background: var(--bg); color: var(--fg2); }
+  .modal-btn.primary { background: var(--cherry); color: #fff; }
+  .modal-btn.primary:active { background: var(--cherry-dark); transform: scale(.97); }
+
+  /* QR modal */
+  .qr-box {
+    background: var(--surface); padding: var(--s-6); border-radius: var(--r-lg);
+    border: 1.5px solid var(--border); display: inline-block; margin-bottom: var(--s-8);
+  }
+  .modal-full-btn {
+    width: 100%; padding: var(--s-8); border-radius: var(--r-lg);
+    background: var(--fg); color: #fff; font-size: var(--t-body); font-weight: 700;
+    border: none; cursor: pointer; transition: background .15s;
+  }
+  .modal-full-btn:active { background: var(--cherry); transform: scale(.97); }
+
+  /* 3D 모델 로딩 모달 — 프로그레스 바 */
+  .load-progress-bar {
+    width: 100%; height: 14px; background: var(--bg-soft, #f6f7fa);
+    border-radius: var(--r-xs); overflow: hidden;
+    border: 1.5px solid var(--border);
+    margin-top: var(--s-2);
+  }
+  .load-progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--cherry), var(--cherry-light, #f4a8b4));
+    transition: width .15s ease-out;
+    border-radius: var(--r-xs);
+  }
+  .load-percent-text {
+    font-size: var(--t-page-md); font-weight: 900; color: var(--cherry);
+    margin: 12px 0 24px; letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .load-status-text {
+    font-size: var(--t-body); color: var(--fg3); margin-top: var(--s-4);
+  }
+  .load-spinner {
+    width: 60px; height: 60px; margin: 0 auto 24px;
+    border: 5px solid var(--bg-soft, #f0f0f0);
+    border-top-color: var(--cherry);
+    border-radius: 50%;
+    animation: load-spin 0.9s linear infinite;
+  }
+  @keyframes load-spin { to { transform: rotate(360deg); } }
+
+  /* Help modal */
+  .help-modal { text-align: left; }
+  .help-modal .modal-title { text-align: left; }
+  .help-list { display: flex; flex-direction: column; gap: var(--s-5); margin-bottom: 0; }
+  .help-item { background: var(--bg); border-radius: var(--r-lg); padding: 28px 30px; border: 1.5px solid var(--border); }
+  .help-item-title { font-size: var(--t-body-sm); font-weight: 800; color: var(--fg); margin-bottom: var(--s-2); }
+  .help-item-desc { font-size: var(--t-body-sm); color: var(--fg2); line-height: 1.6; }
+  .help-item-desc strong { font-weight: 700; }
+  .modal-close {
+    position: absolute; top: 40px; right: 40px;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--bg); border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: var(--t-body); color: var(--fg3);
+    transition: all .15s;
+  }
+  .modal-close:active { background: var(--cherry-light); color: var(--cherry); border-color: var(--cherry-mid); transform: scale(.97); }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--r-sm); }
+</style>
+<!-- React + ReactDOM + Babel Standalone (in-browser JSX 컴파일) -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+
+<!-- Preload all heavy assets so navigating into content pages is instant -->
+<link rel="preload" as="image" href="images/logo.svg">
+<link rel="preload" as="image" href="images/tech/01-goldcrosspoint.png">
+<link rel="preload" as="image" href="images/tech/02-mx-switch.png">
+<link rel="preload" as="image" href="images/tech/03-tmr.png">
+<link rel="preload" as="image" href="images/tech/04-rgb.png">
+<link rel="preload" as="image" href="images/KC 500 MX LP.jpg">
+<link rel="preload" as="image" href="images/KW 550 MX LP.jpg">
+<link rel="preload" as="image" href="images/KC 200 MX.jpg">
+<link rel="preload" as="image" href="images/KW X ULP.jpg">
+<link rel="preload" as="image" href="images/K5V2 Compact.jpg">
+<link rel="preload" as="image" href="images/MX 10.0N RGB.jpg">
+<link rel="preload" as="image" href="images/MX 8.2 TKL WL.jpg">
+<link rel="preload" as="image" href="images/MX 3.0S WL.jpg">
+<link rel="preload" as="image" href="images/MX-LP 2.1 WL.jpg">
+<link rel="preload" as="image" href="images/MX RED.webp">
+<link rel="preload" as="image" href="images/MX BROWN.webp">
+<link rel="preload" as="image" href="images/MX BLUE.webp">
+<link rel="preload" as="image" href="images/MX BLACK.webp">
+<link rel="preload" as="image" href="images/MX CLEAR.webp">
+<link rel="preload" as="image" href="images/MX GREY.webp">
+<link rel="preload" as="image" href="images/MX SILENT RED.webp">
+
+</head>
+<body>
+<div id="stage-wrap"><div id="kiosk">
+
+  <div id="root"></div>
+  <!-- 모달 레이어 — React 외부 정적 DOM, openModal/closeModal로 명령형 제어 (v2와 동일) -->
+  <div id="modal-layer"><div id="modal-box" class="modal-box"></div></div>
+</div></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+/* ───── ICONS ───── */
+const ArrowIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12h14" />
+    <path d="M13 6l6 6-6 6" />
+  </svg>
+);
+const HomeIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 12l9-9 9 9" />
+    <path d="M5 10v10h14V10" />
+    <path d="M10 20v-6h4v6" />
+  </svg>
+);
+const CtaArrowIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12h14M13 5l7 7-7 7" />
+  </svg>
+);
+
+/* ───── DATA ───── */
+const historyEvents = [
+  { y:'1953', d:"미국에서 'Cherry Electrical Products Corporation' 설립. 마이크로스위치 생산 시작." },
+  { y:'1963', d:'유럽 시장 진출. 합작 회사를 통해\n독일에 첫 발 내딛음.' },
+  { y:'1967', d:'독일 바이로이트로 시설 이전.\n키보드 초기 모델 생산 시작.' },
+  { y:'1973', d:'컴퓨터 키보드 제조 시작.\n최초의 키보드 스위치 특허 획득.' },
+  { y:'1979', d:'독일 아우어바흐(Auerbach)에 본사 및 공장을 신축.' },
+  { y:'1983', d:'MX 키보드 스위치 출시.\n수십억 개 생산된 스위치의 표준.' },
+  { y:'1988', d:'가장 오래된 키보드 시리즈 중\n하나인 G80-3000 출시.\n산업·사무 표준으로 자리매김.' },
+  { y:'1994', d:'건강보험 카드 키보드 출시.\n헬스케어 시장으로 영역 확장.' },
+  { y:'1998', d:"친환경 제품 라인 'Cherry Greenline' 도입.\n'블루 엔젤' 인증 획득 시작." },
+  { y:'2014', d:'1,680만 컬러 구현이 가능한\nMX RGB 스위치 출시 후\n게이밍 키보드 시장 본격 진출.' },
+  { y:'2018', d:'슬림한 디자인을 위한\nMX LOW PROFILE 출시.' },
+  { y:'2019', d:'독일 아우어바흐에 신규 공장 및 본사 사옥을 오픈.' },
+  { y:'2020', d:'하드웨어·소프트웨어 기업\nTheobroma Systems 인수.\n의료용 e-Health 단말기 공개.' },
+  { y:'2021', d:'기업 공개(IPO) 진행. 초슬림형\nMX ULTRA LP 스위치 출시.' },
+  { y:'2022', d:'스웨덴의 e스포츠 전문 기업\nXtrfy(엑스트리파이) 인수 합병.' },
+];
+
+const techItems = [
+  {
+    num:'01', name:'골드 크로스포인트 접점 시스템',
+    img:'images/tech/01-goldcrosspoint.png',
+    desc:'높은 전도성과 내구성 덕분에 변함없는 품질을 유지하는 탁월한 수명을 제공합니다.',
+    pills:['1억 회 수명','금 코팅 접점','최고 전도성']
+  },
+  {
+    num:'02', name:'풀 키 / 엔 키 롤오버',
+    img:'images/tech/02-mx-switch.png',
+    desc:'스위치는 각 키가 독립적으로 작동하도록\n보장하고, 모든 키를 동시에 눌러도 입력이\n손실되지 않습니다.',
+    pills:['고스팅 방지','동시 입력 보장','게이밍 최적']
+  },
+  {
+    num:'03', name:'터널 자기저항 센싱',
+    img:'images/tech/03-tmr.png',
+    desc:'더 높은 감도, 더 빠른 반응 속도, 더 낮은 전력 소비, 더 뛰어난 신호 안정성을 제공합니다.',
+    pills:['0.01mm 정밀도','초고속 반응','저전력 무선']
+  },
+  {
+    num:'04', name:'CHERRY 첨단 무선 기술',
+    img:'images/tech/04-rgb.png',
+    desc:'초고속 블루투스 기술을 활용하여 이상적인 조건에서 LLM은 1ms 수준의 연결 간격과 전송 지연을 구현합니다.',
+    pills:['1ms 저지연','LLM 모드','안정적 공존']
+  },
+];
+
+const modelNookkiMap = {
+  'KC 500 MX LP': 'images/model_nookki/KC 500 MX LP_white.png',
+  'KC 200 MX':    'images/model_nookki/KC 200 MX.png',
+  'KW 550 MX LP': 'images/model_nookki/KW 550 MX LP.png',
+  'KW X ULP':     'images/model_nookki/KW X ULP.png',
+  'K5V2 Compact': 'images/model_nookki/K5V2 Compact.png',
+  'MX 10.0N RGB': 'images/model_nookki/MX 10.0N RGB.png',
+  'MX 8.2 TKL WL':'images/model_nookki/MX 8.2 TKL WL.png',
+  'MX 3.0S WL':   'images/model_nookki/MX 3.0S WL.png',
+  'MX-LP 2.1 WL': 'images/model_nookki/MX-LP 2.1 COMPACT WL.png',
+};
+const nookkiForModel = m => modelNookkiMap[m.name] || m.img;
+
+const models = [
+  { id:'m0', name:'KC 500 MX LP', series:'KC', layout:'풀사이즈(100%)', housing:'양극산화 금속판', connect:'유선(USB-A)', keycap:'PBT / 더블샷 (이색사출)', polling:'1ms', img:'images/KC 500 MX LP.jpg',
+    pros:['초슬림 로우프로파일 기계식 키보드 (19.1mm)','하이엔드 PBT 키캡으로 내구성 우수'],
+    recommendUser:'오피스 업무 중심의 전문가, 개발자, 프로그래머',
+    lighting:'백라이트, 잠금 상태키 빨간색 LED 내장',
+    colors:['블랙','화이트','그레이'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/KC 500 MX LP_black.webp',
+      '화이트':'images/keyboard_housing/KC 500 MX LP_white.webp',
+      '그레이':'images/keyboard_housing/KC 500 MX LP_grey(default).webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/KC500 MX LP_BLACK.glb',
+      '화이트':'models/model_color/KC500 MX LP_WHITE.glb',
+      '그레이':'models/model_color/KC 500 MX LP_GREY.glb',
+    } },
+  { id:'m1', name:'KW 550 MX LP', series:'KW', layout:'컴팩트(96%)', housing:'고품질 플라스틱', connect:'유선(USB-C)\n무선(2.4G) / BT(3채널)', keycap:'PBT / 더블샷 (이색사출)', polling:'1ms', img:'images/KW 550 MX LP.jpg',
+    pros:['멀티디바이스 지원 (최대 4개)','무선 로우프로파일 기계식 키보드','컴팩트 96% 레이아웃으로 데스크 공간 절약','하이엔드 PBT 키캡으로 내구성 우수'],
+    recommendUser:'다중기기 사용자, 노트북+데스크톱 병행하는 회사원',
+    lighting:'모든 키에 LED 내장(10단계 밝기 조절), 토글 키 추가 컬러 LED, 충전 상태 알려주는 RGB LED',
+    colors:['블랙','화이트'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/KW 550 MX LP_balck(default).webp',
+      '화이트':'images/keyboard_housing/KW 550 MX LP_white.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/KW 550 MX LP_BLack.glb',
+      '화이트':'models/model_color/KW 550 MX LP_White.glb',
+    } },
+  { id:'m2', name:'KC 200 MX', series:'KC', layout:'풀사이즈(100%)', housing:'양극산화 금속판', connect:'유선(USB-A)', keycap:'ABS / 레이저 에칭 + UV 코팅', polling:'1ms', img:'images/KC 200 MX.jpg',
+    pros:['볼륨 및 계산기용 추가 키 4개','안티고스팅 및 N키 롤오버'],
+    recommendUser:'데이터 입력이 많은 회계/사무직, 계산기 필요한 사용자',
+    lighting:'잠금 상태키 하얀색 LED 내장',
+    colors:['블랙','오렌지','화이트'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/KC 200 MX_black(default).webp',
+      '오렌지':'images/keyboard_housing/KC 200 MX_orange.webp',
+      '화이트':'images/keyboard_housing/KC 200 MX_white.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/KC 200 MX_Black.glb',
+      '오렌지':'models/model_color/KC 200 MX_Orange.glb',
+      '화이트':'models/model_color/KC 200 MX_White.glb',
+    } },
+  { id:'m3', name:'KW X ULP', series:'KW', layout:'풀사이즈(100%)', housing:'브러쉬드 메탈', connect:'유선(USB-A, C)\n무선(2.4G) / BT(5.2채널)', keycap:'PC / 레이저 에칭 + UV 코팅', polling:'-', img:'images/KW X ULP.jpg',
+    pros:['울트라 슬림 무선 기계식 프리미엄 키보드','멀티디바이스 지원 (최대 4개)','안티고스팅 및 N키 롤오버','AES-128 암호화로 무선 보안 강화'],
+    recommendUser:'프리미엄 무선 키보드를 원하는 비즈니스 전문가, 휴대성 중시',
+    lighting:'모든 키에 LED 내장(10단계 밝기 조절), 토글 키 추가 컬러 LED, 충전 상태 알려주는 RGB LED',
+    colors:['블랙'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/KW X ULP_black(default).webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/KW X ULP.glb',
+    } },
+  { id:'m4', name:'K5V2 Compact', series:'XTRFY', layout:'컴팩트(65%)', housing:'반투명 플라스틱', connect:'유선(USB-C)', keycap:'ABS', polling:'1ms', img:'images/K5V2 Compact.jpg',
+    pros:['컴팩트 핫스왑 게이밍 키보드','슈퍼스캔 기술로 0.5ms 응답속도','고도의 사용자 정의 기능(스테빌라이저,키캡,케이블,프레임)','금속 플레이트 구조 및 고품질 부품으로 뛰어난 내구성','흡음 폼이 있는 이중 레이어'],
+    recommendUser:'키보드 커스터마이징을 즐기는 매니아, 게이밍 하이엔드 유저',
+    lighting:'스트립 형식의 RGB LED 조명',
+    colors:['블랙','화이트'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/K5V2 Compact_black(default).webp',
+      '화이트':'images/keyboard_housing/K5V2 Compact_white.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/K5V2 Compact_Black.glb',
+      '화이트':'models/model_color/K5V2 Compact_White.glb',
+    } },
+  { id:'m5', name:'MX 10.0N RGB', series:'MX', layout:'풀사이즈(100%)', housing:'금속(메탈)', connect:'유선(USB-A)', keycap:'ABS / 레이저 에칭 + UV 코팅', polling:'-', img:'images/MX 10.0N RGB.jpg',
+    pros:['초슬림 22mm 프리미엄 게이밍 키보드','키당 1억 회 이상의 내구성','안티고스팅 N키 롤오버','온보드 메모리 내장','높이 조절이 가능한 혁신적인 메탈 스탠드'],
+    recommendUser:'저프로파일 원하는 게이밍 유저, 프로게이머',
+    lighting:'각 키마다 최대 1680만 색상 표현 가능한 RGB LED, 다양한 조명 모드, 커스터마이징 가능한 RGB 백라이트',
+    colors:['블랙'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/MX 10.0N RGB_black(default).webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/MX 10.0N RGB.glb',
+    } },
+  { id:'m6', name:'MX 8.2 TKL WL', series:'XTRFY', layout:'TKL(80%)', housing:'고급 알루미늄', connect:'유선(USB-A, C)\n무선(2.4G) / BT(3채널)', keycap:'ABS / 더블샷 (이색사출)', polling:'1ms 미만', img:'images/MX 8.2 TKL WL.jpg',
+    pros:['무선 TKL 게이밍 키보드','<1ms 게이밍 모드 저레이턴시','메탈 케이스 포함 휴대용 디자인','win키 잠금, 안티 고스팅 및 N키 롤오버'],
+    recommendUser:'멀티기기 게이밍 유저, 스트리머, 콘솔+PC 겸용 게이머',
+    lighting:'각 키마다 최대 1600만 색상 표현 가능한 RGB LED',
+    colors:['블랙','화이트'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/MX 8.2 TKL WL_black(default).webp',
+      '화이트':'images/keyboard_housing/MX 8.2 TKL WL_white.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/MX 8.2 TKL WL_Black.glb',
+      '화이트':'models/model_color/MX_8.2_TKL_WL_White.glb',
+    } },
+  { id:'m7', name:'MX 3.0S WL', series:'XTRFY', layout:'풀사이즈(100%)', housing:'압출 알루미늄', connect:'유선(USB-A, C)\n무선(2.4G) / BT(3채널)', keycap:'ABS / 더블샷 (이색사출)', polling:'1ms', img:'images/MX 3.0S WL.jpg',
+    pros:['풀사이즈 무선 게이밍 키보드','<1ms 게이밍 모드 저레이턴시','5개 디바이스 동시 연결','win키 잠금, 안티 고스팅 및 N키 롤오버'],
+    recommendUser:'멀티기기 게이밍 유저, 스트리머, 콘솔+PC 겸용 게이머',
+    lighting:'각 키마다 최대 1600만 색상 표현 가능한 RGB LED',
+    colors:['블랙','화이트','핑크'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/MX 3.0S WL_black(default).webp',
+      '화이트':'images/keyboard_housing/MX 3.0S WL_white.webp',
+      '핑크':'images/keyboard_housing/MX 3.0S WL_pink.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/MX 3.0S WL_Black.glb',
+      '화이트':'models/model_color/MX 3.0S_WL_White.glb',
+      '핑크':'models/model_color/MX 3.0S_WL_Pink.glb',
+    } },
+  { id:'m8', name:'MX-LP 2.1 WL', series:'XTRFY', layout:'컴팩트(65%)', housing:'고품질 플라스틱', connect:'유선(USB-A, C)\n무선(2.4G) / BT(5.2채널)', keycap:'ABS / 레이저 에칭 + UV 코팅', polling:'1ms', img:'images/MX-LP 2.1 WL.jpg',
+    pros:['컴팩트 무선 게이밍 키보드','전체 높이 35% 감소, 반동 속도 40% 향상','고급 노르딕 칩 장착','<1ms 게이밍 모드 저레이턴시','win키 잠금, 안티고스팅 및 N키 롤오버'],
+    recommendUser:'컴팩트 키보드 선호 게이머, 휴대용 게이밍 키보드 필요 유저',
+    lighting:'각 키마다 최대 1600만 색상 표현 가능한 RGB LED, 나만의 조명 효과 생성 및 키보드 내장 메모리에 저장',
+    colors:['블랙','화이트'],
+    housingImages:{
+      '블랙':'images/keyboard_housing/MX-LP 2.1 COMPACT WL_black(default).webp',
+      '화이트':'images/keyboard_housing/MX-LP 2.1 COMPACT WL_white.webp',
+    },
+    glbImages:{
+      '블랙':'models/model_color/MX-LP 2.1 WL_black.glb',
+      '화이트':'models/model_color/MX-LP 2.1 WL_White.glb',
+    } },
+];
+
+const switches = {
+  red:    { id:'red',    name:'MX Red',        type:'Linear',  force:'45cN', desc:'부드러운 저음역, 선형 타건감', img:'images/MX RED.webp',
+    detail: { opForce:'45cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥1억 회',
+      summary:'걸림 없이 부드럽게 입력되는 순수 리니어 스위치.',
+      pros:['빠른 연타 유리','장시간 사용 시 피로 최소화'],
+      cons:['오타 빈도 증가 가능','타건 피드백 부족']
+    }, color:'#ef4444', stroke:'#ef4444', path:'M0,150 L150,131 L300,106 L370,90 Q390,80 395,55 L400,33' },
+  brown:  { id:'brown',  name:'MX Brown',       type:'Tactile', force:'55cN', desc:'균형 잡힌 톤, 명확한 타이핑 피드백', img:'images/MX BROWN.webp',
+    detail: { opForce:'55cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥1억 회',
+      summary:'중간 범프로 입력 지점을 인지할 수 있는 택타일 스위치.',
+      pros:['타이핑 정확도 향상','게이밍·타이핑 겸용'],
+      cons:['리니어 대비 연타 속도 저하','범프감 호불호']
+    }, color:'#d97706', stroke:'#d97706', path:'M0,150 C40,143 80,128 105,113 C115,107 122,103 125,108 C128,113 132,123 135,130 C140,140 155,140 165,135 C175,130 188,128 195,128 L210,127 L400,67' },
+  blue:   { id:'blue',   name:'MX Blue',        type:'Clicky',  force:'60cN', desc:'경쾌한 고음역, 기계식 찰칵 클릭', img:'images/MX BLUE.webp',
+    detail: { opForce:'60cN', preTravel:'2.2mm', totalTravel:'4.0mm', life:'≥0.5억 회',
+      summary:'클릭음과 강한 피드백으로 키감을 강조한 클릭키 스위치.',
+      pros:['특유의 만족스러운 클릭음','가장 명확한 입력 피드백'],
+      cons:['주변 소음 유발','클릭 구조로 연타 한계']
+    }, color:'#3b82f6', stroke:'#3b82f6', path:'M0,158 C40,150 75,118 105,103 C115,98 122,95 125,100 C128,108 132,135 138,148 C145,158 155,148 165,138 C180,128 192,123 200,122 L400,75' },
+  black:  { id:'black',  name:'MX Black',       type:'Linear',  force:'60cN', desc:'묵직한 반발력, 전문가용 타건감', img:'images/MX BLACK.webp',
+    detail: { opForce:'60cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥1억 회',
+      summary:'무거운 스프링으로 오타를 방지하는 리니어 스위치.',
+      pros:['묵직한 타건감','정밀 입력 환경 최적'],
+      cons:['장시간 사용 시 손가락 피로','가벼운 터치 선호자 부적합']
+    }, color:'#27272a', stroke:'#555', path:'M0,150 L150,108 L300,67 L370,42 Q390,30 395,17 L400,17' },
+  clear:  { id:'clear',  name:'MX Clear',       type:'Tactile', force:'65cN', desc:'강한 택타일 범프, 정밀 타이핑용', img:'images/MX CLEAR.webp',
+    detail: { opForce:'65cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥0.5억 회',
+      summary:'범프와 고하중으로 정확한 입력을 돕는 택타일 스위치.',
+      pros:['뚜렷한 택타일 피드백','정밀 타이핑 최적화'],
+      cons:['장시간 사용 시 손가락 피로','가벼운 터치 선호자 부적합']
+    }, color:'#94a3b8', stroke:'#94a3b8', path:'M0,133 C40,125 80,108 105,98 C115,93 122,90 125,95 C128,103 132,118 135,123 C140,130 155,128 165,122 C175,117 188,113 195,112 L210,110 L400,17' },
+  grey:   { id:'grey',   name:'MX Grey',        type:'Tactile', force:'80cN', desc:'최고 하중, 특수 용도 택타일', img:'images/MX GREY.webp',
+    detail: { opForce:'80cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥0.5억 회',
+      summary:'체리 최고 하중으로 오입력을 차단하는 택타일 스위치.',
+      pros:['대형 키 최적','커스텀 빌드 활용도 우수'],
+      cons:['일반 타이핑에 과도한 하중','빠른 연타·게이밍 부담']
+    }, color:'#6b7280', stroke:'#6b7280', path:'M0,158 C40,148 80,108 110,75 C120,65 128,62 132,68 C138,80 145,98 155,108 C170,120 185,113 195,103 L210,98 L400,17' },
+  silent: { id:'silent', name:'MX Silent Red',  type:'Silent',  force:'45cN', desc:'극저소음 설계, 사무·야간 사용 적합', img:'images/MX SILENT RED.webp',
+    detail: { opForce:'45cN', preTravel:'1.9mm', totalTravel:'3.7mm', life:'≥0.5억 회',
+      summary:'댐퍼 내장으로 소음을 약 30% 저감한 리니어 스위치.',
+      pros:['부드러운 타건감','정숙 환경 최적'],
+      cons:['댐퍼로 인한 무른 바닥감','리니어 특유의 피드백 부재']
+    }, color:'#fb7185', stroke:'#fb7185', path:'M0,150 L150,131 L300,107 L350,98 L365,93 Q372,75 370,67' },
+};
+
+const switchNookkiMap = {
+  red:    'images/switch_nookki/MX RED.png',
+  brown:  'images/switch_nookki/MX BROWN.png',
+  blue:   'images/switch_nookki/MX BLUE.png',
+  black:  'images/switch_nookki/MX BLACK.png',
+  clear:  'images/switch_nookki/MX CLEAR.png',
+  grey:   'images/switch_nookki/MX GREY.png',
+  silent: 'images/switch_nookki/MX SILENT RED.png',
+};
+const nookkiForSwitch = s => switchNookkiMap[s.id] || s.img;
+
+const soundFiles = {
+  red:    'data/sound_of_switchs/MX Red.mp3',
+  brown:  'data/sound_of_switchs/MX Brown.mp3',
+  blue:   'data/sound_of_switchs/MX Blue.mp3',
+  black:  'data/sound_of_switchs/MX Black.mp3',
+  clear:  'data/sound_of_switchs/MX Clear.mp3',
+  grey:   'data/sound_of_switchs/MX Grey.mp3',
+  silent: 'data/sound_of_switchs/MX Silent Red.mp3',
+};
+
+const freqData = {
+  red:    { peak:[250,900],    secondary:[1200,2200], clickLevel:0.15, character:'클릭음 없이 부드럽고 균일한 도각음',
+            cards:[{t:'부드러운 저음', d:'250-900Hz 중심의\n풍부한 사운드'},{t:'낮은 소음', d:'약한 고조파,\n자연스러운 타건음'},{t:'선형 타건감', d:'일정한 타건 패턴,\n균일한 피드백'}] },
+  brown:  { peak:[400,1400],   secondary:[1500,2500], clickLevel:0.35, character:'클릭음은 없고 가볍게 도각이는 중음 중심 사운드',
+            cards:[{t:'또렷한 중음', d:'400-1.4kHz 중심의\n명료한 사운드'},{t:'중간 소음', d:'적당한 고조파,\n자연스러운 타건'},{t:'촉각 피드백', d:'범프 지점 인지,\n정확한 입력'}] },
+  blue:   { peak:[2500,5500],  secondary:[700,1500],  clickLevel:0.95, character:'찰칵거리는 클릭음이 강하게 튀는 사운드',
+            cards:[{t:'경쾌한 고음', d:'2.5-5.5kHz 중심의\n찰칵음'},{t:'높은 클릭음', d:'강한 고조파,\n명확한 찰칵 사운드'},{t:'클릭 피드백', d:'리듬감 있는 타건,\n강한 피드백'}] },
+  black:  { peak:[180,700],    secondary:[800,1600],  clickLevel:0.15, character:'낮고 단단하게 떨어지는 묵직한 리니어 사운드',
+            cards:[{t:'묵직한 저음', d:'180-700Hz 중심의\n단단한 사운드'},{t:'낮은 소음', d:'약한 고조파,\n자연스러운 타건음'},{t:'단단한 리니어', d:'강한 반발력,\n묵직한 타건감'}] },
+  clear:  { peak:[300,1200],   secondary:[1200,2200], clickLevel:0.18, character:'굵고 밀도 있는 중저음 중심 무클릭 사운드',
+            cards:[{t:'굵은 중저음', d:'300-1.2kHz 중심의\n밀도 있는 사운드'},{t:'낮은 소음', d:'무클릭,\n차분한 타건'},{t:'강한 택타일', d:'뚜렷한 범프,\n정밀 타이핑'}] },
+  grey:   { peak:[150,900],    secondary:[900,1800],  clickLevel:0.15, character:'가장 묵직하고 둔탁한 저음형 사운드',
+            cards:[{t:'가장 묵직한 저음', d:'150-900Hz 중심의\n둔탁한 사운드'},{t:'낮은 소음', d:'약한 고조파,\n자연스러운 타건음'},{t:'고하중 택타일', d:'강한 키압,\n깊은 피드백'}] },
+  silent: { peak:[150,500],    secondary:[600,1200],  clickLevel:0.05, character:'댐핑된 둔탁한 저소음 사운드',
+            cards:[{t:'댐핑된 저음', d:'150-500Hz 중심의\n둔탁한 사운드'},{t:'매우 낮은 소음', d:'댐퍼로 고조파 흡수'},{t:'부드러운 슬립', d:'끝맺음이 부드러운 타건'}] },
+};
+
+const ICON_WAVE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h2l2-7 3 14 3-10 2 6 2-3h4"/></svg>';
+const ICON_VOLUME_MUTE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg>';
+const ICON_VOLUME_ACTIVE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
+function pickFreqIcon(idx, cardTitle) {
+  if (idx === 0) return ICON_WAVE;
+  if (idx === 1) return /낮은/.test(cardTitle) ? ICON_VOLUME_MUTE : ICON_VOLUME_ACTIVE;
+  return ICON_WAVE;
+}
+
+/* ───── STEP 2 그래프·오디오 (v2 명령형 로직 — DOM id 기반, useEffect에서 호출) ───── */
+// 활성 스위치는 모듈 스코프에 보관 (v2의 state.activeSwitch 대체). React는 setS2Active로 동기화.
+const s2 = { activeSwitch: 'red' };
+
+let waveRaf = null;
+let audioEl = null, audioCtx = null, audioAnalyser = null, audioSrcNode = null, audioData = null;
+let preloadEl = null, preloadAnalyser = null, preloadSrcNode = null, preloadData = null;
+function ensureAudio() {
+  if (!audioEl) { audioEl = new Audio(); audioEl.preload = 'auto'; }
+  if (!audioCtx) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    audioCtx = new AC();
+    audioAnalyser = audioCtx.createAnalyser();
+    audioAnalyser.fftSize = 1024;
+    audioAnalyser.smoothingTimeConstant = 0.6;
+    audioData = new Uint8Array(audioAnalyser.frequencyBinCount);
+    audioSrcNode = audioCtx.createMediaElementSource(audioEl);
+    audioSrcNode.connect(audioAnalyser);
+    audioAnalyser.connect(audioCtx.destination);
+  }
+  return true;
+}
+function ensurePreload() {
+  if (!ensureAudio()) return false;
+  if (!preloadEl) {
+    preloadEl = new Audio();
+    preloadEl.preload = 'auto';
+    preloadAnalyser = audioCtx.createAnalyser();
+    preloadAnalyser.fftSize = 1024;
+    preloadAnalyser.smoothingTimeConstant = 0.6;
+    preloadData = new Uint8Array(preloadAnalyser.frequencyBinCount);
+    preloadSrcNode = audioCtx.createMediaElementSource(preloadEl);
+    preloadSrcNode.connect(preloadAnalyser);
+  }
+  return true;
+}
+
+let preloadQueueStarted = false;
+function startPreloadQueue() {
+  const order = (s2.activeSwitch ? [s2.activeSwitch] : []).concat(
+    ['red','brown','blue','black','clear','grey','silent'].filter(s => s !== s2.activeSwitch)
+  );
+  let i = 0;
+  (function next() {
+    while (i < order.length && freqGhostFromAudio[order[i]]) i++;
+    if (i >= order.length) return;
+    preloadGhostForSwitch(order[i++], next);
+  })();
+}
+function preloadGhostForSwitch(swId, done) {
+  if (freqGhostFromAudio[swId]) { done && done(); return; }
+  if (!ensurePreload()) { done && done(); return; }
+  const src = soundFiles[swId];
+  if (!src) { done && done(); return; }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  preloadEl.pause();
+  preloadEl.src = src;
+  preloadEl.currentTime = 0;
+  const N = FREQ_BAR_N;
+  const ranges = freqBarRanges();
+  const ghost = new Float32Array(N);
+  let first = true;
+  function poll() {
+    if (preloadEl.paused || preloadEl.ended) {
+      freqGhost[swId] = ghost;
+      freqGhostFromAudio[swId] = true;
+      if (s2.activeSwitch === swId && !waveRaf) renderFreqBars();
+      done && done();
+      return;
+    }
+    preloadAnalyser.getByteFrequencyData(preloadData);
+    const binCount = preloadData.length;
+    const binHz = (audioCtx.sampleRate / 2) / binCount;
+    for (let i2 = 0; i2 < N; i2++) {
+      const [fLo, fHi] = ranges[i2];
+      const binLo = Math.max(0, Math.floor(fLo / binHz));
+      const binHi = Math.min(binCount - 1, Math.max(binLo, Math.ceil(fHi / binHz)));
+      let mx = 0;
+      for (let b = binLo; b <= binHi; b++) if (preloadData[b] > mx) mx = preloadData[b];
+      const v = Math.min(1, (mx / 255) * 1.4);
+      if (first) ghost[i2] = v;
+      else if (v > ghost[i2]) ghost[i2] = v;
+    }
+    first = false;
+    requestAnimationFrame(poll);
+  }
+  const p = preloadEl.play();
+  if (p && p.then) p.then(poll).catch(()=>{ done && done(); });
+  else poll();
+}
+
+function renderFreqGraphs() {
+  const swId = s2.activeSwitch;
+  const sw = switches[swId];
+  const fd = freqData[swId];
+  if (!fd) return;
+  const color = sw.color;
+
+  const peakHz = Math.round(Math.sqrt(fd.peak[0] * fd.peak[1]));
+  const peakLabel = peakHz >= 1000 ? (peakHz/1000).toFixed(1).replace(/\.0$/,'') + 'kHz' : peakHz + 'Hz';
+
+  const fMin = 20, fMax = 20000;
+  const lMin = Math.log10(fMin), lMax = Math.log10(fMax);
+  const xLog = f => (Math.log10(f) - lMin) / (lMax - lMin) * 1000;
+  const yDb = db => (1 - (db + 20) / 40) * 1000;
+
+  const peakCenter = Math.log10(peakHz);
+  const peakWidth = Math.max((Math.log10(fd.peak[1]) - Math.log10(fd.peak[0])) / 2, 0.15);
+  const secCenter = Math.log10(Math.sqrt(fd.secondary[0] * fd.secondary[1]));
+  const secWidth = Math.max((Math.log10(fd.secondary[1]) - Math.log10(fd.secondary[0])) / 2, 0.2);
+  const cl = fd.clickLevel;
+  const respDb = f => {
+    const l = Math.log10(f);
+    let v = 10 * Math.exp(-Math.pow((l - peakCenter) / peakWidth, 2))
+          + 4.5 * Math.exp(-Math.pow((l - secCenter) / secWidth, 2));
+    if (cl >= 0.9) { v += 6 * Math.exp(-Math.pow((l - 3.55) / 0.10, 2)); }
+    else if (cl >= 0.3) { v += 2.6 * Math.exp(-Math.pow((l - 3.15) / 0.22, 2)); }
+    else if (cl <= 0.08) { v -= 2.5 * Math.exp(-Math.pow((l - 2.85) / 0.40, 2)); }
+    v += 0.45 * Math.sin(l * 9 + peakCenter * 4);
+    return v - 4;
+  };
+
+  const pts = [];
+  for (let i = 0; i <= 160; i++) {
+    const f = Math.pow(10, lMin + (i / 160) * (lMax - lMin));
+    pts.push([xLog(f), yDb(respDb(f))]);
+  }
+  const linePath = pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join('');
+  const fillPath = linePath + ` L${pts[pts.length-1][0].toFixed(1)},1000 L${pts[0][0].toFixed(1)},1000 Z`;
+  const yGridLines = [250, 500, 750].map(y => `<line x1="0" y1="${y}" x2="1000" y2="${y}" stroke-dasharray="3 5"/>`).join('');
+  const xGridLines = [xLog(200), xLog(2000)].map(x => `<line x1="${x.toFixed(1)}" y1="0" x2="${x.toFixed(1)}" y2="1000" stroke-dasharray="3 5"/>`).join('');
+
+  const peakX = xLog(peakHz);
+  const peakY = yDb(respDb(peakHz));
+  const gradId = 'freq-line-grad-' + swId;
+
+  const lineEl = document.getElementById('freq-line-svg');
+  if (lineEl) lineEl.innerHTML = `
+    <defs>
+      <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${color}" stop-opacity="0.42"/>
+        <stop offset="22%" stop-color="${color}" stop-opacity="0.12"/>
+        <stop offset="42%" stop-color="${color}" stop-opacity="0"/>
+        <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <g stroke="#a8b0bc" stroke-width="1" vector-effect="non-scaling-stroke" fill="none">${yGridLines}${xGridLines}</g>
+    <path d="${fillPath}" fill="url(#${gradId})"/>
+    <path d="${linePath}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+    <g transform="translate(${peakX.toFixed(1)},${peakY.toFixed(1)})">
+      <circle r="6" fill="${color}" vector-effect="non-scaling-stroke"/>
+      <circle r="14" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.4" vector-effect="non-scaling-stroke"/>
+    </g>
+    <g stroke="#94a3b8" stroke-width="1.5" vector-effect="non-scaling-stroke" fill="none">
+      <line x1="2" y1="0" x2="2" y2="1000"/>
+      <line x1="996" y1="0" x2="996" y2="1000"/>
+      <line x1="0" y1="998" x2="1000" y2="998"/>
+    </g>
+  `;
+
+  const pill = document.getElementById('freq-peak-pill');
+  if (pill) {
+    pill.style.display = '';
+    const leftPct = Math.min(94, Math.max(6, peakX / 10));
+    const topPct = Math.max(2, peakY / 10);
+    pill.style.left = leftPct + '%';
+    pill.style.top = topPct + '%';
+    pill.style.borderColor = color;
+    pill.style.color = color;
+    pill.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L15 9 L22 10 L17 15 L18 22 L12 18 L6 22 L7 15 L2 10 L9 9 Z"/></svg>피크 ${peakLabel}`;
+  }
+
+  renderFreqBars();
+
+  const grid = document.getElementById('freq-info-grid');
+  if (grid) grid.innerHTML = fd.cards.slice(0, 2).map((c,i) => `
+    <div class="freq-info-card">
+      <div class="freq-info-icon" style="color:${color}">${pickFreqIcon(i, c.t)}</div>
+      <div class="freq-info-text">
+        <div class="freq-info-title">${c.t}</div>
+        <div class="freq-info-desc">${c.d}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+const FREQ_BAR_N = 24;
+const FREQ_BAR_MIN = 100, FREQ_BAR_MAX = 10000;
+const freqGhost = {};
+
+function freqBarRanges() {
+  const lMin = Math.log10(FREQ_BAR_MIN), lMax = Math.log10(FREQ_BAR_MAX);
+  const out = [];
+  for (let i = 0; i < FREQ_BAR_N; i++) {
+    const lo = Math.pow(10, lMin + (i / FREQ_BAR_N) * (lMax - lMin));
+    const hi = Math.pow(10, lMin + ((i + 1) / FREQ_BAR_N) * (lMax - lMin));
+    out.push([lo, hi]);
+  }
+  return out;
+}
+
+function buildEnvelopeGhost(swId) {
+  const fd = freqData[swId];
+  if (!fd) return null;
+  const N = FREQ_BAR_N;
+  const ranges = freqBarRanges();
+  const peakCenter = Math.log10(Math.sqrt(fd.peak[0] * fd.peak[1]));
+  const peakWidth = Math.max((Math.log10(fd.peak[1]) - Math.log10(fd.peak[0])) / 2, 0.15);
+  const secCenter = Math.log10(Math.sqrt(fd.secondary[0] * fd.secondary[1]));
+  const secWidth = Math.max((Math.log10(fd.secondary[1]) - Math.log10(fd.secondary[0])) / 2, 0.2);
+  const out = new Float32Array(N);
+  for (let i = 0; i < N; i++) {
+    const c = Math.sqrt(ranges[i][0] * ranges[i][1]);
+    const l = Math.log10(c);
+    let v = Math.exp(-Math.pow((l - peakCenter) / peakWidth, 2))
+          + 0.5 * Math.exp(-Math.pow((l - secCenter) / secWidth, 2));
+    if (fd.clickLevel >= 0.9) v += 0.55 * Math.exp(-Math.pow((l - 3.55) / 0.12, 2));
+    else if (fd.clickLevel >= 0.3) v += 0.22 * Math.exp(-Math.pow((l - 3.15) / 0.22, 2));
+    else if (fd.clickLevel <= 0.08) v *= 0.85;
+    out[i] = Math.min(0.9, v);
+  }
+  return out;
+}
+
+const BAR_MAX_H = 800;
+function paintFreqBars(opts) {
+  const N = FREQ_BAR_N;
+  const VB_W = 1000, BASE_Y = 1000;
+  const gap = 8, gridW = VB_W / N;
+  const w = gridW - gap;
+  const live = opts.live, ghost = opts.ghost, color = opts.color;
+  const progress = Math.max(0, Math.min(1, opts.progress || 0));
+  const activeIdx = Math.ceil(N * progress);
+  const TOP = BASE_Y - BAR_MAX_H;
+  const gIdGhost = 'bg' + (color || '').replace('#','');
+  const gIdLive  = 'bl' + (color || '').replace('#','');
+
+  let defs = `<defs>
+    <linearGradient id="${gIdGhost}" gradientUnits="userSpaceOnUse" x1="0" y1="${TOP}" x2="0" y2="${BASE_Y}">
+      <stop offset="0%" stop-color="${color}" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="${color}" stop-opacity="0.26"/>
+    </linearGradient>
+    <linearGradient id="${gIdLive}" gradientUnits="userSpaceOnUse" x1="0" y1="${TOP}" x2="0" y2="${BASE_Y}">
+      <stop offset="0%" stop-color="${color}" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="${color}" stop-opacity="1.0"/>
+    </linearGradient>
+  </defs>`;
+
+  const x1k = 500;
+  let svgInner = defs +
+    `<g stroke="#a8b0bc" stroke-width="1" vector-effect="non-scaling-stroke" fill="none">` +
+      `<line x1="0" y1="250" x2="1000" y2="250" stroke-dasharray="3 5"/>` +
+      `<line x1="0" y1="500" x2="1000" y2="500" stroke-dasharray="3 5"/>` +
+      `<line x1="0" y1="750" x2="1000" y2="750" stroke-dasharray="3 5"/>` +
+      `<line x1="${x1k}" y1="0" x2="${x1k}" y2="1000" stroke-dasharray="3 5"/>` +
+    `</g>` +
+    `<line x1="0" y1="998" x2="1000" y2="998" stroke="#94a3b8" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/>`;
+
+  if (ghost) {
+    for (let i = 0; i < N; i++) {
+      const v = ghost[i] || 0;
+      if (v < 0.015) continue;
+      const h = v * BAR_MAX_H;
+      const x = i * gridW + gap/2;
+      const y = BASE_Y - h;
+      svgInner += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="url(#${gIdGhost})"/>`;
+    }
+  }
+
+  if (live && ghost) {
+    for (let i = 0; i < activeIdx && i < N; i++) {
+      const lv = live[i] || 0;
+      const gv = ghost[i] || 0;
+      const v = Math.min(lv, gv);
+      if (v < 0.015) continue;
+      const h = v * BAR_MAX_H;
+      const x = i * gridW + gap/2;
+      const y = BASE_Y - h;
+      svgInner += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="url(#${gIdLive})"/>`;
+    }
+  }
+
+  const svg = document.getElementById('freq-bars-svg');
+  if (svg) svg.innerHTML = svgInner;
+}
+
+function renderFreqBars() {
+  const swId = s2.activeSwitch;
+  const sw = switches[swId];
+  if (!sw) return;
+  paintFreqBars({ color: sw.color, ghost: freqGhost[swId] || null, live: null, progress: 0 });
+  if (!freqGhostFromAudio[swId]) {
+    if (!preloadQueueStarted) { preloadQueueStarted = true; startPreloadQueue(); }
+    else { preloadGhostForSwitch(swId); }
+  }
+}
+
+const freqGhostFromAudio = {};
+function renderFreqBarsFromAudio() {
+  if (!audioAnalyser || !audioData) return;
+  audioAnalyser.getByteFrequencyData(audioData);
+  const swId = s2.activeSwitch;
+  const sw = switches[swId];
+  if (!sw) return;
+  const N = FREQ_BAR_N;
+  const binCount = audioData.length;
+  const binHz = (audioCtx.sampleRate / 2) / binCount;
+  const ranges = freqBarRanges();
+  if (!freqGhost[swId]) freqGhost[swId] = new Float32Array(N);
+  const ghost = freqGhost[swId];
+  const firstAudio = !freqGhostFromAudio[swId];
+  const live = new Array(N);
+  for (let i = 0; i < N; i++) {
+    const [fLo, fHi] = ranges[i];
+    const binLo = Math.max(0, Math.floor(fLo / binHz));
+    const binHi = Math.min(binCount - 1, Math.max(binLo, Math.ceil(fHi / binHz)));
+    let max = 0;
+    for (let b = binLo; b <= binHi; b++) if (audioData[b] > max) max = audioData[b];
+    const v = Math.min(1, (max / 255) * 1.4);
+    live[i] = v;
+    if (firstAudio) ghost[i] = v;
+    else if (v > ghost[i]) ghost[i] = v;
+  }
+  freqGhostFromAudio[swId] = true;
+  const dur = audioEl && audioEl.duration && isFinite(audioEl.duration) ? audioEl.duration : 1;
+  const progress = Math.min(1, audioEl ? audioEl.currentTime / dur : 1);
+  paintFreqBars({ color: sw.color, ghost, live, progress });
+}
+
+function playWave() {
+  const swId = s2.activeSwitch;
+  const src = soundFiles[swId];
+  if (!src) return;
+  if (!ensureAudio()) return;
+  if (waveRaf) { cancelAnimationFrame(waveRaf); waveRaf = null; }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  audioEl.pause();
+  audioEl.src = src;
+  audioEl.currentTime = 0;
+  const playPromise = audioEl.play();
+  if (playPromise && playPromise.catch) playPromise.catch(()=>{});
+  function loop() {
+    if (audioEl.paused || audioEl.ended) { renderFreqBars(false); waveRaf = null; return; }
+    renderFreqBarsFromAudio();
+    waveRaf = requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+function stopWave() {
+  if (waveRaf) { cancelAnimationFrame(waveRaf); waveRaf = null; }
+  if (audioEl) { audioEl.pause(); audioEl.currentTime = 0; }
+}
+
+function startWave() {
+  stopWave();
+  renderFreqGraphs();
+}
+
+// 포스 커브 SVG — updateStep2의 s2-svg 부분을 분리
+function drawForceCurve() {
+  const sw = switches[s2.activeSwitch];
+  if (!sw) return;
+  const el = document.getElementById('s2-svg');
+  if (!el) return;
+  const yTicks = [0, 20, 40, 60, 80, 100, 120];
+  const xTicks = [0, 1, 2, 3, 4];
+  el.innerHTML = `
+    <g stroke="#e5e7eb" stroke-width="1">
+      ${yTicks.map(v => { const y = 200 - v * 5/3; return `<line x1="0" y1="${y}" x2="400" y2="${y}"/>`; }).join('')}
+      ${xTicks.map(v => { const x = v * 100; return `<line x1="${x}" y1="0" x2="${x}" y2="200"/>`; }).join('')}
+    </g>
+    <g font-size="14" font-weight="600" fill="#94a3b8" font-family="'Pretendard Variable','Pretendard',sans-serif">
+      ${yTicks.map(v => { const y = 200 - v * 5/3; return `<text x="-8" y="${y + 5}" text-anchor="end">${v}</text>`; }).join('')}
+      ${xTicks.map(v => { const x = v * 100; return `<text x="${x}" y="220" text-anchor="middle">${v}</text>`; }).join('')}
+      <text x="-8" y="-14" text-anchor="end">(cN)</text>
+      <text x="402" y="248" text-anchor="end">(mm)</text>
+      <text x="-38" y="100" text-anchor="middle" transform="rotate(-90 -38 100)" fill="#64748b" font-size="17">작동력</text>
+      <text x="200" y="248" text-anchor="middle" fill="#64748b" font-size="17">키눌림 거리</text>
+    </g>
+    <g stroke="#cbd5e1" stroke-width="1.2">
+      <line x1="0" y1="0" x2="0" y2="200"/>
+      <line x1="0" y1="200" x2="400" y2="200"/>
+    </g>
+    ${Object.values(switches).filter(s => s.id !== s2.activeSwitch).map(s => `
+      <path d="${s.path}" fill="none" stroke="${s.stroke}" stroke-width="2" opacity="0.18" stroke-linecap="round" stroke-linejoin="round"/>
+    `).join('')}
+    <path d="${sw.path}" fill="none" stroke="${sw.stroke}" stroke-width="3.5" opacity="1" stroke-linecap="round" stroke-linejoin="round"/>`;
+}
+
+/* ───── STEP 3 데이터·키보드·맵핑·모달 (v2 명령형 로직) ───── */
+const s3 = {
+  brush: 'red',
+  model: null,
+  mapping: { base:null, alphas:null, wasd:null, mods:null, spacebar:null, esc:null, fn:null, arrows:null, numpad:null, nav:null, media:null },
+};
+
+const G = {l:'',w:'wg',z:'_gap'};
+const kbRowsFull = [
+  [{l:'Esc',w:'w1',z:'esc'}, {l:'',w:'w05',z:'_gap'}, {l:'',w:'w05',z:'_gap'}, {l:'F1',w:'w1',z:'fn'},{l:'F2',w:'w1',z:'fn'},{l:'F3',w:'w1',z:'fn'},{l:'F4',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F5',w:'w1',z:'fn'},{l:'F6',w:'w1',z:'fn'},{l:'F7',w:'w1',z:'fn'},{l:'F8',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F9',w:'w1',z:'fn'},{l:'F10',w:'w1',z:'fn'},{l:'F11',w:'w1',z:'fn'},{l:'F12',w:'w1',z:'fn'}, G, {l:'PrtSc',w:'w1',z:'nav'},{l:'ScrLk',w:'w1',z:'nav'},{l:'Pause',w:'w1',z:'nav'}, G, {l:'Vol-',w:'w1',z:'media'},{l:'Mute',w:'w1',z:'media'},{l:'Vol+',w:'w1',z:'media'},{l:'Calc',w:'w1',z:'media'}],
+  [{l:'~',w:'w1',z:'alphas'},{l:'1',w:'w1',z:'alphas'},{l:'2',w:'w1',z:'alphas'},{l:'3',w:'w1',z:'alphas'},{l:'4',w:'w1',z:'alphas'},{l:'5',w:'w1',z:'alphas'},{l:'6',w:'w1',z:'alphas'},{l:'7',w:'w1',z:'alphas'},{l:'8',w:'w1',z:'alphas'},{l:'9',w:'w1',z:'alphas'},{l:'0',w:'w1',z:'alphas'},{l:'-',w:'w1',z:'alphas'},{l:'=',w:'w1',z:'alphas'},{l:'Bksp',w:'w2',z:'mods'}, G, {l:'Ins',w:'w1',z:'nav'},{l:'Home',w:'w1',z:'nav'},{l:'PgUp',w:'w1',z:'nav'}, G, {l:'Num',w:'w1',z:'numpad'},{l:'/',w:'w1',z:'numpad'},{l:'*',w:'w1',z:'numpad'},{l:'-',w:'w1',z:'numpad'}],
+  [{l:'Tab',w:'w15',z:'mods'},{l:'Q',w:'w1',z:'alphas'},{l:'W',w:'w1',z:'wasd'},{l:'E',w:'w1',z:'alphas'},{l:'R',w:'w1',z:'alphas'},{l:'T',w:'w1',z:'alphas'},{l:'Y',w:'w1',z:'alphas'},{l:'U',w:'w1',z:'alphas'},{l:'I',w:'w1',z:'alphas'},{l:'O',w:'w1',z:'alphas'},{l:'P',w:'w1',z:'alphas'},{l:'[',w:'w1',z:'alphas'},{l:']',w:'w1',z:'alphas'},{l:'\\',w:'w15',z:'mods'}, G, {l:'Del',w:'w1',z:'nav'},{l:'End',w:'w1',z:'nav'},{l:'PgDn',w:'w1',z:'nav'}, G, {l:'7',w:'w1',z:'numpad'},{l:'8',w:'w1',z:'numpad'},{l:'9',w:'w1',z:'numpad'},{l:'+',w:'w1',z:'numpad',h:2}],
+  [{l:'Caps',w:'w175',z:'mods'},{l:'A',w:'w1',z:'wasd'},{l:'S',w:'w1',z:'wasd'},{l:'D',w:'w1',z:'wasd'},{l:'F',w:'w1',z:'alphas'},{l:'G',w:'w1',z:'alphas'},{l:'H',w:'w1',z:'alphas'},{l:'J',w:'w1',z:'alphas'},{l:'K',w:'w1',z:'alphas'},{l:'L',w:'w1',z:'alphas'},{l:';',w:'w1',z:'alphas'},{l:"'",w:'w1',z:'alphas'},{l:'Enter',w:'w225',z:'mods'}, G, {l:'',w:'w1',z:'_gap'},{l:'',w:'w1',z:'_gap'},{l:'',w:'w1',z:'_gap'}, G, {l:'4',w:'w1',z:'numpad'},{l:'5',w:'w1',z:'numpad'},{l:'6',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}],
+  [{l:'Shift',w:'w225',z:'mods'},{l:'Z',w:'w1',z:'alphas'},{l:'X',w:'w1',z:'alphas'},{l:'C',w:'w1',z:'alphas'},{l:'V',w:'w1',z:'alphas'},{l:'B',w:'w1',z:'alphas'},{l:'N',w:'w1',z:'alphas'},{l:'M',w:'w1',z:'alphas'},{l:',',w:'w1',z:'alphas'},{l:'.',w:'w1',z:'alphas'},{l:'/',w:'w1',z:'alphas'},{l:'Shift',w:'w275',z:'mods'}, G, {l:'',w:'w1',z:'_gap'},{l:'↑',w:'w1',z:'arrows'},{l:'',w:'w1',z:'_gap'}, G, {l:'1',w:'w1',z:'numpad'},{l:'2',w:'w1',z:'numpad'},{l:'3',w:'w1',z:'numpad'},{l:'Ent',w:'w1',z:'numpad',h:2}],
+  [{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w625',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'}, G, {l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'},{l:'→',w:'w1',z:'arrows'}, G, {l:'0',w:'w2',z:'numpad'},{l:'.',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}],
+];
+const kbRowsTKL = [
+  [{l:'Esc',w:'w1',z:'esc'}, {l:'',w:'w05',z:'_gap'}, {l:'',w:'w05',z:'_gap'}, {l:'F1',w:'w1',z:'fn'},{l:'F2',w:'w1',z:'fn'},{l:'F3',w:'w1',z:'fn'},{l:'F4',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F5',w:'w1',z:'fn'},{l:'F6',w:'w1',z:'fn'},{l:'F7',w:'w1',z:'fn'},{l:'F8',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F9',w:'w1',z:'fn'},{l:'F10',w:'w1',z:'fn'},{l:'F11',w:'w1',z:'fn'},{l:'F12',w:'w1',z:'fn'}, G, {l:'PrtSc',w:'w1',z:'nav'},{l:'ScrLk',w:'w1',z:'nav'},{l:'Pause',w:'w1',z:'nav'}],
+  [{l:'~',w:'w1',z:'alphas'},{l:'1',w:'w1',z:'alphas'},{l:'2',w:'w1',z:'alphas'},{l:'3',w:'w1',z:'alphas'},{l:'4',w:'w1',z:'alphas'},{l:'5',w:'w1',z:'alphas'},{l:'6',w:'w1',z:'alphas'},{l:'7',w:'w1',z:'alphas'},{l:'8',w:'w1',z:'alphas'},{l:'9',w:'w1',z:'alphas'},{l:'0',w:'w1',z:'alphas'},{l:'-',w:'w1',z:'alphas'},{l:'=',w:'w1',z:'alphas'},{l:'Bksp',w:'w2',z:'mods'}, G, {l:'Ins',w:'w1',z:'nav'},{l:'Home',w:'w1',z:'nav'},{l:'PgUp',w:'w1',z:'nav'}],
+  [{l:'Tab',w:'w15',z:'mods'},{l:'Q',w:'w1',z:'alphas'},{l:'W',w:'w1',z:'wasd'},{l:'E',w:'w1',z:'alphas'},{l:'R',w:'w1',z:'alphas'},{l:'T',w:'w1',z:'alphas'},{l:'Y',w:'w1',z:'alphas'},{l:'U',w:'w1',z:'alphas'},{l:'I',w:'w1',z:'alphas'},{l:'O',w:'w1',z:'alphas'},{l:'P',w:'w1',z:'alphas'},{l:'[',w:'w1',z:'alphas'},{l:']',w:'w1',z:'alphas'},{l:'\\',w:'w15',z:'mods'}, G, {l:'Del',w:'w1',z:'nav'},{l:'End',w:'w1',z:'nav'},{l:'PgDn',w:'w1',z:'nav'}],
+  [{l:'Caps',w:'w175',z:'mods'},{l:'A',w:'w1',z:'wasd'},{l:'S',w:'w1',z:'wasd'},{l:'D',w:'w1',z:'wasd'},{l:'F',w:'w1',z:'alphas'},{l:'G',w:'w1',z:'alphas'},{l:'H',w:'w1',z:'alphas'},{l:'J',w:'w1',z:'alphas'},{l:'K',w:'w1',z:'alphas'},{l:'L',w:'w1',z:'alphas'},{l:';',w:'w1',z:'alphas'},{l:"'",w:'w1',z:'alphas'},{l:'Enter',w:'w225',z:'mods'}, G, {l:'',w:'w1',z:'_gap'},{l:'',w:'w1',z:'_gap'},{l:'',w:'w1',z:'_gap'}],
+  [{l:'Shift',w:'w225',z:'mods'},{l:'Z',w:'w1',z:'alphas'},{l:'X',w:'w1',z:'alphas'},{l:'C',w:'w1',z:'alphas'},{l:'V',w:'w1',z:'alphas'},{l:'B',w:'w1',z:'alphas'},{l:'N',w:'w1',z:'alphas'},{l:'M',w:'w1',z:'alphas'},{l:',',w:'w1',z:'alphas'},{l:'.',w:'w1',z:'alphas'},{l:'/',w:'w1',z:'alphas'},{l:'Shift',w:'w275',z:'mods'}, G, {l:'',w:'w1',z:'_gap'},{l:'↑',w:'w1',z:'arrows'},{l:'',w:'w1',z:'_gap'}],
+  [{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w625',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'}, G, {l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'},{l:'→',w:'w1',z:'arrows'}],
+];
+const kbRowsCompact96 = [
+  [{l:'Esc',w:'w1',z:'esc'}, {l:'',w:'w05',z:'_gap'}, {l:'F1',w:'w1',z:'fn'},{l:'F2',w:'w1',z:'fn'},{l:'F3',w:'w1',z:'fn'},{l:'F4',w:'w1',z:'fn'}, {l:'',w:'w03',z:'_gap'}, {l:'F5',w:'w1',z:'fn'},{l:'F6',w:'w1',z:'fn'},{l:'F7',w:'w1',z:'fn'},{l:'F8',w:'w1',z:'fn'}, {l:'',w:'w03',z:'_gap'}, {l:'F9',w:'w1',z:'fn'},{l:'F10',w:'w1',z:'fn'},{l:'F11',w:'w1',z:'fn'},{l:'F12',w:'w1',z:'fn'},{l:'Nav',w:'w1',z:'nav'}, G, {l:'Vol-',w:'w1',z:'media'},{l:'Mute',w:'w1',z:'media'},{l:'Vol+',w:'w1',z:'media'},{l:'Calc',w:'w1',z:'media'}],
+  [{l:'~',w:'w1',z:'alphas'},{l:'1',w:'w1',z:'alphas'},{l:'2',w:'w1',z:'alphas'},{l:'3',w:'w1',z:'alphas'},{l:'4',w:'w1',z:'alphas'},{l:'5',w:'w1',z:'alphas'},{l:'6',w:'w1',z:'alphas'},{l:'7',w:'w1',z:'alphas'},{l:'8',w:'w1',z:'alphas'},{l:'9',w:'w1',z:'alphas'},{l:'0',w:'w1',z:'alphas'},{l:'-',w:'w1',z:'alphas'},{l:'=',w:'w1',z:'alphas'},{l:'Bksp',w:'w2',z:'mods'}, G, {l:'Num',w:'w1',z:'numpad'},{l:'/',w:'w1',z:'numpad'},{l:'*',w:'w1',z:'numpad'},{l:'-',w:'w1',z:'numpad'}],
+  [{l:'Tab',w:'w15',z:'mods'},{l:'Q',w:'w1',z:'alphas'},{l:'W',w:'w1',z:'wasd'},{l:'E',w:'w1',z:'alphas'},{l:'R',w:'w1',z:'alphas'},{l:'T',w:'w1',z:'alphas'},{l:'Y',w:'w1',z:'alphas'},{l:'U',w:'w1',z:'alphas'},{l:'I',w:'w1',z:'alphas'},{l:'O',w:'w1',z:'alphas'},{l:'P',w:'w1',z:'alphas'},{l:'[',w:'w1',z:'alphas'},{l:']',w:'w1',z:'alphas'},{l:'\\',w:'w15',z:'mods'}, G, {l:'7',w:'w1',z:'numpad'},{l:'8',w:'w1',z:'numpad'},{l:'9',w:'w1',z:'numpad'},{l:'+',w:'w1',z:'numpad',h:2}],
+  [{l:'Caps',w:'w175',z:'mods'},{l:'A',w:'w1',z:'wasd'},{l:'S',w:'w1',z:'wasd'},{l:'D',w:'w1',z:'wasd'},{l:'F',w:'w1',z:'alphas'},{l:'G',w:'w1',z:'alphas'},{l:'H',w:'w1',z:'alphas'},{l:'J',w:'w1',z:'alphas'},{l:'K',w:'w1',z:'alphas'},{l:'L',w:'w1',z:'alphas'},{l:';',w:'w1',z:'alphas'},{l:"'",w:'w1',z:'alphas'},{l:'Enter',w:'w225',z:'mods'}, G, {l:'4',w:'w1',z:'numpad'},{l:'5',w:'w1',z:'numpad'},{l:'6',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}],
+  [{l:'Shift',w:'w225',z:'mods'},{l:'Z',w:'w1',z:'alphas'},{l:'X',w:'w1',z:'alphas'},{l:'C',w:'w1',z:'alphas'},{l:'V',w:'w1',z:'alphas'},{l:'B',w:'w1',z:'alphas'},{l:'N',w:'w1',z:'alphas'},{l:'M',w:'w1',z:'alphas'},{l:',',w:'w1',z:'alphas'},{l:'.',w:'w1',z:'alphas'},{l:'/',w:'w1',z:'alphas'},{l:'Shift',w:'w175',z:'mods'},{l:'↑',w:'w1',z:'arrows'}, G, {l:'1',w:'w1',z:'numpad'},{l:'2',w:'w1',z:'numpad'},{l:'3',w:'w1',z:'numpad'},{l:'Ent',w:'w1',z:'numpad',h:2}],
+  [{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w625',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'},{l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'}, G, {l:'→',w:'w1',z:'arrows'},{l:'0',w:'w1',z:'numpad'},{l:'.',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}],
+];
+const kbRowsCompact65 = [
+  [{l:'Esc',w:'w1',z:'esc'},{l:'1',w:'w1',z:'alphas'},{l:'2',w:'w1',z:'alphas'},{l:'3',w:'w1',z:'alphas'},{l:'4',w:'w1',z:'alphas'},{l:'5',w:'w1',z:'alphas'},{l:'6',w:'w1',z:'alphas'},{l:'7',w:'w1',z:'alphas'},{l:'8',w:'w1',z:'alphas'},{l:'9',w:'w1',z:'alphas'},{l:'0',w:'w1',z:'alphas'},{l:'-',w:'w1',z:'alphas'},{l:'=',w:'w1',z:'alphas'},{l:'Bksp',w:'w2',z:'mods'},{l:'Del',w:'w1',z:'nav'}],
+  [{l:'Tab',w:'w15',z:'mods'},{l:'Q',w:'w1',z:'alphas'},{l:'W',w:'w1',z:'wasd'},{l:'E',w:'w1',z:'alphas'},{l:'R',w:'w1',z:'alphas'},{l:'T',w:'w1',z:'alphas'},{l:'Y',w:'w1',z:'alphas'},{l:'U',w:'w1',z:'alphas'},{l:'I',w:'w1',z:'alphas'},{l:'O',w:'w1',z:'alphas'},{l:'P',w:'w1',z:'alphas'},{l:'[',w:'w1',z:'alphas'},{l:']',w:'w1',z:'alphas'},{l:'\\',w:'w15',z:'mods'},{l:'PgUp',w:'w1',z:'nav'}],
+  [{l:'Caps',w:'w175',z:'mods'},{l:'A',w:'w1',z:'wasd'},{l:'S',w:'w1',z:'wasd'},{l:'D',w:'w1',z:'wasd'},{l:'F',w:'w1',z:'alphas'},{l:'G',w:'w1',z:'alphas'},{l:'H',w:'w1',z:'alphas'},{l:'J',w:'w1',z:'alphas'},{l:'K',w:'w1',z:'alphas'},{l:'L',w:'w1',z:'alphas'},{l:';',w:'w1',z:'alphas'},{l:"'",w:'w1',z:'alphas'},{l:'Enter',w:'w225',z:'mods'},{l:'PgDn',w:'w1',z:'nav'}],
+  [{l:'Shift',w:'w225',z:'mods'},{l:'Z',w:'w1',z:'alphas'},{l:'X',w:'w1',z:'alphas'},{l:'C',w:'w1',z:'alphas'},{l:'V',w:'w1',z:'alphas'},{l:'B',w:'w1',z:'alphas'},{l:'N',w:'w1',z:'alphas'},{l:'M',w:'w1',z:'alphas'},{l:',',w:'w1',z:'alphas'},{l:'.',w:'w1',z:'alphas'},{l:'/',w:'w1',z:'alphas'},{l:'Shift',w:'w175',z:'mods'},{l:'↑',w:'w1',z:'arrows'},{l:'End',w:'w1',z:'nav'}],
+  [{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w579',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'},{l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'},{l:'→',w:'w1',z:'arrows'}],
+];
+
+function getActiveLayout() {
+  const layoutStr = (s3.model && s3.model.layout) || '';
+  if (layoutStr.includes('TKL')) return { rows: kbRowsTKL, splitIdx: [12, 10, 10, 9, 9, 4], single: false };
+  if (layoutStr.includes('컴팩트(65%)')) return { rows: kbRowsCompact65, splitIdx: [10, 10, 9, 9, 4], single: false };
+  if (layoutStr.includes('컴팩트(96%)')) return { rows: kbRowsCompact96, splitIdx: [11, 10, 10, 9, 9, 4], single: false };
+  return { rows: kbRowsFull, splitIdx: [12, 10, 10, 9, 9, 4], single: false };
+}
+
+// 키보드 키 HTML 생성 — onclick 대신 data-zone만, 클릭은 kb-wrap 이벤트 위임으로 처리
+function buildKeyboardHTML() {
+  const layout = getActiveLayout();
+  const rows = layout.rows;
+  const SPLIT_IDX = layout.splitIdx;
+  const mediaIcons = {
+    'Vol-': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>',
+    'Mute': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
+    'Vol+': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+    'Calc': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="16" y1="14" x2="16" y2="14.01"/><line x1="8" y1="18" x2="16" y2="18"/></svg>',
+  };
+  const stemSvg = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+    '<rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#ffffff" stroke="rgba(20,22,28,.6)" stroke-width="1"/>' +
+    '<circle cx="12" cy="12" r="6.8" fill="rgba(20,22,28,.06)" stroke="rgba(20,22,28,.2)" stroke-width=".5"/>' +
+    '<path d="M10.6 7.4 H13.4 V10.6 H16.6 V13.4 H13.4 V16.6 H10.6 V13.4 H7.4 V10.6 H10.6 Z" fill="currentColor" stroke="rgba(0,0,0,.35)" stroke-width=".4"/>' +
+    '</svg>';
+  const renderKey = (k) => {
+    if (k.z === '_gap' && k.w === 'wg') return '<div class="key wg"></div>';
+    if (k.z === '_gap') return '<div class="key ' + k.w + '" style="visibility:hidden"></div>';
+    const zClass = 'zone-'+k.z;
+    const tallClass = k.h === 2 ? ' tall-key' : '';
+    const label = mediaIcons[k.l] || k.l;
+    return '<div class="key ' + k.w + ' ' + zClass + tallClass + '" data-zone="' + k.z + '">' +
+      '<div class="key-label">' + label + '</div>' +
+      '<div class="key-dot" data-dot="' + k.z + '">' + stemSvg + '</div></div>';
+  };
+  const trimGaps = (arr) => { let s = 0; while (s < arr.length && arr[s].z === '_gap') s++; return arr.slice(s); };
+  if (layout.single) {
+    const allRows = rows.map(row => '<div class="kb-row">' + row.map(renderKey).join('') + '</div>').join('');
+    return `<div class="kb-half kb-single"><div class="kb-shell"><div class="kb-plate">${allRows}</div></div></div>`;
+  }
+  const leftRows = rows.map((row, ri) => '<div class="kb-row">' + trimGaps(row.slice(0, SPLIT_IDX[ri])).map(renderKey).join('') + '</div>').join('');
+  const rightRows = rows.map((row, ri) => '<div class="kb-row">' + trimGaps(row.slice(SPLIT_IDX[ri])).map(renderKey).join('') + '</div>').join('');
+  return `
+    <div class="kb-half"><div class="kb-shell"><div class="kb-plate">${leftRows}</div></div></div>
+    <div class="kb-half"><div class="kb-shell"><div class="kb-plate">${rightRows}</div></div></div>
+  `;
+}
+
+function paintZone(zone) {
+  if (!zone || zone === '_gap') return;
+  s3.mapping[zone] = s3.brush;
+  updateKeyboard();
+}
+function resetMapping() {
+  Object.keys(s3.mapping).forEach(z => { s3.mapping[z] = null; });
+  updateKeyboard();
+}
+function updateKeyboard() {
+  document.querySelectorAll('.key[data-zone]').forEach(el => {
+    const zone = el.getAttribute('data-zone');
+    if (zone === '_gap') return;
+    const swId = s3.mapping[zone] || s3.mapping.base;
+    const dot = el.querySelector('.key-dot');
+    if (!dot) return;
+    const oldSw = el.dataset.sw || '';
+    const newSw = swId || '';
+    if (swId) {
+      const sw = switches[swId];
+      el.classList.add('mapped');
+      dot.style.color = sw.color;
+      if (newSw !== oldSw) { dot.style.animation = 'none'; void dot.offsetHeight; dot.style.animation = ''; }
+    } else {
+      el.classList.remove('mapped');
+      dot.style.color = '';
+    }
+    el.dataset.sw = newSw;
+  });
+}
+
+function renderZoneOverlays() {
+  document.querySelectorAll('.zone-overlay-svg').forEach(el => el.remove());
+  const skipZones = new Set(['alphas']);
+  document.querySelectorAll('.kb-plate').forEach(plate => {
+    const zones = {};
+    plate.querySelectorAll('.key[data-zone]').forEach(key => {
+      const z = key.dataset.zone;
+      if (z === '_gap' || skipZones.has(z)) return;
+      if (!zones[z]) zones[z] = [];
+      zones[z].push({ x: key.offsetLeft, y: key.offsetTop, w: key.offsetWidth, h: key.offsetHeight });
+    });
+    if (Object.keys(zones).length === 0) return;
+    const W = plate.offsetWidth, H = plate.offsetHeight, inflate = 5;
+    const buildRects = (rects) => rects.map(r =>
+      `<rect x="${r.x-inflate}" y="${r.y-inflate}" width="${r.w+inflate*2}" height="${r.h+inflate*2}" rx="14" fill="rgb(0,0,0)"/>`
+    ).join('');
+    let inner = '<defs><filter id="zoneOutline"><feMorphology operator="erode" radius="2" in="SourceGraphic" result="eroded"/><feComposite in="SourceGraphic" in2="eroded" operator="out"/></filter></defs>';
+    Object.entries(zones).forEach(([zone, rects]) => {
+      inner += `<g opacity="0.07">${buildRects(rects)}</g>`;
+      inner += `<g opacity="0.72" filter="url(#zoneOutline)">${buildRects(rects)}</g>`;
+    });
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.classList.add('zone-overlay-svg');
+    svg.setAttribute('width', W);
+    svg.setAttribute('height', H);
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.style.cssText = 'position:absolute;left:0;top:0;pointer-events:none;overflow:visible;';
+    svg.innerHTML = inner;
+    plate.insertBefore(svg, plate.firstChild);
+  });
+}
+
+/* 모달 — #kiosk 안 정적 #modal-layer 를 명령형 제어 (window 노출: 모달 내부 인라인 onclick용) */
+function openModal(html) {
+  document.getElementById('modal-box').innerHTML = html;
+  document.getElementById('modal-layer').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal-layer').classList.remove('open');
+}
+window.closeModal = closeModal;
+
+function showHelpModal() {
+  const zoneRecColors = { alphas:'#d97706', wasd:'#ef4444', arrows:'#ef4444', mods:'#fb7185', spacebar:'#3b82f6', esc:'#94a3b8', nav:'#94a3b8' };
+  const W_UNITS = { w1:1, w125:1.25, w15:1.5, w175:1.75, w2:2, w225:2.25, w625:6.25, wg:0.5 };
+  const layout = getActiveLayout();
+  const previewRows = layout && layout.rows ? layout.rows : [];
+  const kbPreview = previewRows.length ? `
+    <div style="display:flex;flex-direction:column;gap: var(--s-1);background:#f5f7fa;padding: var(--s-3);border-radius: var(--r-md);border:1.5px solid var(--border);margin-bottom:20px">
+      ${previewRows.map(row => `
+        <div style="display:flex;gap:3px">
+          ${row.map(k => {
+            const u = W_UNITS[k.w] || 1;
+            if (k.z === '_gap') return `<div style="flex:${u} 0 0;height:22px"></div>`;
+            const color = zoneRecColors[k.z] || '#cbd5e1';
+            return `<div style="flex:${u} 0 0;height:22px;background:${color};border-radius: var(--r-xs);opacity:.92"></div>`;
+          }).join('')}
+        </div>
+      `).join('')}
+    </div>` : '';
+  openModal(`
+    <div class="help-modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <div class="modal-title" style="margin:0;font-size: var(--t-h2)">키 영역별 추천 스위치</div>
+        <button class="modal-close" onclick="closeModal()" style="position:static;flex-shrink:0">✕</button>
+      </div>
+      ${kbPreview}
+      <div class="help-list">
+        <div class="help-item">
+          <div class="help-item-title" style="font-size: var(--t-h2)">문자 · 숫자 키</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">타이핑 — <strong style="color:#d97706">Brown</strong> · <strong style="color:#94a3b8">Clear</strong></div>
+        </div>
+        <div class="help-item">
+          <div class="help-item-title" style="font-size: var(--t-h2)">방향 · 게이밍 키</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">빠른 연타 — <strong style="color:#ef4444">Red</strong></div>
+        </div>
+        <div class="help-item">
+          <div class="help-item-title" style="font-size: var(--t-h2)">모디파이어</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">저소음 — <strong style="color:#fb7185">Silent Red</strong></div>
+        </div>
+        <div class="help-item">
+          <div class="help-item-title" style="font-size: var(--t-h2)">엔터 · 스페이스</div>
+          <div class="help-item-desc" style="font-size: var(--t-h3)">강한 피드백 — <strong style="color:#3b82f6">Blue</strong> · <strong style="color:#555555">Black</strong></div>
+        </div>
+      </div>
+    </div>`);
+}
+
+/* ───── GLB·조명·리뷰 키보드·로딩/QR 모달 (v2 명령형 로직) ───── */
+const GLB_CACHE_VERSION = '20260529a';
+function glbUrl(path) {
+  if (!path) return path;
+  const ts = (typeof window !== 'undefined' && window.__GLB_BUST_TS) || (window.__GLB_BUST_TS = Date.now());
+  return path + (path.includes('?') ? '&' : '?') + 'v=' + GLB_CACHE_VERSION + '&t=' + ts;
+}
+const HDR_DEFAULT = 'neutral';
+function mvLighting(color) {
+  switch (color) {
+    case '블랙': case '블랙/브론즈': return { exposure: '0.92', shadow: '0.45', tone: 'commerce', env: HDR_DEFAULT };
+    case '화이트': case '화이트/실버': return { exposure: '1.30', shadow: '0.30', tone: 'commerce', env: HDR_DEFAULT };
+    case '그레이': return { exposure: '1.15', shadow: '0.35', tone: 'commerce', env: HDR_DEFAULT };
+    case '핑크': return { exposure: '1.20', shadow: '0.35', tone: 'commerce', env: HDR_DEFAULT };
+    case '오렌지': case '옐로우': return { exposure: '1.10', shadow: '0.35', tone: 'commerce', env: HDR_DEFAULT };
+    default: return { exposure: '1.05', shadow: '0.40', tone: 'commerce', env: HDR_DEFAULT };
+  }
+}
+const glbLightingOverrides = {
+  'models/model_color/KC 200 MX_White.glb': { exposure: '1.10', shadow: '0.40', tone: 'commerce', env: 'neutral' },
+  'models/model_color/MX_8.2_TKL_WL_White.glb': { exposure: '0.95', shadow: '0.40', softness: '0.40', tone: 'aces', env: 'neutral' },
+  'models/model_color/MX 3.0S_WL_White.glb': { exposure: '1.00', shadow: '0.40', tone: 'commerce', env: 'neutral' },
+  'models/model_color/KC500 MX LP_WHITE.glb': { exposure: '1.25', shadow: '0.30', tone: 'commerce', env: 'neutral' },
+  'models/model_color/KW 550 MX LP_White.glb': { exposure: '1.20', shadow: '0.32', tone: 'neutral', env: 'neutral' },
+};
+function getLightingFor(color, glbPath) {
+  if (glbPath && glbLightingOverrides[glbPath]) return glbLightingOverrides[glbPath];
+  return mvLighting(color);
+}
+const glbOverrides = {
+  'models/model_color/KC500 MX LP_WHITE.glb': {
+    'Base':[0.78,0.78,0.76,1.0],'base upper':[0.93,0.97,0.85,1.0],'Good_Keys':[0.76,0.76,0.73,1.0],
+    'Good_keys shadow':[0.66,0.66,0.63,1.0],'Good_keys dark grey':[0.50,0.50,0.47,1.0],
+    'Good_dark grey shadow':[0.34,0.34,0.31,1.0],'Good_keys dark grey red light':[0.42,0.42,0.39,1.0],
+  },
+  'models/model_color/KW 550 MX LP_White.glb': { 'cooper':[0.55,0.95,0.35,1.0],'Cherry':[0.95,0.95,0.92,1.0] },
+  'models/model_color/KC 200 MX_White.glb': { 'Texture.001':[0.97,0.98,1.00,1.0] },
+};
+function applyGlbOverrides(mvEl, glbPath) {
+  const overrides = glbOverrides[glbPath];
+  if (!overrides) return;
+  const apply = () => {
+    const mats = (mvEl.model && mvEl.model.materials) || [];
+    for (const m of mats) {
+      const c = overrides[m.name];
+      if (c && m.pbrMetallicRoughness) {
+        try { m.pbrMetallicRoughness.setBaseColorFactor(c); } catch (e) {}
+      }
+      if (overrides._zeroEmissive && typeof m.setEmissiveFactor === 'function') {
+        try { m.setEmissiveFactor([0, 0, 0]); } catch (e) {}
+      }
+    }
+  };
+  mvEl.addEventListener('load', apply, { once: true });
+  if (mvEl.model) apply();
+}
+
+const reviewFullSections = [
+  { main:[{l:'Esc',w:'w1',z:'esc'}, {l:'',w:'w05',z:'_gap'}, {l:'',w:'w05',z:'_gap'}, {l:'F1',w:'w1',z:'fn'},{l:'F2',w:'w1',z:'fn'},{l:'F3',w:'w1',z:'fn'},{l:'F4',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F5',w:'w1',z:'fn'},{l:'F6',w:'w1',z:'fn'},{l:'F7',w:'w1',z:'fn'},{l:'F8',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F9',w:'w1',z:'fn'},{l:'F10',w:'w1',z:'fn'},{l:'F11',w:'w1',z:'fn'},{l:'F12',w:'w1',z:'fn'}],
+    nav:[{l:'PrtSc',w:'w1',z:'nav'},{l:'ScrLk',w:'w1',z:'nav'},{l:'Pause',w:'w1',z:'nav'}],
+    numpad:[{l:'Vol-',w:'w1',z:'media'},{l:'Mute',w:'w1',z:'media'},{l:'Vol+',w:'w1',z:'media'},{l:'Calc',w:'w1',z:'media'}] },
+  { main:[{l:'~',w:'w1',z:'alphas'},{l:'1',w:'w1',z:'alphas'},{l:'2',w:'w1',z:'alphas'},{l:'3',w:'w1',z:'alphas'},{l:'4',w:'w1',z:'alphas'},{l:'5',w:'w1',z:'alphas'},{l:'6',w:'w1',z:'alphas'},{l:'7',w:'w1',z:'alphas'},{l:'8',w:'w1',z:'alphas'},{l:'9',w:'w1',z:'alphas'},{l:'0',w:'w1',z:'alphas'},{l:'-',w:'w1',z:'alphas'},{l:'=',w:'w1',z:'alphas'},{l:'Bksp',w:'w2',z:'mods'}],
+    nav:[{l:'Ins',w:'w1',z:'nav'},{l:'Home',w:'w1',z:'nav'},{l:'PgUp',w:'w1',z:'nav'}],
+    numpad:[{l:'Num',w:'w1',z:'numpad'},{l:'/',w:'w1',z:'numpad'},{l:'*',w:'w1',z:'numpad'},{l:'-',w:'w1',z:'numpad'}] },
+  { main:[{l:'Tab',w:'w15',z:'mods'},{l:'Q',w:'w1',z:'alphas'},{l:'W',w:'w1',z:'wasd'},{l:'E',w:'w1',z:'alphas'},{l:'R',w:'w1',z:'alphas'},{l:'T',w:'w1',z:'alphas'},{l:'Y',w:'w1',z:'alphas'},{l:'U',w:'w1',z:'alphas'},{l:'I',w:'w1',z:'alphas'},{l:'O',w:'w1',z:'alphas'},{l:'P',w:'w1',z:'alphas'},{l:'[',w:'w1',z:'alphas'},{l:']',w:'w1',z:'alphas'},{l:'\\',w:'w15',z:'mods'}],
+    nav:[{l:'Del',w:'w1',z:'nav'},{l:'End',w:'w1',z:'nav'},{l:'PgDn',w:'w1',z:'nav'}],
+    numpad:[{l:'7',w:'w1',z:'numpad'},{l:'8',w:'w1',z:'numpad'},{l:'9',w:'w1',z:'numpad'},{l:'+',w:'w1',z:'numpad',h:2}] },
+  { main:[{l:'Caps',w:'w175',z:'mods'},{l:'A',w:'w1',z:'wasd'},{l:'S',w:'w1',z:'wasd'},{l:'D',w:'w1',z:'wasd'},{l:'F',w:'w1',z:'alphas'},{l:'G',w:'w1',z:'alphas'},{l:'H',w:'w1',z:'alphas'},{l:'J',w:'w1',z:'alphas'},{l:'K',w:'w1',z:'alphas'},{l:'L',w:'w1',z:'alphas'},{l:';',w:'w1',z:'alphas'},{l:"'",w:'w1',z:'alphas'},{l:'Enter',w:'w225',z:'mods'}],
+    nav:[{l:'',w:'w1',z:'_gap'},{l:'',w:'w1',z:'_gap'},{l:'',w:'w1',z:'_gap'}],
+    numpad:[{l:'4',w:'w1',z:'numpad'},{l:'5',w:'w1',z:'numpad'},{l:'6',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}] },
+  { main:[{l:'Shift',w:'w225',z:'mods'},{l:'Z',w:'w1',z:'alphas'},{l:'X',w:'w1',z:'alphas'},{l:'C',w:'w1',z:'alphas'},{l:'V',w:'w1',z:'alphas'},{l:'B',w:'w1',z:'alphas'},{l:'N',w:'w1',z:'alphas'},{l:'M',w:'w1',z:'alphas'},{l:',',w:'w1',z:'alphas'},{l:'.',w:'w1',z:'alphas'},{l:'/',w:'w1',z:'alphas'},{l:'Shift',w:'w275',z:'mods'}],
+    nav:[{l:'',w:'w1',z:'_gap'},{l:'↑',w:'w1',z:'arrows'},{l:'',w:'w1',z:'_gap'}],
+    numpad:[{l:'1',w:'w1',z:'numpad'},{l:'2',w:'w1',z:'numpad'},{l:'3',w:'w1',z:'numpad'},{l:'Ent',w:'w1',z:'numpad',h:2}] },
+  { main:[{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w625',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'}],
+    nav:[{l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'},{l:'→',w:'w1',z:'arrows'}],
+    numpad:[{l:'0',w:'w2',z:'numpad'},{l:'.',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}] },
+];
+const reviewTklSections = reviewFullSections.map(r => ({ main: r.main, nav: r.nav, numpad: [] }));
+const reviewCompact96Sections = [
+  { main:[{l:'Esc',w:'w1',z:'esc'}, {l:'',w:'w05',z:'_gap'}, {l:'F1',w:'w1',z:'fn'},{l:'F2',w:'w1',z:'fn'},{l:'F3',w:'w1',z:'fn'},{l:'F4',w:'w1',z:'fn'}, {l:'',w:'w03',z:'_gap'}, {l:'F5',w:'w1',z:'fn'},{l:'F6',w:'w1',z:'fn'},{l:'F7',w:'w1',z:'fn'},{l:'F8',w:'w1',z:'fn'}, {l:'',w:'w03',z:'_gap'}, {l:'F9',w:'w1',z:'fn'},{l:'F10',w:'w1',z:'fn'},{l:'F11',w:'w1',z:'fn'},{l:'F12',w:'w1',z:'fn'},{l:'Nav',w:'w1',z:'nav'}],
+    nav:[], numpad:[{l:'Vol-',w:'w1',z:'media'},{l:'Mute',w:'w1',z:'media'},{l:'Vol+',w:'w1',z:'media'},{l:'Calc',w:'w1',z:'media'}] },
+  { main:[{l:'~',w:'w1',z:'alphas'},{l:'1',w:'w1',z:'alphas'},{l:'2',w:'w1',z:'alphas'},{l:'3',w:'w1',z:'alphas'},{l:'4',w:'w1',z:'alphas'},{l:'5',w:'w1',z:'alphas'},{l:'6',w:'w1',z:'alphas'},{l:'7',w:'w1',z:'alphas'},{l:'8',w:'w1',z:'alphas'},{l:'9',w:'w1',z:'alphas'},{l:'0',w:'w1',z:'alphas'},{l:'-',w:'w1',z:'alphas'},{l:'=',w:'w1',z:'alphas'},{l:'Bksp',w:'w2',z:'mods'}],
+    nav:[], numpad:[{l:'Num',w:'w1',z:'numpad'},{l:'/',w:'w1',z:'numpad'},{l:'*',w:'w1',z:'numpad'},{l:'-',w:'w1',z:'numpad'}] },
+  { main:[{l:'Tab',w:'w15',z:'mods'},{l:'Q',w:'w1',z:'alphas'},{l:'W',w:'w1',z:'wasd'},{l:'E',w:'w1',z:'alphas'},{l:'R',w:'w1',z:'alphas'},{l:'T',w:'w1',z:'alphas'},{l:'Y',w:'w1',z:'alphas'},{l:'U',w:'w1',z:'alphas'},{l:'I',w:'w1',z:'alphas'},{l:'O',w:'w1',z:'alphas'},{l:'P',w:'w1',z:'alphas'},{l:'[',w:'w1',z:'alphas'},{l:']',w:'w1',z:'alphas'},{l:'\\',w:'w15',z:'mods'}],
+    nav:[], numpad:[{l:'7',w:'w1',z:'numpad'},{l:'8',w:'w1',z:'numpad'},{l:'9',w:'w1',z:'numpad'},{l:'+',w:'w1',z:'numpad',h:2}] },
+  { main:[{l:'Caps',w:'w175',z:'mods'},{l:'A',w:'w1',z:'wasd'},{l:'S',w:'w1',z:'wasd'},{l:'D',w:'w1',z:'wasd'},{l:'F',w:'w1',z:'alphas'},{l:'G',w:'w1',z:'alphas'},{l:'H',w:'w1',z:'alphas'},{l:'J',w:'w1',z:'alphas'},{l:'K',w:'w1',z:'alphas'},{l:'L',w:'w1',z:'alphas'},{l:';',w:'w1',z:'alphas'},{l:"'",w:'w1',z:'alphas'},{l:'Enter',w:'w225',z:'mods'}],
+    nav:[], numpad:[{l:'4',w:'w1',z:'numpad'},{l:'5',w:'w1',z:'numpad'},{l:'6',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}] },
+  { main:[{l:'Shift',w:'w225',z:'mods'},{l:'Z',w:'w1',z:'alphas'},{l:'X',w:'w1',z:'alphas'},{l:'C',w:'w1',z:'alphas'},{l:'V',w:'w1',z:'alphas'},{l:'B',w:'w1',z:'alphas'},{l:'N',w:'w1',z:'alphas'},{l:'M',w:'w1',z:'alphas'},{l:',',w:'w1',z:'alphas'},{l:'.',w:'w1',z:'alphas'},{l:'/',w:'w1',z:'alphas'},{l:'Shift',w:'w175',z:'mods'},{l:'↑',w:'w1',z:'arrows'}],
+    nav:[], numpad:[{l:'1',w:'w1',z:'numpad'},{l:'2',w:'w1',z:'numpad'},{l:'3',w:'w1',z:'numpad'},{l:'Ent',w:'w1',z:'numpad',h:2}] },
+  { main:[{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w582',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'},{l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'}],
+    nav:[], numpad:[{l:'→',w:'w1',z:'arrows'},{l:'0',w:'w1',z:'numpad'},{l:'.',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}] },
+];
+function getReviewLayout() {
+  const layoutStr = (s3.model && s3.model.layout) || '';
+  if (layoutStr.includes('TKL')) return { type: 'sections', sections: reviewTklSections, cols: 'tkl' };
+  if (layoutStr.includes('컴팩트(65%)')) return { type: 'flat', rows: kbRowsCompact65 };
+  if (layoutStr.includes('컴팩트(96%)')) return { type: 'sections', sections: reviewCompact96Sections, cols: 'compact96' };
+  return { type: 'sections', sections: reviewFullSections, cols: 'full' };
+}
+function renderReviewKeyboard() {
+  const layout = getReviewLayout();
+  const mediaIcons = {
+    'Vol-': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>',
+    'Mute': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
+    'Vol+': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+    'Calc': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>',
+  };
+  const stemSvg = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+    '<rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#ffffff" stroke="rgba(20,22,28,.6)" stroke-width="1"/>' +
+    '<circle cx="12" cy="12" r="6.8" fill="rgba(20,22,28,.06)" stroke="rgba(20,22,28,.2)" stroke-width=".5"/>' +
+    '<path d="M10.6 7.4 H13.4 V10.6 H16.6 V13.4 H13.4 V16.6 H10.6 V13.4 H7.4 V10.6 H10.6 Z" fill="currentColor" stroke="rgba(0,0,0,.35)" stroke-width=".4"/>' +
+    '</svg>';
+  const renderKey = (k) => {
+    if (k.z === '_gap' && k.w === 'wg') return '<div class="key wg"></div>';
+    if (k.z === '_gap') return '<div class="key ' + k.w + '" style="visibility:hidden"></div>';
+    const swId = s3.mapping[k.z] || s3.mapping.base;
+    const sw = swId ? switches[swId] : null;
+    const mappedClass = sw ? ' mapped' : '';
+    const dotStyle = sw ? ' style="color:' + sw.color + '"' : '';
+    const tallClass = k.h === 2 ? ' tall-key' : '';
+    const label = mediaIcons[k.l] || k.l;
+    return '<div class="key ' + k.w + ' zone-' + k.z + tallClass + mappedClass + '">' +
+      '<div class="key-label">' + label + '</div>' +
+      '<div class="key-dot"' + dotStyle + '>' + stemSvg + '</div></div>';
+  };
+  if (layout.type === 'flat') {
+    const allRows = layout.rows.map(row => '<div class="kb-row">' + row.map(renderKey).join('') + '</div>').join('');
+    return '<div class="ric-kb-single"><div class="kb-shell"><div class="kb-plate">' + allRows + '</div></div></div>';
+  }
+  const cols = layout.cols || 'full';
+  const rowsHtml = layout.sections.map(sec => {
+    const renderSec = (keys) => keys.map(renderKey).join('');
+    if (cols === 'compact96') {
+      return '<div class="kb-row-grid compact96"><div class="kb-section kb-section-main">' + renderSec(sec.main) + '</div><div class="kb-section kb-section-numpad">' + renderSec(sec.numpad) + '</div></div>';
+    }
+    if (cols === 'tkl') {
+      return '<div class="kb-row-grid tkl"><div class="kb-section kb-section-main">' + renderSec(sec.main) + '</div><div class="kb-section kb-section-nav">' + renderSec(sec.nav) + '</div></div>';
+    }
+    return '<div class="kb-row-grid"><div class="kb-section kb-section-main">' + renderSec(sec.main) + '</div><div class="kb-section kb-section-nav">' + renderSec(sec.nav) + '</div><div class="kb-section kb-section-numpad">' + renderSec(sec.numpad) + '</div></div>';
+  }).join('');
+  return '<div class="ric-kb-single"><div class="kb-shell"><div class="kb-plate kb-plate-grid">' + rowsHtml + '</div></div></div>';
+}
+
+// GLB 로딩 모달 — 숨김 model-viewer로 다운로드 대기 후 onDone() 콜백. v2 로직 그대로.
+function showModelLoadingModal(url, onDone) {
+  openModal(`
+    <div class="load-spinner"></div>
+    <div class="modal-title">3D 모델 로딩 중</div>
+    <div class="load-percent-text" id="load-percent">0%</div>
+    <div class="load-progress-bar"><div class="load-progress-fill" id="load-fill"></div></div>
+    <div class="load-status-text" id="load-status">키보드를 불러오고 있습니다...</div>
+  `);
+  let displayed = 0, target = 0, realProgress = 0, finishedFlag = false;
+  const startTime = performance.now();
+  const ESTIMATED_LOAD_MS = 4000;
+  const updateUI = () => {
+    const pctEl = document.getElementById('load-percent');
+    const fillEl = document.getElementById('load-fill');
+    const rounded = Math.round(displayed);
+    if (pctEl) pctEl.textContent = rounded + '%';
+    if (fillEl) fillEl.style.width = rounded + '%';
+  };
+  let rafId;
+  const rafLoop = () => {
+    const elapsed = performance.now() - startTime;
+    const t = Math.min(1, elapsed / ESTIMATED_LOAD_MS);
+    const timeEstimate = (1 - Math.pow(1 - t, 2.5)) * 94;
+    let candidate = Math.max(realProgress * 100, timeEstimate);
+    if (finishedFlag) candidate = 100;
+    target = Math.max(target, candidate);
+    displayed += (target - displayed) * 0.12;
+    if (target - displayed < 0.5 && target >= 100) displayed = 100;
+    updateUI();
+    if (!finishedFlag || displayed < 100) rafId = requestAnimationFrame(rafLoop);
+  };
+  rafId = requestAnimationFrame(rafLoop);
+  const hidden = document.createElement('model-viewer');
+  hidden.setAttribute('loading', 'eager');
+  hidden.setAttribute('reveal', 'auto');
+  hidden.style.cssText = 'position:fixed;left:0;top:0;width:120px;height:80px;opacity:0;pointer-events:none;z-index:-1';
+  hidden.src = url;
+  document.body.appendChild(hidden);
+  const finish = () => {
+    if (finishedFlag) return;
+    finishedFlag = true;
+    realProgress = 1;
+    const waitFor100 = () => {
+      if (displayed >= 99.5) {
+        try { hidden.remove(); } catch (e) {}
+        if (onDone) onDone();
+        requestAnimationFrame(() => requestAnimationFrame(() => closeModal()));
+      } else {
+        requestAnimationFrame(waitFor100);
+      }
+    };
+    requestAnimationFrame(waitFor100);
+  };
+  hidden.addEventListener('progress', (e) => {
+    const p = (e.detail && typeof e.detail.totalProgress === 'number') ? e.detail.totalProgress : 0;
+    realProgress = Math.max(realProgress, p);
+    if (p >= 1) finish();
+  });
+  hidden.addEventListener('load', finish, { once: true });
+  hidden.addEventListener('error', () => finish(), { once: true });
+  const poller = setInterval(() => {
+    if (finishedFlag) { clearInterval(poller); return; }
+    if (hidden.loaded || hidden.modelIsVisible) { clearInterval(poller); finish(); return; }
+    if (typeof hidden.progress === 'number' && hidden.progress > realProgress) realProgress = hidden.progress;
+  }, 200);
+  setTimeout(() => { if (!finishedFlag) { clearInterval(poller); finish(); } }, 30000);
+}
+
+function showQrModal() {
+  openModal(`
+    <div class="modal-icon" style="background:#e8f5e9">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="modal-title" style="font-size: var(--t-h2)">견적서 생성 완료</div>
+    <div class="modal-desc" style="font-size: var(--t-h2)">QR 코드를 스마트폰으로 촬영하여<br>부스 내 전문가 상담을 진행해 주세요.</div>
+    <div class="qr-box">
+      <svg width="200" height="200" viewBox="0 0 10 10" fill="#111">
+        <rect x="1" y="1" width="3" height="3"/><rect x="6" y="1" width="3" height="3"/><rect x="1" y="6" width="3" height="3"/>
+        <rect x="6" y="6" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="4" y="4" width="2" height="2"/>
+        <rect x="5" y="8" width="1" height="2"/><rect x="8" y="4" width="2" height="1"/><rect x="4" y="1" width="1" height="1"/>
+        <rect x="1" y="4" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/>
+      </svg>
+    </div>
+    <button class="modal-full-btn" style="font-size: var(--t-h2)" onclick="location.reload()">처음으로 돌아가기</button>`);
+}
+
+/* ───── SCREENS ───── */
+function Landing({ onStart }) {
+  return (
+    <div className="screen active" id="screen-landing" onClick={onStart}>
+      <div className="landing-bg-kb"></div>
+      <div className="landing-top-logo">
+        <img src="images/logo.svg" className="landing-cherry-icon" alt="Cherry" />
+      </div>
+      <div className="landing-content">
+        <div className="landing-title-cherry">CHERRY</div>
+        <div className="landing-title-kb">KEYBOARD</div>
+      </div>
+      <button className="landing-cta">시작하기</button>
+    </div>
+  );
+}
+
+const HUB_CARDS = [
+  { id: 'history', title: 'CHERRY 역사', desc: '1953년부터 이어진 70년의 발자취' },
+  { id: 'tech', title: 'CHERRY 기술력', desc: 'Goldcrosspoint부터 TMR · 무선 기술까지' },
+  { id: 'builder', title: '커스텀 견적내기', desc: '모델 · 스위치 · 맵핑까지 나만의 키보드 설계' },
+];
+
+function Home({ onNav }) {
+  return (
+    <div className="screen active" id="screen-home">
+      <div className="home-body home-hub">
+        <div className="home-eyebrow">Custom Interactive Studio</div>
+        <div className="home-headline">CHERRY를<br />만나보세요</div>
+        <div className="home-desc">70년 역사의 정통, 스위치 기술의 진수,<br />그리고 나만의 키보드를 설계하는 경험까지</div>
+        <div className="hub-cards">
+          {HUB_CARDS.map(card => (
+            <button key={card.id} className="hub-card" onClick={() => onNav(card.id)}>
+              <div className="hub-card-body">
+                <div className="hub-card-title">{card.title}</div>
+                <div className="hub-card-desc">{card.desc}</div>
+              </div>
+              <div className="hub-card-cta"><ArrowIcon /></div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HistoryScreen({ onHome, onBuilder }) {
+  const screenRef = useRef(null);
+  const timelineRef = useRef(null);
+  const cherryRef = useRef(null);
+
+  // 체리 로고가 스크롤 진행도(0..1)에 따라 점선 위를 따라 이동
+  useEffect(() => {
+    const screen = screenRef.current;
+    const tl = timelineRef.current;
+    const cherry = cherryRef.current;
+    if (!screen || !tl || !cherry) return;
+    const update = () => {
+      const cherryH = cherry.offsetHeight || 70;
+      const tlH = tl.offsetHeight;
+      const scrollMax = screen.scrollHeight - screen.clientHeight;
+      const progress = scrollMax > 0 ? Math.max(0, Math.min(1, screen.scrollTop / scrollMax)) : 0;
+      const minTop = 24;
+      const maxTop = tlH - cherryH - 8;
+      cherry.style.top = (minTop + (maxTop - minTop) * progress) + 'px';
+    };
+    screen.addEventListener('scroll', update, { passive: true });
+    const t = setTimeout(update, 100);
+    return () => { screen.removeEventListener('scroll', update); clearTimeout(t); };
+  }, []);
+
+  return (
+    <div className="screen active" id="screen-history" ref={screenRef}>
+      <div className="content-header">
+        <button className="home-btn" onClick={onHome} aria-label="홈으로"><HomeIcon /></button>
+        <div className="content-header-title">CHERRY 역사</div>
+        <div></div>
+      </div>
+      <div className="content-page">
+        <div className="origin-hero">
+          <h1 className="origin-title">ORIGINAL CHERRY</h1>
+        </div>
+
+        <div className="origin-block">
+          <p className="lead">CHERRY는 1953년 Walter Lorain Cherry가 설립했습니다.</p>
+          <p className="body">{'미국의 기업가 정신과 독일의 엔지니어링 기술이 결합된 CHERRY의 역사와\n미래는 오늘날 품질·혁신·디자인·지속가능성의 대명사로 자리잡았습니다.\n현재 본사는 독일 아우어바흐(Auerbach in der Oberpfalz)에 있으며,\nCEO Rogier Volmer와 COO Dr.Udo Streller가 이끌고 있습니다.'}</p>
+        </div>
+
+        <div className="story-header">
+          <div className="story-eyebrow">TO BE CONTINUED…</div>
+          <h2 className="story-title">The success story</h2>
+        </div>
+        <div className="timeline" id="history-timeline" ref={timelineRef}>
+          <div className="timeline-cherry" id="timeline-cherry" ref={cherryRef}>
+            <img src="images/logo.svg" alt="CHERRY" />
+          </div>
+          {historyEvents.map((e, i) => (
+            <div className={'timeline-row ' + (i % 2 === 0 ? 'right' : 'left')} key={e.y}>
+              <div className="timeline-content">
+                <div className="timeline-year">{e.y}</div>
+                <div className="timeline-desc">{e.d}</div>
+              </div>
+              <div className="timeline-dot"></div>
+              <div className="timeline-img"><img src={'images/history/' + e.y + '.png'} alt={e.y} loading="lazy" /></div>
+            </div>
+          ))}
+        </div>
+
+        <div className="origin-block team-cherry-block">
+          <h2 className="team-cherry-title">Team CHERRY</h2>
+          <p className="team-cherry-q">CHERRY는 누가 이끌고 있을까요?</p>
+          <p className="team-cherry-body">{'2008년 Peter Cherry의 회사 매각 이후, ZF Friedrichshafen AG와의 파트너십을 거쳐 2016년부터 CHERRY는 GENUI Partners가 운영하고 있습니다.\n이후 2020년에는 Argand Partners가 주요 투자자로 합류했으며,\n현재 CHERRY Europe GmbH는 독일 Auerbach에 본사를 두고\nRogier Volmer(CEO)와 Dr. Udo Streller(COO)가 경영을 맡고 있습니다.'}</p>
+        </div>
+
+        <div className="overview-grid bottom">
+          <div className="overview-card">
+            <div className="overview-num">80억+</div>
+            <div className="overview-label">누적 스위치 판매량</div>
+          </div>
+          <div className="overview-card">
+            <div className="overview-num">6,000만+</div>
+            <div className="overview-label">사용 중인 키보드</div>
+          </div>
+          <div className="overview-card">
+            <div className="overview-num">70년+</div>
+            <div className="overview-label">업력</div>
+          </div>
+        </div>
+      </div>
+      <div className="content-cta-footer">
+        <button className="btn-cta-custom" onClick={onBuilder}>
+          커스텀하러가기
+          <CtaArrowIcon />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function TechScreen({ onHome, onBuilder }) {
+  return (
+    <div className="screen active" id="screen-tech">
+      <div className="content-header">
+        <button className="home-btn" onClick={onHome} aria-label="홈으로"><HomeIcon /></button>
+        <div className="content-header-title">CHERRY 기술력</div>
+        <div></div>
+      </div>
+      <div className="content-page">
+        <div className="tech-list" id="tech-list">
+          {techItems.map((t) => (
+            <div className="tech-item" key={t.num}>
+              <div className="tech-img">{t.img ? <img src={t.img} alt={t.name} /> : null}</div>
+              <div className="tech-text">
+                <div className="tech-num">TECH {t.num}</div>
+                <div className="tech-name">{t.name}</div>
+                <div className="tech-desc">{t.desc}</div>
+                <div className="tech-highlights">
+                  {t.pills.map((p, j) => <span className="tech-pill" key={j}>{p}</span>)}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="content-cta-footer">
+        <button className="btn-cta-custom" onClick={onBuilder}>
+          커스텀하러가기
+          <CtaArrowIcon />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Stepper({ step }) {
+  const labels = ['라인업 선택', '스위치 분석', '커스텀 맵핑'];
+  return (
+    <div className="stepper" id="stepper">
+      {labels.map((l, i) => {
+        const n = i + 1, active = n === step, done = n < step;
+        return (
+          <React.Fragment key={n}>
+            {i > 0 && <div className="step-divider"></div>}
+            <div className={'step-item ' + (active ? 'active' : done ? 'done' : '')}>
+              <div className="step-num">{done ? '✓' : n}</div>
+              {l}
+            </div>
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
+function Step1({ model, color, onSelectModel, onSelectColor }) {
+  if (!model) {
+    return (
+      <div className="s1-grid-wrap">
+        <div className="step-heading">체리 라인업 셀렉션</div>
+        <div className="step-sub">커스텀의 뼈대가 될 베이스 키보드 모델을 선택하세요.</div>
+        <div className="model-grid">
+          {models.map(m => (
+            <div className="model-card" key={m.id} onClick={() => onSelectModel(m.id)}>
+              <div className="model-card-img"><img src={nookkiForModel(m)} alt={m.name} /></div>
+              <div className="model-name">{m.name}</div>
+              <div className="model-layout">{m.layout}</div>
+              <div className="model-meta">{m.housing}</div>
+              <div className="model-meta">{m.connect.split('\n')[0]}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  const m = model;
+  const housingSrc = (m.housingImages && m.housingImages[color]) || m.img;
+  return (
+    <div className="s1-detail">
+      <div className="sidebar">
+        <div className="sidebar-list" id="s1-list">
+          {models.map(mdl => (
+            <button className={'sidebar-item s1-model-item ' + (mdl.id === m.id ? 'active' : '')} key={mdl.id} onClick={() => onSelectModel(mdl.id)}>
+              <div className="s1-model-img" style={{ width: '100%', flex: '1 1 0', minHeight: 0, borderRadius: 'var(--r-sm)', overflow: 'hidden', padding: '2px' }}>
+                <img src={nookkiForModel(mdl)} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} alt={mdl.name} />
+              </div>
+              <div className="sidebar-item-name" style={{ fontSize: 'var(--t-body-sm)' }}>{mdl.name}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="detail-panel" id="s1-detail-panel">
+        <div className="detail-3d-preview">
+          <img id="s1-housing-img" src={housingSrc} alt={m.name} style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'multiply' }} />
+        </div>
+        <div className="detail-card">
+          <div>
+            <div className="section-label"><div className="dot"></div> 하우징 테마 옵션</div>
+            <div className="color-options" id="s1-colors" style={{ marginTop: '16px' }}>
+              {m.colors.map(c => (
+                <button className={'color-btn ' + (c === color ? 'active' : '')} key={c} onClick={() => onSelectColor(c)}>{c}</button>
+              ))}
+            </div>
+          </div>
+          <hr style={{ border: 'none', borderTop: '1.5px solid var(--border)' }} />
+          <div>
+            <div className="section-label"><div className="dot"></div> 핵심 스펙 데이터</div>
+            <div className="spec-list" style={{ marginTop: '16px' }}>
+              <div className="spec-item">
+                <svg className="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2" /></svg>
+                <div><strong>배열</strong> <span>{m.layout}</span></div>
+              </div>
+              <div className="spec-item">
+                <svg className="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>
+                <div><strong>하우징 소재</strong> <span>{m.housing}</span></div>
+              </div>
+              <div className="spec-item">
+                <svg className="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="2" /><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14" /></svg>
+                <div><strong>연결 방식</strong> <span>{m.connect.replace(/\\n/g, ' / ')}</span></div>
+              </div>
+              <div className="spec-item">
+                <svg className="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18M9 21V9" /></svg>
+                <div><strong>키캡 재질 / 각인</strong> <span>{m.keycap}</span></div>
+              </div>
+            </div>
+          </div>
+          <hr style={{ border: 'none', borderTop: '1.5px solid var(--border)' }} />
+          <div>
+            <div className="section-label"><div className="dot"></div> 모델 상세 설명</div>
+            <div style={{ marginTop: 'var(--s-5)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 700, color: '#16A34A', marginBottom: 'var(--s-4)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg> 장점
+                </div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 400, color: 'var(--fg2)', lineHeight: '40px', whiteSpace: 'pre-line' }}>{(Array.isArray(m.pros) ? m.pros : [m.pros]).join('\n')}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 700, color: 'var(--fg)', marginBottom: 'var(--s-4)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg> 추천 사용자
+                </div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 400, color: 'var(--fg2)', lineHeight: '35px', whiteSpace: 'pre-line' }}>{m.recommendUser || ''}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 900, color: 'var(--fg)', marginBottom: 'var(--s-4)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10" /></svg> 조명
+                </div>
+                <div style={{ fontSize: 'var(--t-body)', fontWeight: 400, color: 'var(--fg2)', lineHeight: '40px', whiteSpace: 'pre-line' }}>{m.lighting.replace(/, /g, '\n')}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Step2({ activeSwitch, onSelectSwitch }) {
+  const sw = switches[activeSwitch];
+  const d = sw.detail;
+
+  // 활성 스위치 변경 시: 모듈 state 동기화 → 포스커브 + 주파수 그래프(라인·바·info·pill) 그림.
+  // 빈 SVG/div(children 없음)는 React가 내부를 건드리지 않으므로 명령형 innerHTML이 유지됨.
+  useEffect(() => {
+    s2.activeSwitch = activeSwitch;
+    drawForceCurve();
+    startWave();
+    return () => stopWave();
+  }, [activeSwitch]);
+
+  return (
+    <div className="s2-layout">
+      <div className="sidebar">
+        <div className="sidebar-list" id="s2-list">
+          {Object.values(switches).map(s => (
+            <button className={'sidebar-item s2-switch-item ' + (s.id === activeSwitch ? 'active' : '')} key={s.id} onClick={() => onSelectSwitch(s.id)}>
+              <div className="s2-img-wrap"><img src={nookkiForSwitch(s)} alt={s.name} /></div>
+              <div className="sidebar-item-name">{s.name}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="s2-detail">
+        <div className="switch-header">
+          <div className="switch-name-row">
+            <div className="switch-color-bar" id="s2-color-bar" style={{ background: sw.color }}></div>
+            <div className="switch-name" id="s2-name">{sw.name}</div>
+            <div className="switch-badge" id="s2-type">{sw.type}</div>
+          </div>
+          <div className="switch-desc" id="s2-desc">{sw.desc}</div>
+        </div>
+
+        <div className="switch-detail-card" id="s2-detail-card">
+          <div className="sdc-specs">
+            <div className="sdc-spec"><div className="sdc-spec-label">작동력</div><div className="sdc-spec-value">{d.opForce}</div></div>
+            <div className="sdc-spec"><div className="sdc-spec-label">선행이동거리</div><div className="sdc-spec-value">{d.preTravel}</div></div>
+            <div className="sdc-spec"><div className="sdc-spec-label">총이동거리</div><div className="sdc-spec-value">{d.totalTravel}</div></div>
+            <div className="sdc-spec"><div className="sdc-spec-label">수명</div><div className="sdc-spec-value">{d.life}</div></div>
+          </div>
+          <div className="sdc-summary">{d.summary}</div>
+          <div className="sdc-pros-cons">
+            <div>
+              <div className="sdc-col-title pro"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg> 장점</div>
+              <ul className="sdc-list pro">{d.pros.map((p, i) => <li key={i}>{p}</li>)}</ul>
+            </div>
+            <div>
+              <div className="sdc-col-title con"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="4" x2="12" y2="13" /><circle cx="12" cy="19" r="2" fill="currentColor" stroke="none" /></svg> 유의사항</div>
+              <ul className="sdc-list con">{d.cons.map((c, i) => <li key={i}>{c}</li>)}</ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="wave-card">
+          <div className="card-label">
+            타건음 주파수 분석
+            <button className="freq-play-btn" onClick={() => playWave()}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 18v-6a9 9 0 0 1 18 0v6" /><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" /></svg>
+              타건음 재생
+            </button>
+          </div>
+          <div className="freq-graphs">
+            <div className="freq-line-wrap">
+              <div className="freq-unit-label">(dB)</div>
+              <div className="freq-y-axis"><span>+20</span><span>+10</span><span>0</span><span>-10</span><span>-20</span></div>
+              <div className="freq-plot">
+                <svg id="freq-line-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
+                <div className="freq-peak-pill" id="freq-peak-pill"></div>
+              </div>
+              <div className="freq-x-axis"><span>20</span><span>200</span><span>2k</span><span>20k</span></div>
+              <div className="freq-unit-x">(Hz)</div>
+            </div>
+            <div className="freq-bars-wrap">
+              <div className="freq-plot">
+                <svg id="freq-bars-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
+              </div>
+              <div className="freq-x-axis"><span>100</span><span>1k</span><span>10k</span></div>
+              <div className="freq-unit-x">(Hz)</div>
+            </div>
+          </div>
+          <div className="freq-info-grid" id="freq-info-grid"></div>
+        </div>
+
+        <div className="force-card">
+          <div className="card-label">
+            포스 커브
+            <div className="badge" id="s2-force">{sw.force}</div>
+          </div>
+          <div className="force-curve-desc">키를 누르는 힘과 깊이의 관계</div>
+          <svg id="s2-svg" viewBox="-50 -30 470 280" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Step3({ brush, onSelectBrush, model }) {
+  const kbRef = useRef(null);
+
+  // 모델(레이아웃) 변경/마운트 시 키보드 그림 + 매핑 반영 + zone overlay
+  useEffect(() => {
+    s3.model = model;
+    s3.brush = brush;
+    if (kbRef.current) kbRef.current.innerHTML = buildKeyboardHTML();
+    updateKeyboard();
+    const t = setTimeout(renderZoneOverlays, 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line
+  }, [model]);
+
+  // brush 변경 시 모듈 동기화 (키 클릭 시 최신 brush 사용)
+  useEffect(() => { s3.brush = brush; }, [brush]);
+
+  const handleKbClick = (e) => {
+    const key = e.target.closest('.key[data-zone]');
+    if (!key) return;
+    paintZone(key.getAttribute('data-zone'));
+  };
+
+  return (
+    <div className="s3-layout">
+      <div className="sidebar">
+        <div className="sidebar-list" id="s3-list">
+          {Object.values(switches).map(s => (
+            <button className={'sidebar-item s3-brush-item ' + (s.id === brush ? 'active' : '')} key={s.id} onClick={() => onSelectBrush(s.id)}>
+              <div className="s3-stem-icon" style={{ color: s.color }}>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#ffffff" stroke="rgba(20,22,28,.6)" strokeWidth="1" />
+                  <circle cx="12" cy="12" r="6.8" fill="rgba(20,22,28,.06)" stroke="rgba(20,22,28,.2)" strokeWidth=".5" />
+                  <path d="M10.6 7.4 H13.4 V10.6 H16.6 V13.4 H13.4 V16.6 H10.6 V13.4 H7.4 V10.6 H10.6 Z" fill="currentColor" stroke="rgba(0,0,0,.35)" strokeWidth=".4" />
+                </svg>
+              </div>
+              <div className="sidebar-item-name">{s.name}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="s3-detail">
+        <div>
+          <div className="step-heading">커스텀 스위치 맵핑</div>
+          <div className="step-sub">스위치를 선택하여 하단 기판을 터치하여 체결하세요.</div>
+        </div>
+        <div className="keyboard-wrap" id="kb-wrap" onClick={handleKbClick}>
+          <button className="s3-reset-btn" onClick={resetMapping} aria-label="맵핑 초기화">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" /></svg>
+          </button>
+          <button className="s3-tip-btn" onClick={() => showHelpModal()}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6" /><path d="M10 22h4" /><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" /></svg>
+            추천 팁
+          </button>
+          <div ref={kbRef} style={{ display: 'contents' }}></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 빌더 리뷰(빌드 완성) — 3D model-viewer + 선택 모델 정보 + 스위치 배치도
+function Step3Review({ model, color }) {
+  const kbRef = useRef(null);
+  const mvRef = useRef(null);
+  const glb = model && model.glbImages && model.glbImages[color];
+  const L = glb ? getLightingFor(color, glb) : null;
+
+  useEffect(() => {
+    if (kbRef.current) kbRef.current.innerHTML = renderReviewKeyboard();
+    if (glb && mvRef.current) applyGlbOverrides(mvRef.current, glb);
+    // eslint-disable-next-line
+  }, []);
+
+  return (
+    <div className="s3-review">
+      <div style={{ textAlign: 'center' }}>
+        <div className="step-heading">커스텀 빌드 완성</div>
+        <div className="step-sub">화면을 스와이프하여 완성된 키보드를 360도로 감상하세요.</div>
+      </div>
+      <div className="review-3d">
+        {glb ? (
+          <model-viewer ref={mvRef} src={glbUrl(glb)} alt={(model ? model.name : '') + ' ' + color}
+            camera-controls="" touch-action="pan-y" auto-rotate="" auto-rotate-delay="2000" rotation-per-second="15deg"
+            exposure={L.exposure} shadow-intensity={L.shadow} shadow-softness={L.softness || '0.85'}
+            environment-image={L.env} tone-mapping={L.tone}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', background: 'transparent' }}></model-viewer>
+        ) : null}
+      </div>
+      <div className="review-info-stack">
+        <div className="review-info-card">
+          <div className="ric-side">
+            <div className="ric-label">선택 모델</div>
+            <div className="ric-title">{model ? model.name : '—'}</div>
+            <div className="ric-sub">{model ? model.layout : ''} · {color}</div>
+          </div>
+          <div className="ric-img-wrap"></div>
+        </div>
+        <div className="review-info-card review-info-card-stack">
+          <div className="ric-label">스위치 배치도</div>
+          <div className="ric-kb-wrap" ref={kbRef}></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BuilderScreen({ onHome }) {
+  const [step, setStep] = useState(1);
+  const [model, setModel] = useState(null);
+  const [color, setColor] = useState('블랙');
+  const [activeSwitch, setActiveSwitch] = useState('red');
+  const [brush, setBrush] = useState('red');
+  const [buildMode, setBuildMode] = useState('build');
+
+  // 빌더 마운트(진입) 시 step3 모듈 상태 초기화 — v2 go('builder') 리셋과 동치
+  useEffect(() => {
+    s3.mapping = { base:null, alphas:null, wasd:null, mods:null, spacebar:null, esc:null, fn:null, arrows:null, numpad:null, nav:null, media:null };
+    s3.brush = 'red';
+    s3.model = null;
+  }, []);
+
+  const selectModel = (id) => {
+    const m = models.find(x => x.id === id);
+    setModel(m);
+    setColor(m.colors[0]);
+  };
+  const selectBrush = (id) => { setBrush(id); s3.brush = id; };
+
+  const handlePrev = () => {
+    if (step === 1 && model) { setModel(null); return; }
+    if (step === 3 && buildMode === 'review') { setBuildMode('build'); return; }
+    if (step > 1) setStep(step - 1);
+  };
+  const handleNext = () => {
+    if (step === 1 && !model) return;
+    if (step === 2) { setBrush(activeSwitch); s3.brush = activeSwitch; setStep(3); return; }
+    if (step === 3 && buildMode === 'build') {
+      const glb = model && model.glbImages && model.glbImages[color];
+      if (!glb) { setBuildMode('review'); return; }
+      showModelLoadingModal(glbUrl(glb), () => setBuildMode('review'));
+      return;
+    }
+    if (step === 3 && buildMode === 'review') { showQrModal(); return; }
+    setStep(step + 1);
+  };
+
+  const hidePrev = (step === 1 && !model);
+  const nextDisabled = (step === 1 && !model);
+  const isReview = (step === 3 && buildMode === 'review');
+
+  return (
+    <div className="screen active" id="screen-builder">
+      <div className="content-header">
+        <button className="home-btn" onClick={onHome} aria-label="홈으로"><HomeIcon /></button>
+        <Stepper step={step} />
+        <div></div>
+      </div>
+      <div id="builder-main">
+        {step === 1 && <Step1 model={model} color={color} onSelectModel={selectModel} onSelectColor={setColor} />}
+        {step === 2 && <Step2 activeSwitch={activeSwitch} onSelectSwitch={setActiveSwitch} />}
+        {step === 3 && buildMode === 'build' && <Step3 brush={brush} onSelectBrush={selectBrush} model={model} />}
+        {step === 3 && buildMode === 'review' && <Step3Review model={model} color={color} />}
+      </div>
+      <div className="kiosk-footer">
+        <button className="btn-secondary" id="btn-prev" onClick={handlePrev} style={{ visibility: hidePrev ? 'hidden' : 'visible' }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6" /></svg>
+          이전으로
+        </button>
+        <button className={'btn-next' + (nextDisabled ? ' disabled' : '') + (isReview ? ' cherry' : '')} id="btn-next" onClick={handleNext}>
+          {nextDisabled ? (
+            <React.Fragment>모델을 선택하세요 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg></React.Fragment>
+          ) : isReview ? (
+            <React.Fragment>견적서 생성 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="17" width="3" height="3" /><rect x="20" y="14" width="1" height="3" /><rect x="17" y="14" width="3" height="1" /></svg></React.Fragment>
+          ) : (
+            <React.Fragment>다음 단계 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6" /></svg></React.Fragment>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [screen, setScreen] = useState('landing');
+
+  return (
+    <React.Fragment>
+      {screen === 'landing' && <Landing onStart={() => setScreen('home')} />}
+      {screen === 'home' && <Home onNav={(s) => setScreen(s)} />}
+      {screen === 'history' && (
+        <HistoryScreen onHome={() => setScreen('home')} onBuilder={() => setScreen('builder')} />
+      )}
+      {screen === 'tech' && (
+        <TechScreen onHome={() => setScreen('home')} onBuilder={() => setScreen('builder')} />
+      )}
+      {screen === 'builder' && (
+        <BuilderScreen onHome={() => setScreen('home')} />
+      )}
+    </React.Fragment>
+  );
+}
+
+/* ───── SCALE: 1080x1920 캔버스를 뷰포트에 맞춰 균등 스케일 ───── */
+function scaleKiosk() {
+  const kiosk = document.getElementById('kiosk');
+  if (!kiosk) return;
+  const scaleX = window.innerWidth / 1080;
+  const scaleY = window.innerHeight / 1920;
+  const scale = Math.min(scaleX, scaleY);
+  kiosk.style.transform = `scale(${scale})`;
+  // v2와 동일한 세로 위치 보정 — flex 중앙정렬 + marginTop으로 정수 픽셀 정렬 유지
+  kiosk.style.marginTop = `${(window.innerHeight - 1920 * scale) / 2}px`;
+}
+window.addEventListener('resize', scaleKiosk);
+window.addEventListener('load', scaleKiosk);
+scaleKiosk();
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+</body>
+</html>
