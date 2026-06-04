@@ -24,37 +24,8 @@
     --border:  var(--gray-200);  /* 경계선 */
     --surface: #ffffff;           /* 카드 배경 (순백 유지) */
     --bg:      #f4f5f7;           /* 페이지 배경 (warm tint 유지) */
-    --radius: 24px;
-    --radius-lg: 36px;
 
-    /* ── Typography ── */
-    --font-family: 'Pretendard Variable', 'Pretendard', 'Noto Sans KR', sans-serif;
-    --font-display:   160px;  /* Landing "Cherry" */
-    --font-heading-1:  96px;  /* Page title (History, Tech) */
-    --font-heading-2:  64px;  /* Section heading */
-    --font-heading-3:  44px;  /* Card title / Sub-heading */
-    --font-heading-4:  38px;  /* Small heading */
-    --font-title:      28px;  /* List title / Sidebar label */
-    --font-body-lg:    22px;  /* Body large */
-    --font-body:       18px;  /* Body default */
-    --font-caption:    14px;  /* Eyebrow / Caption */
-    --line-height-tight: 1.1;
-    --line-height-normal: 1.5;
-    --line-height-relaxed: 1.7;
-    --letter-spacing-tight: -1.5px;
-    --letter-spacing-normal: 0;
-    --letter-spacing-wide: 2px;
-
-    /* ═══════════════════════════════════════════════════════════════
-       DESIGN TOKENS v2 — 신규 추가, 아직 미적용 상태.
-       다음 단계에서 코드의 px 값을 var()로 점진적으로 치환할 예정.
-       기존 --font-*, --line-height-*, --letter-spacing-* 토큰은
-       실제 코드에서 사용되지 않는 죽은 코드(0 reference)이지만,
-       1단계에서는 손대지 않고 새 토큰은 --t-/--fw-/--s-/--gray-/--r-
-       네임스페이스로 분리해 추가만 함.
-       ═══════════════════════════════════════════════════════════════ */
-
-    /* ── Typography scale (12 tier, 실측 후 확장) ── */
+    /* ── Typography scale (12 tier) ── */
     --t-hero:      160px;  /* 랜딩 CHERRY */
     --t-display:   142px;  /* home hero */
     --t-page-xl:    96px;  /* 콘텐츠 페이지 헤더 (역사·기술) */
@@ -577,7 +548,7 @@
     width: 100%; margin-top: var(--s-20);
   }
   .feature-card {
-    background: var(--surface); border-radius: var(--radius);
+    background: var(--surface); border-radius: var(--r-lg);
     padding: 40px 36px; border: 1.5px solid var(--border);
     display: flex; flex-direction: column; gap: var(--s-4);
   }
@@ -646,7 +617,7 @@
   .step-sub { font-size: var(--t-h3); font-weight: 500; color: var(--fg2); margin-bottom: var(--s-12); }
   .model-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--s-6); flex: 1; }
   .model-card {
-    background: var(--surface); border-radius: var(--radius-lg);
+    background: var(--surface); border-radius: var(--r-xl);
     border: 2px solid var(--border); cursor: pointer;
     padding: 32px 28px; display: flex; flex-direction: column;
     transition: all .2s; position: relative; overflow: hidden;
@@ -735,7 +706,7 @@
   .detail-panel { flex: 1; padding: var(--s-12); overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-8); }
   .detail-3d-preview {
     width: 100%; height: 360px; flex-shrink: 0;
-    border-radius: var(--radius-lg); background: #ffffff;
+    border-radius: var(--r-xl); background: #ffffff;
     border: 1.5px solid var(--border);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     position: relative; overflow: hidden; gap: var(--s-4);
@@ -743,7 +714,7 @@
     box-sizing: border-box;
   }
   .detail-card {
-    background: var(--surface); border-radius: var(--radius);
+    background: var(--surface); border-radius: var(--r-lg);
     border: 1.5px solid var(--border); padding: var(--s-10);
     display: flex; flex-direction: column; gap: var(--s-8);
   }
@@ -806,7 +777,7 @@
   .audio-play-icon svg { fill: white; width: 20px; height: 20px; margin-left: var(--s-1); }
 
   .wave-card {
-    background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); padding: var(--s-8);
+    background: var(--surface); border-radius: var(--r-lg); border: 1.5px solid var(--border); padding: var(--s-8);
     display: flex; flex-direction: column; gap: var(--s-5);
   }
   .card-label { font-size: var(--t-h2); font-weight: 700; color: var(--fg); display: flex; justify-content: space-between; align-items: center; }
@@ -903,7 +874,7 @@
   .freq-info-desc { font-size: var(--t-body); color: var(--fg3); line-height: 1.4; white-space: pre-line; }
 
   .force-card {
-    background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); padding: var(--s-8);
+    background: var(--surface); border-radius: var(--r-lg); border: 1.5px solid var(--border); padding: var(--s-8);
     display: flex; flex-direction: column; gap: var(--s-4);
   }
   /* 포스커브 설명 — 스위치 설명 한 줄(.sdc-summary)과 동일 글꼴/사이즈 */
@@ -912,7 +883,7 @@
   #s2-svg { width: 100%; height: 480px; display: block; }
 
   .switch-detail-card {
-    background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border);
+    background: var(--surface); border-radius: var(--r-lg); border: 1.5px solid var(--border);
     padding: var(--s-8); display: flex; flex-direction: column; gap: var(--s-6);
   }
   .sdc-summary { font-size: var(--t-h3); color: var(--fg2); line-height: 1.6; }
@@ -934,7 +905,7 @@
 
   .tech-card {
     background: var(--cherry-light); border: 1.5px solid var(--cherry-mid);
-    border-radius: var(--radius); padding: var(--s-8);
+    border-radius: var(--r-lg); padding: var(--s-8);
     display: flex; gap: var(--s-5);
   }
   .tech-icon { width: 52px; height: 52px; border-radius: var(--r-md); background: var(--cherry); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -975,7 +946,7 @@
   .keyboard-wrap {
     flex: 1; min-height: 0;
     background: linear-gradient(145deg, #f0f2f5, #e4e8ef);
-    border-radius: var(--radius-lg); border: 1.5px solid var(--border);
+    border-radius: var(--r-xl); border: 1.5px solid var(--border);
     display: flex; flex-direction: column; align-items: stretch; justify-content: center;
     gap: var(--s-4); padding: 24px 12px; overflow: hidden;
     position: relative;
@@ -1062,7 +1033,7 @@
   /* ── STEP 3 REVIEW ── */
   .s3-review { flex: 1; padding: 56px 48px; display: flex; flex-direction: column; gap: var(--s-8); overflow-y: auto; }
   .review-3d {
-    flex: 1; min-height: 500px; border-radius: var(--radius-lg);
+    flex: 1; min-height: 500px; border-radius: var(--r-xl);
     background: linear-gradient(145deg, #f0f2f5, #e4e8ef);
     border: 1.5px solid var(--border);
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--s-5);
@@ -1072,7 +1043,7 @@
   /* ── REVIEW 페이지 — 가로형 2박스 스택 ── */
   .review-info-stack { display: flex; flex-direction: column; gap: var(--s-5); }
   .review-info-card {
-    background: var(--surface); border-radius: var(--radius); padding: 28px 32px;
+    background: var(--surface); border-radius: var(--r-lg); padding: 28px 32px;
     border: 1.5px solid var(--border);
     display: flex; align-items: center; gap: var(--s-8);
   }
