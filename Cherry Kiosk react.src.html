@@ -184,8 +184,8 @@
   .landing-top-logo {
     position: absolute; top: 4%; left: 0; right: 0;
     display: flex; align-items: center; justify-content: center; gap: var(--s-1);
-    /* 브랜드 텍스트를 아이콘 높이(104px)에 맞춰 키우고 line-height:1로 박스를 타이트하게 */
-    font-size: 104px; line-height: 1; font-weight: 900; color: var(--cherry); letter-spacing: 2px;
+    /* 브랜드 텍스트 = 메인 허브 'CHERRY 역사' 제목과 동일 크기(var(--t-h1)=46px). 텍스트 좌 / 아이콘 우. */
+    font-size: var(--t-h1); line-height: 1; font-weight: 900; color: var(--cherry); letter-spacing: 2px;
     z-index: 5;
   }
   .landing-cherry-icon { width: 104px; height: 104px; margin-top: -4px; }
@@ -2495,8 +2495,8 @@ function Landing({ onStart }) {
     <div className="screen active" id="screen-landing" onClick={onStart}>
       <div className="landing-bg-kb"></div>
       <div className="landing-top-logo">
-        <img src="images/logo.svg" className="landing-cherry-icon" alt="Cherry" />
         <span>CHERRY</span>
+        <img src="images/logo.svg" className="landing-cherry-icon" alt="Cherry" />
       </div>
       <div className="landing-content">
         <div className="landing-title-cherry">CHERRY</div>
