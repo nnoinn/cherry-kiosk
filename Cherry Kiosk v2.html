@@ -121,12 +121,13 @@
   }
   .landing-top-logo {
     position: absolute; top: 4%; left: 0; right: 0;
-    display: flex; align-items: center; justify-content: center; gap: 2px;
+    display: flex; align-items: center; justify-content: center; gap: 0;
     /* 브랜드 텍스트 = 메인 허브 'CHERRY 역사' 제목과 동일 크기(var(--t-h1)=46px). 텍스트 좌 / 아이콘 우. */
     font-size: var(--t-h1); line-height: 1; font-weight: 900; color: var(--cherry); letter-spacing: 2px;
     z-index: 5;
   }
-  .landing-cherry-icon { width: 80px; height: 80px; margin-top: -4px; }
+  /* margin-left 음수 — 로고 SVG 자체 좌측 여백까지 당겨 텍스트에 밀착 */
+  .landing-cherry-icon { width: 80px; height: 80px; margin-top: -4px; margin-left: -8px; }
   .landing-bg-kb {
     position: absolute; inset: 0;
     pointer-events: none;
