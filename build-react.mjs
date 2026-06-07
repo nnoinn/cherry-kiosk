@@ -44,5 +44,5 @@ html = html.replace(
 
 writeFileSync(OUT, html, 'utf8');
 console.log('✅ 빌드 완료:', OUT, '(' + html.length + ' chars)');
-console.log('   babel.min.js 제거됨:', !html.includes('@babel/standalone'));
+console.log('   babel.min.js 제거됨:', !html.includes('standalone/babel.min.js'));
 console.log('   text/babel 제거됨:', !html.includes('text/babel'));
