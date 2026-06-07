@@ -3265,6 +3265,10 @@ function showQrModal() {
       </svg>
     </div>
     <button class="modal-full-btn" style="font-size: var(--t-h2)" onclick="location.reload()">처음으로 돌아가기</button>`);
+  // 견적서 완료 모달이 뜬 뒤 20초가 지나면 자동으로 처음 화면(랜딩)으로 복귀.
+  // 무인 키오스크 — 사용자가 떠나도 다음 사용자를 위해 초기 상태로 되돌린다.
+  // 페이지가 리로드되면 타이머도 사라지므로 clearTimeout 불필요. (타이머 UI 미표시)
+  setTimeout(() => { location.reload(); }, 20000);
 }
 
 /* Hash-driven auto-navigation for screenshot capture */
