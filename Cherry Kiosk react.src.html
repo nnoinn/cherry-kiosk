@@ -1323,6 +1323,8 @@ const CtaArrowIcon = () => (
 );
 
 /* ───── DATA ───── */
+
+// CHERRY 연표 — 역사 페이지 타임라인. 각 항목 { y:연도, d:설명(\n으로 줄바꿈) }.
 const historyEvents = [
   { y:'1953', d:"미국에서 'Cherry Electrical Products Corporation' 설립. 마이크로스위치 생산 시작." },
   { y:'1963', d:'유럽 시장 진출. 합작 회사를 통해\n독일에 첫 발 내딛음.' },
@@ -1341,6 +1343,7 @@ const historyEvents = [
   { y:'2022', d:'스웨덴의 e스포츠 전문 기업\nXtrfy(엑스트리파이) 인수 합병.' },
 ];
 
+// 기술력 카드 데이터(4종). { num, name, img, desc(\n 줄바꿈), pills:[키워드…] }.
 const techItems = [
   {
     num:'01', name:'골드 크로스포인트 접점 시스템',
@@ -1368,6 +1371,7 @@ const techItems = [
   },
 ];
 
+// 모델명 → 누끼(투명배경) 썸네일 경로. 라인업 3x3 그리드·사이드바 리스트에서 사용.
 const modelNookkiMap = {
   'KC 500 MX LP': 'images/keyboard_housing/KC 500 MX LP_black.webp',
   'KC 200 MX':    'images/model_nookki/KC 200 MX.png',
@@ -1381,6 +1385,10 @@ const modelNookkiMap = {
 };
 const nookkiForModel = m => modelNookkiMap[m.name] || m.img;
 
+// 베이스 키보드 모델 9종. 각 항목 필드:
+//  id·name·series·layout(배열)·housing(소재)·connect(연결,\n 다중)·keycap·polling·
+//  img(대표 사진) / pros(장점)·recommendUser·lighting(조명) /
+//  colors(선택 색상)·housingImages(색상별 2D 미리보기)·glbImages(색상별 3D GLB)
 const models = [
   { id:'m0', name:'KC 500 MX LP', series:'KC', layout:'풀사이즈(100%)', housing:'양극산화 금속판', connect:'유선(USB-A)', keycap:'PBT / 더블샷 (이색사출)', polling:'1ms', img:'images/KC 500 MX LP.jpg',
     pros:['초슬림 로우프로파일 기계식 키보드 (19.1mm)','하이엔드 PBT 키캡으로 내구성 우수'],
@@ -1503,6 +1511,10 @@ const models = [
     } },
 ];
 
+// MX 스위치 7종(red/brown/blue/black/clear/grey/silent). 각 항목:
+//  id·name·type(Linear/Tactile/Clicky/Silent)·force(작동력)·desc·img /
+//  detail{ opForce·preTravel·totalTravel·life·summary·pros·cons } /
+//  color(대표색)·stroke(그래프 선색)·path(포스커브 SVG: x=키눌림거리, y=힘)
 const switches = {
   red:    { id:'red',    name:'MX Red',        type:'Linear',  force:'45cN', desc:'부드러운 저음역, 선형 타건감', img:'images/MX RED.webp',
     detail: { opForce:'45cN', preTravel:'2.0mm', totalTravel:'4.0mm', life:'≥1억 회',
@@ -1548,6 +1560,7 @@ const switches = {
     }, color:'#fb7185', stroke:'#fb7185', path:'M0,150 L150,131 L300,107 L350,98 L365,93 Q372,75 370,67' },
 };
 
+// 스위치 id → 누끼 썸네일 경로. 스위치 분석 사이드바에서 사용.
 const switchNookkiMap = {
   red:    'images/switch_nookki/MX RED.png',
   brown:  'images/switch_nookki/MX BROWN.png',
@@ -1559,6 +1572,7 @@ const switchNookkiMap = {
 };
 const nookkiForSwitch = s => switchNookkiMap[s.id] || s.img;
 
+// 스위치 id → 타건음 mp3 경로. 타건음 재생·사전 FFT 분석에 사용.
 const soundFiles = {
   red:    'data/sound_of_switchs/MX Red.mp3',
   brown:  'data/sound_of_switchs/MX Brown.mp3',
@@ -1569,6 +1583,8 @@ const soundFiles = {
   silent: 'data/sound_of_switchs/MX Silent Red.mp3',
 };
 
+// 스위치별 주파수 특성. peak/secondary(주력·보조 Hz 대역)·clickLevel(클릭음 강도)·
+// character(설명)·cards(주파수 분석 하단 설명 카드). 그래프 곡선·막대 생성에 사용.
 const freqData = {
   red:    { peak:[250,900],    secondary:[1200,2200], clickLevel:0.15, character:'클릭음 없이 부드럽고 균일한 도각음',
             cards:[{t:'부드러운 저음', d:'250-900Hz 중심의\n풍부한 사운드'},{t:'낮은 소음', d:'약한 고조파,\n자연스러운 타건음'},{t:'선형 타건감', d:'일정한 타건 패턴,\n균일한 피드백'}] },
@@ -1602,6 +1618,8 @@ const s2 = { activeSwitch: 'red' };
 let waveRaf = null;
 let audioEl = null, audioCtx = null, audioAnalyser = null, audioSrcNode = null, audioData = null;
 let preloadEl = null, preloadAnalyser = null, preloadSrcNode = null, preloadData = null;
+// 오디오 그래프 1회 구성 — <audio> + AudioContext + AnalyserNode(FFT 1024).
+// 재생 시 AnalyserNode로 주파수 데이터를 읽어 막대 그래프를 그린다.
 function ensureAudio() {
   if (!audioEl) { audioEl = new Audio(); audioEl.preload = 'auto'; }
   if (!audioCtx) {
@@ -1618,6 +1636,7 @@ function ensureAudio() {
   }
   return true;
 }
+// 사전 분석 전용 오디오 그래프(무음) — destination 미연결로 소리 없이 FFT만 캡처.
 function ensurePreload() {
   if (!ensureAudio()) return false;
   if (!preloadEl) {
@@ -1634,6 +1653,8 @@ function ensurePreload() {
 }
 
 let preloadQueueStarted = false;
+// 모든 스위치를 순차 무음 재생하며 FFT 실루엣(ghost)을 미리 캡처하는 큐.
+// 현재 선택 스위치 먼저, 나머지 차례로. 막대 그래프의 배경 실루엣으로 쓰임.
 function startPreloadQueue() {
   const order = (s2.activeSwitch ? [s2.activeSwitch] : []).concat(
     ['red','brown','blue','black','clear','grey','silent'].filter(s => s !== s2.activeSwitch)
@@ -1645,6 +1666,7 @@ function startPreloadQueue() {
     preloadGhostForSwitch(order[i++], next);
   })();
 }
+// 한 스위치 사운드를 무음 재생하며 매 프레임 FFT 최댓값을 누적해 ghost 생성.
 function preloadGhostForSwitch(swId, done) {
   if (freqGhostFromAudio[swId]) { done && done(); return; }
   if (!ensurePreload()) { done && done(); return; }
@@ -1687,6 +1709,8 @@ function preloadGhostForSwitch(swId, done) {
   else poll();
 }
 
+// 좌측 라인 그래프(주파수 응답 곡선) — freqData의 peak/secondary로 가우시안 봉우리를
+// 합성해 dB 곡선을 만들고 SVG path로 그림. 피크 pill·우측 막대·info 카드도 함께 갱신.
 function renderFreqGraphs() {
   const swId = s2.activeSwitch;
   const sw = switches[swId];
@@ -1782,10 +1806,12 @@ function renderFreqGraphs() {
   `).join('');
 }
 
+// 우측 막대 스펙트럼 설정 — 막대 개수(24), 주파수 범위(100Hz~10kHz, 로그 스케일).
 const FREQ_BAR_N = 24;
 const FREQ_BAR_MIN = 100, FREQ_BAR_MAX = 10000;
 const freqGhost = {};
 
+// 막대 24개 각각의 (저, 고) 주파수 경계(Hz) — 100Hz~10kHz 로그 분할.
 function freqBarRanges() {
   const lMin = Math.log10(FREQ_BAR_MIN), lMax = Math.log10(FREQ_BAR_MAX);
   const out = [];
@@ -1797,6 +1823,7 @@ function freqBarRanges() {
   return out;
 }
 
+// 재생 전 미리 보이는 막대 실루엣(envelope) — freqData 기반 근사 스펙트럼.
 function buildEnvelopeGhost(swId) {
   const fd = freqData[swId];
   if (!fd) return null;
@@ -1821,6 +1848,8 @@ function buildEnvelopeGhost(swId) {
 }
 
 const BAR_MAX_H = 800;
+// 우측 막대 스펙트럼 SVG 렌더 — ghost(캡처된 실루엣, 연하게)와 live(재생 중 실제 FFT,
+// 좌→우 스윕)를 그라데이션 막대로 그림. progress(0~1)로 스윕 위치 결정.
 function paintFreqBars(opts) {
   const N = FREQ_BAR_N;
   const VB_W = 1000, BASE_Y = 1000;
@@ -1882,6 +1911,7 @@ function paintFreqBars(opts) {
   if (svg) svg.innerHTML = svgInner;
 }
 
+// 정적 막대 표시(재생 안 함) — 캡처된 ghost만. 미캡처면 사전 분석 큐를 트리거.
 function renderFreqBars() {
   const swId = s2.activeSwitch;
   const sw = switches[swId];
@@ -1894,6 +1924,7 @@ function renderFreqBars() {
 }
 
 const freqGhostFromAudio = {};
+// 재생 중 매 프레임 — AnalyserNode에서 FFT를 읽어 live 막대 + ghost(최댓값 누적) 갱신.
 function renderFreqBarsFromAudio() {
   if (!audioAnalyser || !audioData) return;
   audioAnalyser.getByteFrequencyData(audioData);
@@ -1925,6 +1956,7 @@ function renderFreqBarsFromAudio() {
   paintFreqBars({ color: sw.color, ghost, live, progress });
 }
 
+// 타건음 재생 — 오디오 src 설정·재생 후 RAF 루프로 막대 그래프를 실시간 갱신.
 function playWave() {
   const swId = s2.activeSwitch;
   const src = soundFiles[swId];
@@ -1993,6 +2025,10 @@ const s3 = {
   mapping: { base:null, alphas:null, wasd:null, mods:null, spacebar:null, esc:null, fn:null, arrows:null, numpad:null, nav:null, media:null },
 };
 
+// 키보드 레이아웃 데이터 — 키 객체 { l:라벨, w:너비클래스(w1=1u, w15=1.5u…), z:존 }.
+// z(존)는 매핑 단위(alphas/wasd/mods/fn/numpad…), '_gap'은 빈 칸(매핑 안 됨).
+// G는 좌/우 블록 사이 간격 스페이서. 레이아웃 4종(Full/TKL/Compact96/Compact65)은
+// getActiveLayout()이 모델 layout 문자열로 선택. splitIdx로 좌/우 분할 렌더.
 const G = {l:'',w:'wg',z:'_gap'};
 const kbRowsFull = [
   [{l:'Esc',w:'w1',z:'esc'}, {l:'',w:'w05',z:'_gap'}, {l:'',w:'w05',z:'_gap'}, {l:'F1',w:'w1',z:'fn'},{l:'F2',w:'w1',z:'fn'},{l:'F3',w:'w1',z:'fn'},{l:'F4',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F5',w:'w1',z:'fn'},{l:'F6',w:'w1',z:'fn'},{l:'F7',w:'w1',z:'fn'},{l:'F8',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F9',w:'w1',z:'fn'},{l:'F10',w:'w1',z:'fn'},{l:'F11',w:'w1',z:'fn'},{l:'F12',w:'w1',z:'fn'}, G, {l:'PrtSc',w:'w1',z:'nav'},{l:'ScrLk',w:'w1',z:'nav'},{l:'Pause',w:'w1',z:'nav'}, G, {l:'Vol-',w:'w1',z:'media'},{l:'Mute',w:'w1',z:'media'},{l:'Vol+',w:'w1',z:'media'},{l:'Calc',w:'w1',z:'media'}],
@@ -2026,6 +2062,8 @@ const kbRowsCompact65 = [
   [{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w579',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'},{l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'},{l:'→',w:'w1',z:'arrows'}],
 ];
 
+// 모델 layout 문자열로 빌드 키보드 레이아웃 선택(Full/TKL/Compact96/Compact65).
+// rows(키 행 배열) + splitIdx(행별 좌/우 분할 인덱스) 반환.
 function getActiveLayout() {
   const layoutStr = (s3.model && s3.model.layout) || '';
   if (layoutStr.includes('TKL')) return { rows: kbRowsTKL, splitIdx: [12, 10, 10, 9, 9, 4], single: false };
@@ -2073,6 +2111,7 @@ function buildKeyboardHTML() {
   `;
 }
 
+// 키 클릭 시 — 해당 존(zone)에 현재 brush 스위치를 매핑하고 키보드를 갱신.
 function paintZone(zone) {
   if (!zone || zone === '_gap') return;
   s3.mapping[zone] = s3.brush;
@@ -2082,6 +2121,7 @@ function resetMapping() {
   Object.keys(s3.mapping).forEach(z => { s3.mapping[z] = null; });
   updateKeyboard();
 }
+// 키보드 DOM 갱신(명령형) — 각 키의 존 매핑에 따라 스템 색·mapped 클래스 적용.
 function updateKeyboard() {
   document.querySelectorAll('.key[data-zone]').forEach(el => {
     const zone = el.getAttribute('data-zone');
@@ -2104,6 +2144,8 @@ function updateKeyboard() {
   });
 }
 
+// 키보드 존 윤곽 오버레이 — 각 kb-plate에서 키 위치(offsetLeft/Top/Width/Height)를
+// 측정해 존별로 묶은 사각형 SVG를 그려 깔아둠. DOM 레이아웃 후 실행 필요(setTimeout 0).
 function renderZoneOverlays() {
   document.querySelectorAll('.zone-overlay-svg').forEach(el => el.remove());
   const skipZones = new Set(['alphas']);
@@ -2146,6 +2188,7 @@ function closeModal() {
 }
 window.closeModal = closeModal;
 
+// 추천 팁 모달 — 키 영역별 추천 스위치 안내(레이아웃 미리보기 + 설명 리스트).
 function showHelpModal() {
   const zoneRecColors = { alphas:'#d97706', wasd:'#ef4444', arrows:'#ef4444', mods:'#fb7185', spacebar:'#3b82f6', esc:'#94a3b8', nav:'#94a3b8' };
   const W_UNITS = { w1:1, w125:1.25, w15:1.5, w175:1.75, w2:2, w225:2.25, w625:6.25, wg:0.5 };
@@ -2194,12 +2237,15 @@ function showHelpModal() {
 
 /* ───── GLB·조명·리뷰 키보드·로딩/QR 모달 (v2 명령형 로직) ───── */
 const GLB_CACHE_VERSION = '20260529a';
+// GLB 캐시 무효화 URL — 버전 + 진입 시각 타임스탬프를 쿼리로 붙여 브라우저·
+// model-viewer 캐시를 우회(모델 파일 교체 시 새 파일을 받도록).
 function glbUrl(path) {
   if (!path) return path;
   const ts = (typeof window !== 'undefined' && window.__GLB_BUST_TS) || (window.__GLB_BUST_TS = Date.now());
   return path + (path.includes('?') ? '&' : '?') + 'v=' + GLB_CACHE_VERSION + '&t=' + ts;
 }
 const HDR_DEFAULT = 'neutral';
+// 모델 색상별 model-viewer 조명 프로파일(노출/그림자/톤매핑/환경맵).
 function mvLighting(color) {
   switch (color) {
     case '블랙': case '블랙/브론즈': return { exposure: '0.92', shadow: '0.45', tone: 'commerce', env: HDR_DEFAULT };
@@ -2217,10 +2263,13 @@ const glbLightingOverrides = {
   'models/model_color/KC500 MX LP_WHITE.glb': { exposure: '1.25', shadow: '0.30', tone: 'commerce', env: 'neutral' },
   'models/model_color/KW 550 MX LP_White.glb': { exposure: '1.20', shadow: '0.32', tone: 'neutral', env: 'neutral' },
 };
+// 조명 선택 — 특정 GLB에 전용 오버라이드가 있으면 그것, 없으면 색상 기본값.
 function getLightingFor(color, glbPath) {
   if (glbPath && glbLightingOverrides[glbPath]) return glbLightingOverrides[glbPath];
   return mvLighting(color);
 }
+// GLB별 머티리얼 baseColor 오버라이드 — 일부 화이트/특수 모델 색 보정용.
+// applyGlbOverrides()가 model-viewer 로드 후 머티리얼 이름으로 매칭해 적용.
 const glbOverrides = {
   'models/model_color/KC500 MX LP_WHITE.glb': {
     'Base':[0.78,0.78,0.76,1.0],'base upper':[0.93,0.97,0.85,1.0],'Good_Keys':[0.76,0.76,0.73,1.0],
@@ -2230,6 +2279,7 @@ const glbOverrides = {
   'models/model_color/KW 550 MX LP_White.glb': { 'cooper':[0.55,0.95,0.35,1.0],'Cherry':[0.95,0.95,0.92,1.0] },
   'models/model_color/KC 200 MX_White.glb': { 'Texture.001':[0.97,0.98,1.00,1.0] },
 };
+// model-viewer 로드 후 머티리얼 baseColor 보정 적용(glbOverrides 이름 매칭).
 function applyGlbOverrides(mvEl, glbPath) {
   const overrides = glbOverrides[glbPath];
   if (!overrides) return;
@@ -2249,6 +2299,8 @@ function applyGlbOverrides(mvEl, glbPath) {
   if (mvEl.model) apply();
 }
 
+// 리뷰(빌드 완성) 페이지용 통합 키보드 — 행을 main/nav/numpad 3섹션 그리드로 분할해
+// 정렬(빌드 페이지의 좌우 분할과 별개). TKL은 numpad 제거, Compact96은 nav 생략 변형.
 const reviewFullSections = [
   { main:[{l:'Esc',w:'w1',z:'esc'}, {l:'',w:'w05',z:'_gap'}, {l:'',w:'w05',z:'_gap'}, {l:'F1',w:'w1',z:'fn'},{l:'F2',w:'w1',z:'fn'},{l:'F3',w:'w1',z:'fn'},{l:'F4',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F5',w:'w1',z:'fn'},{l:'F6',w:'w1',z:'fn'},{l:'F7',w:'w1',z:'fn'},{l:'F8',w:'w1',z:'fn'}, {l:'',w:'w05',z:'_gap'}, {l:'F9',w:'w1',z:'fn'},{l:'F10',w:'w1',z:'fn'},{l:'F11',w:'w1',z:'fn'},{l:'F12',w:'w1',z:'fn'}],
     nav:[{l:'PrtSc',w:'w1',z:'nav'},{l:'ScrLk',w:'w1',z:'nav'},{l:'Pause',w:'w1',z:'nav'}],
@@ -2284,6 +2336,7 @@ const reviewCompact96Sections = [
   { main:[{l:'Ctrl',w:'w125',z:'mods'},{l:'Win',w:'w125',z:'mods'},{l:'Alt',w:'w125',z:'mods'},{l:'',w:'w582',z:'spacebar'},{l:'Alt',w:'w125',z:'mods'},{l:'Fn',w:'w125',z:'mods'},{l:'Ctrl',w:'w125',z:'mods'},{l:'←',w:'w1',z:'arrows'},{l:'↓',w:'w1',z:'arrows'}],
     nav:[], numpad:[{l:'→',w:'w1',z:'arrows'},{l:'0',w:'w1',z:'numpad'},{l:'.',w:'w1',z:'numpad'},{l:'',w:'w1',z:'_gap'}] },
 ];
+// 리뷰 통합 키보드 레이아웃 선택 — Full/TKL/Compact96은 섹션 그리드, 65%는 flat.
 function getReviewLayout() {
   const layoutStr = (s3.model && s3.model.layout) || '';
   if (layoutStr.includes('TKL')) return { type: 'sections', sections: reviewTklSections, cols: 'tkl' };
@@ -2291,6 +2344,7 @@ function getReviewLayout() {
   if (layoutStr.includes('컴팩트(96%)')) return { type: 'sections', sections: reviewCompact96Sections, cols: 'compact96' };
   return { type: 'sections', sections: reviewFullSections, cols: 'full' };
 }
+// 리뷰 통합 키보드 HTML 생성 — 매핑된 스위치 색으로 스템을 칠해 완성 배치를 표시.
 function renderReviewKeyboard() {
   const layout = getReviewLayout();
   const mediaIcons = {
@@ -2404,6 +2458,7 @@ function showModelLoadingModal(url, onDone) {
   setTimeout(() => { if (!finishedFlag) { clearInterval(poller); finish(); } }, 30000);
 }
 
+// 견적서 완료 모달 — QR + "처음으로 돌아가기". 20초 후 자동 리로드(아래 setTimeout).
 function showQrModal() {
   openModal(`
     <div class="modal-icon" style="background:#e8f5e9">
