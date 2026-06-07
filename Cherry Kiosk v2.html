@@ -130,6 +130,10 @@
     position: absolute; inset: 0;
     pointer-events: none;
     overflow: hidden;
+    background-image: url('images/landing-bg-keycaps.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   .landing-keycap {
     position: absolute;
@@ -784,20 +788,14 @@
     padding: 16px 28px; border-radius: var(--r-md); background: var(--cherry); color: #fff;
     font-size: var(--t-body-sm); font-weight: 700; border: none; cursor: pointer;
     display: flex; align-items: center; gap: var(--s-3);
-    box-shadow: 0 8px 24px rgba(197,48,69,.25); transition: filter .15s;
+    transition: filter .15s;
     animation: freqPlayPulse 1.8s ease-in-out infinite;
   }
   .freq-play-btn:active { filter: brightness(0.92); transform: scale(.97); animation: none; }
-  /* 테두리 반짝 — 클릭 유도용 펄스 글로우 */
+  /* 테두리 반짝 — 클릭 유도용 펄스 글로우 (드롭섀도우 없이 링만) */
   @keyframes freqPlayPulse {
-    0%, 100% {
-      box-shadow: 0 8px 24px rgba(197,48,69,.30),
-                  0 0 0 0 rgba(197,48,69,.55);
-    }
-    50% {
-      box-shadow: 0 10px 28px rgba(197,48,69,.45),
-                  0 0 0 10px rgba(197,48,69,0);
-    }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(197,48,69,.55); }
+    50%      { box-shadow: 0 0 0 10px rgba(197,48,69,0); }
   }
   .freq-graphs {
     display: grid; grid-template-columns: 2.6fr 1fr; gap: var(--s-5);
@@ -897,7 +895,7 @@
   .sdc-col-title { font-size: var(--t-body); font-weight: 800; margin-bottom: var(--s-3); display: flex; align-items: center; gap: var(--s-2); }
   .sdc-col-title.pro { color: #16a34a; }
   .sdc-col-title.con { color: #dc2626; }
-  .sdc-list { list-style: none; display: flex; flex-direction: column; gap: var(--s-3); }
+  .sdc-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
   /* 동그라미 구분자 제거 + 제목 글자("장"/"유") 시작점과 세로정렬 (아이콘 24px + gap 8px = 32px) */
   .sdc-list li { font-size: var(--t-body); color: var(--fg2); padding-left: var(--s-8); line-height: 1.5; white-space: nowrap; }
 
@@ -920,7 +918,8 @@
   .s3-tip-btn {
     position: absolute; top: 20px; right: 20px;
     display: flex; align-items: center; gap: var(--s-3);
-    padding: 16px 28px; border-radius: var(--r-pill);
+    padding: 0 28px; border-radius: var(--r-pill);
+    box-sizing: border-box; height: 68px;
     background: var(--surface); border: 1.5px solid var(--border);
     font-size: var(--t-h3); font-weight: 700; color: var(--fg2);
     cursor: pointer; z-index: 10; transition: all .15s;
@@ -2929,7 +2928,7 @@ function renderStep3(main) {
           </div>
           <div class="keyboard-wrap" id="kb-wrap">
             <button class="s3-reset-btn" onclick="resetMapping()" aria-label="맵핑 초기화">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
             </button>
             <button class="s3-tip-btn" onclick="showHelpModal()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
