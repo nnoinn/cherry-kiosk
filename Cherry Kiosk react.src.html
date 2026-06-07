@@ -802,6 +802,8 @@
     padding: 0;
   }
   .color-btn.active { border-color: var(--cherry); background: var(--cherry-light); color: var(--cherry); }
+  /* 터치 누름 피드백 — 꾸욱 들어가는 효과(축소 + 살짝 어둡게). transition: all .15s로 부드럽게. */
+  .color-btn:active { transform: scale(.95); filter: brightness(0.96); }
 
   .spec-list { display: flex; flex-direction: column; gap: var(--s-4); }
   .spec-item {
