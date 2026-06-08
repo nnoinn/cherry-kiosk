@@ -793,7 +793,7 @@
 
   .color-options { display: flex; gap: var(--s-5); flex-wrap: wrap; }
   .color-btn {
-    width: 200px; height: 80px;
+    width: 200px; height: 80px; flex-shrink: 0;
     border-radius: var(--r-md);
     border: 2px solid var(--border); background: var(--bg);
     font-size: var(--t-h3); font-weight: 700; cursor: pointer; transition: all .15s;
@@ -819,7 +819,9 @@
 
   /* ── STEP 2 ── */
   .s2-layout { flex: 1; display: flex; overflow: hidden; height: 100%; }
-  .s2-detail { flex: 1; padding: var(--s-12); overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-6); }
+  /* 터치는 브라우저 네이티브 스크롤(아이패드 등 손가락 드래그로 잘 됨) 유지.
+     데스크톱 마우스는 휠만 되므로 아래 JS로 마우스 드래그 스크롤을 추가(cursor:grab 힌트). */
+  .s2-detail { flex: 1; padding: var(--s-12); overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-6); cursor: grab; }
 
   .switch-header { display: flex; flex-direction: column; gap: var(--s-2); padding-bottom: var(--s-8); border-bottom: 1.5px solid var(--border); }
   .switch-name-row { display: flex; align-items: center; gap: var(--s-4); }
@@ -6040,6 +6042,40 @@ function Step2({
     startWave();
     return () => stopWave();
   }, [activeSwitch]);
+
+  // 데스크톱 마우스 드래그 스크롤 — 터치는 브라우저 네이티브 스크롤로 충분하므로
+  // pointerType이 'mouse'일 때만 화면을 잡아끌어 스크롤(휠 외 드래그도 가능하게).
+  useEffect(() => {
+    const el = document.querySelector('.s2-detail');
+    if (!el) return;
+    let down = false,
+      startY = 0,
+      startTop = 0;
+    const onDown = e => {
+      if (e.pointerType !== 'mouse') return; // 터치/펜은 네이티브에 맡김
+      down = true;
+      startY = e.clientY;
+      startTop = el.scrollTop;
+      el.style.cursor = 'grabbing';
+    };
+    const onMove = e => {
+      if (down) el.scrollTop = startTop - (e.clientY - startY);
+    };
+    const onUp = () => {
+      if (down) {
+        down = false;
+        el.style.cursor = 'grab';
+      }
+    };
+    el.addEventListener('pointerdown', onDown);
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    return () => {
+      el.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+    };
+  }, []);
   return /*#__PURE__*/React.createElement("div", {
     className: "s2-layout"
   }, /*#__PURE__*/React.createElement("div", {
@@ -6377,7 +6413,6 @@ function Step3Review({
     src: glbUrl(glb),
     alt: (model ? model.name : '') + ' ' + color,
     "camera-controls": "",
-    "touch-action": "pan-y",
     "auto-rotate": "",
     "auto-rotate-delay": "2000",
     "rotation-per-second": "15deg",
