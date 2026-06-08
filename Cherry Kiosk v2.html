@@ -729,7 +729,8 @@
   }
   .section-label .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cherry); }
 
-  .color-options { display: flex; gap: var(--s-5); flex-wrap: wrap; }
+  /* nowrap — 줌 레벨에서도 색상 버튼을 항상 한 줄로 유지(줄바꿈 방지) */
+  .color-options { display: flex; gap: var(--s-5); flex-wrap: nowrap; }
   .color-btn {
     width: 200px; height: 80px; flex-shrink: 0;
     border-radius: var(--r-md);
