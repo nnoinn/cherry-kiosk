@@ -8,13 +8,17 @@ Cherry 기계식 키보드 매장용 **인터랙티브 터치 키오스크**입�
 
 ## 1. 실행 방법
 
-### 가장 간단 — 브라우저로 열기
-`Cherry Kiosk react.html` 을 더블클릭하면 바로 실행됩니다.
+> 3D 모델(.glb)·타건음(.mp3)은 **로컬 웹서버**에서 열어야 정상 동작합니다(브라우저 보안정책). 아래 A~C 중 하나를 쓰세요.
 
-> ⚠️ 단, **3D 모델(.glb)·타건음(.mp3)** 은 브라우저 보안정책(`file://`) 때문에 로컬 서버로 열어야 정상 동작합니다. 아래 "로컬 서버" 방법을 권장합니다.
+### 방법 A — VSCode Live Server (가장 쉬움, 권장)
+1. VSCode 확장 탭(`Ctrl+Shift+X`)에서 **"Live Server"** (제작자: Ritwick Dey) 설치
+2. 이 프로젝트 폴더를 VSCode로 열기 (`File › Open Folder`)
+3. `Cherry Kiosk react.html` 파일을 연 뒤, 편집창에서 **우클릭 → "Open with Live Server"**
+   (또는 VSCode 오른쪽 아래 상태바의 **"Go Live"** 버튼 클릭)
+4. 브라우저가 자동으로 `http://127.0.0.1:5500/Cherry%20Kiosk%20react.html` 을 엽니다 ✅
 
-### 권장 — 로컬 서버
-프로젝트 폴더에서 아래 중 하나를 실행한 뒤, 브라우저로 접속합니다.
+### 방법 B — 터미널 로컬 서버
+프로젝트 폴더에서 아래 중 하나를 실행한 뒤 브라우저로 접속:
 ```
 python -m http.server 8000
 # 또는
@@ -22,24 +26,47 @@ npx serve
 ```
 → http://localhost:8000/Cherry%20Kiosk%20react.html
 
-### 온라인 — 설치 없이 확인
+### 방법 C — 온라인 (설치 없이 확인)
 https://cherry-kiosk.vercel.app/
+
+### ⚠️ 참고 — 더블클릭으로 직접 열면
+`Cherry Kiosk react.html` 을 더블클릭해도 화면은 뜨지만, **3D 모델과 타건음은 나오지 않습니다.** 브라우저가 `file://` 경로의 로컬 파일 접근을 막기 때문입니다. 반드시 위 A~C 중 하나로 실행하세요.
 
 ---
 
-## 2. 코드 보기 (중요)
+## 2. 두 개의 HTML 파일 — 왜 나뉘어 있나
 
-| 파일 | 용도 | 비고 |
+비슷한 이름의 HTML이 둘 있습니다. 역할이 다릅니다.
+
+| 파일 | 역할 | 설명 |
 |---|---|---|
-| **`Cherry Kiosk react.src.html`** | **소스 — 코드 리뷰용** | JSX 원본 + 상세 한글 주석. **코드는 이 파일을 보세요.** |
-| `Cherry Kiosk react.html` | 실행본 | 위 소스를 Babel로 컴파일한 산출물. 브라우저에서 바로 실행되도록 `React.createElement(...)` 형태로 변환돼 있어 **읽기에는 부적합**합니다. |
+| **`Cherry Kiosk react.src.html`** | 📝 **소스 (원본)** | 사람이 쓰고 읽는 파일. **JSX**(HTML처럼 생긴 React 문법) + 한글 주석. **코드 리뷰는 이 파일을 보세요.** |
+| `Cherry Kiosk react.html` | 📦 **빌드 산출물** | 위 소스를 기계가 번역한 결과. 브라우저가 바로 실행하는 용도. `React.createElement(...)` 형태라 **사람이 읽기엔 부적합**합니다. |
 
-### 빌드 (소스 → 실행본)
+### 같은 코드가 이렇게 달라집니다
+`src.html` — **JSX** (사람이 작성):
+```jsx
+<div className="screen active" onClick={onStart}>
+```
+`react.html` — **컴파일된 JS** (기계가 변환):
+```js
+React.createElement("div", { className: "screen active", onClick: onStart })
+```
+
+### 왜 빌드 산출물이 따로 필요한가?
+- 브라우저는 **JSX를 직접 읽지 못합니다.** 그래서 자바스크립트로의 "번역"이 필요합니다.
+- 원래는 `src.html` 안에 들어있는 Babel(번역기, 약 2.8MB)이 **페이지를 열 때마다 실시간으로** JSX를 번역합니다 — 매번 다운로드 + 번역이 일어나 **느립니다.**
+- 그래서 번역을 **미리 한 번** 끝내두고 Babel을 들어낸 것이 `react.html` 입니다. 브라우저는 실행만 하면 되니 **빠릅니다.**
+
+> **참고:** 일반적인 React 프로젝트(Vite·Next.js 등)도 `소스 → 빌드 산출물(dist)` 로 나뉘는 것이 표준입니다. 다만 그쪽은 빌드를 안 하면 **아예 실행이 안 되는** 반면(브라우저가 JSX·모듈을 직접 못 읽음), 이 프로젝트는 번들러 없이 **단일 HTML 파일**로 동작하도록 만들었기 때문에 빌드는 *필수가 아니라 "속도를 위한 선택"* 입니다. 원본이 단일 HTML 키오스크라, 그 단순한 구조(파일 하나 = 실행)를 유지하려는 의도입니다.
+
+### 빌드 방법 (소스를 수정했을 때)
+**항상 `src.html` 을 고친 뒤** 다시 빌드하세요. `react.html` 을 직접 수정하면 ❌ 다음 빌드 때 덮어써집니다.
 ```
 npm i --no-save @babel/standalone@7
 node build-react.mjs
 ```
-`build-react.mjs` 가 `react.src.html` 의 JSX(`<script type="text/babel">`)를 컴파일하고 Babel CDN 스크립트를 제거해, 외부 빌드 도구 없이 독립 실행되는 `react.html` 을 생성합니다.
+`build-react.mjs` 가 `src.html` 의 JSX를 컴파일하고 Babel 로더를 제거해, 외부 도구 없이 독립 실행되는 `react.html` 을 생성합니다.
 
 ---
 
@@ -69,7 +96,7 @@ node build-react.mjs
 
 ## 5. 파일 구성
 
-### 제출 포함 (React 버전)
+### React 버전 (핵심)
 ```
 Cherry Kiosk react.html        실행본 (빌드 산출물)
 Cherry Kiosk react.src.html    소스 (JSX + 주석, 코드 리뷰용)
@@ -81,18 +108,9 @@ models/model_color/            색상별 3D 모델 (.glb · 19개)
 data/sound_of_switchs/         스위치 타건음 (.mp3 · 7개)
 ```
 
-### 백업 (제출 제외 · git 보관용)
+### 백업 (git 보관용)
 ```
 Cherry Kiosk v2.html           React 전환 직전 바닐라 JS 버전
 Cherry Kiosk.html              최초 버전
 data/cherry_keyboards.xlsx     모델 스펙 원본 데이터 시트
 ```
-
----
-
-## 6. 제출용 압축파일(zip) 만들기
-백업·원본 데이터·git 메타 파일은 `.gitattributes` 의 `export-ignore` 로 자동 제외됩니다. 프로젝트 폴더에서:
-```
-git archive --format=zip -o submission.zip HEAD
-```
-생성된 `submission.zip` 이 곧 제출본입니다 — 위 **"제출 포함"** 목록만 들어갑니다.
