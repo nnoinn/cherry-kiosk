@@ -199,20 +199,6 @@
     background-position: center;
     background-repeat: no-repeat;
   }
-  .landing-keycap {
-    position: absolute;
-    width: 120px; height: 110px;
-    border: 2px solid #d8d8d8;
-    border-radius: var(--r-md);
-    background: transparent;
-    box-shadow: inset 0 -8px 0 -2px #e8e8e8;
-  }
-  .landing-keycap::before {
-    content: ''; position: absolute;
-    top: 8px; left: 8px; right: 8px; bottom: 18px;
-    border: 1.5px solid #e0e0e0;
-    border-radius: var(--r-xs);
-  }
   .landing-content {
     position: absolute; top: 38%; left: 50%;
     transform: translate(-50%, -50%);
@@ -242,33 +228,8 @@
     white-space: nowrap;
   }
   .landing-cta:active { background: var(--cherry-dark); transform: translateX(-50%) scale(.97); }
-  .landing-dots {
-    position: absolute; bottom: 5%;
-    left: 50%; transform: translateX(-50%);
-    display: flex; gap: var(--s-5); align-items: center;
-  }
-  .landing-dot {
-    width: 14px; height: 14px; border-radius: 50%;
-    border: 2px solid var(--border);
-    background: transparent;
-  }
-  .landing-dot.active { border-color: var(--cherry); }
 
   /* ── HEADER ── */
-  .kiosk-header {
-    background: var(--surface);
-    border-bottom: 1.5px solid var(--border);
-    padding: 32px 48px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; z-index: 20;
-  }
-  .header-brand { display: flex; align-items: center; gap: var(--s-5); cursor: pointer; }
-  .header-logo {
-    width: 52px; height: 52px; border-radius: 50%;
-    background: var(--cherry); color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    font-size: var(--t-h3); font-weight: 900; font-style: italic;
-  }
   .header-title { font-size: var(--t-h3); font-weight: 700; letter-spacing: -1px; }
   .header-title span { font-weight: 300; color: var(--fg3); }
 
@@ -382,21 +343,6 @@
     display: flex; flex-direction: column;
   }
 
-  /* legacy page-progress kept for any reference but unused */
-  .page-progress { display: none; }
-  .content-hero { margin-bottom: var(--s-16); text-align: center; }
-  .content-eyebrow {
-    display: inline-block; font-size: var(--t-caption); font-weight: 800; letter-spacing: 6px;
-    color: var(--cherry); margin-bottom: var(--s-6);
-  }
-  .content-title {
-    font-family: 'Pretendard Variable','Pretendard',sans-serif;
-    font-size: var(--t-page-xl); font-weight: 900; color: var(--fg);
-    letter-spacing: -3px; line-height: 1.05; margin-bottom: var(--s-8);
-  }
-  .content-lede {
-    font-size: var(--t-body); color: var(--fg2); line-height: 1.7;
-  }
 
   /* Overview stats */
   .overview-grid {
@@ -532,7 +478,6 @@
     overflow: hidden; align-self: start; width: 100%;
   }
   .timeline-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .timeline-img.empty { background: var(--surface); border-style: dashed; }
 
   /* Tech list (Content 2) */
   .tech-list { display: flex; flex-direction: column; gap: var(--s-6); flex: 1; }
@@ -596,31 +541,6 @@
     font-size: var(--t-h2); font-weight: 500; color: var(--fg2); line-height: 48px;
     text-align: center; margin-bottom: 115px;
   }
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: var(--s-4);
-    background: var(--fg); color: #fff;
-    padding: 32px 72px; border-radius: var(--r-pill);
-    font-size: var(--t-h3); font-weight: 700;
-    border: none; cursor: pointer;
-    box-shadow: 0 24px 60px rgba(0,0,0,.22);
-    transition: background .2s, transform .15s, box-shadow .2s;
-    letter-spacing: -.5px;
-  }
-  .btn-primary:active { background: var(--cherry); transform: scale(.97); box-shadow: 0 10px 32px rgba(197,48,69,.28); }
-  .btn-arrow { font-size: var(--t-h2); }
-
-  .home-features {
-    display: grid; grid-template-columns: repeat(3,1fr); gap: var(--s-6);
-    width: 100%; margin-top: var(--s-20);
-  }
-  .feature-card {
-    background: var(--surface); border-radius: var(--r-lg);
-    padding: 40px 36px; border: 1.5px solid var(--border);
-    display: flex; flex-direction: column; gap: var(--s-4);
-  }
-  .feature-num { font-size: var(--t-caption); font-weight: 700; color: var(--cherry); letter-spacing: 2px; }
-  .feature-title { font-size: var(--t-body); font-weight: 700; color: var(--fg); }
-  .feature-desc { font-size: var(--t-caption); color: var(--fg2); line-height: 1.6; }
 
   /* ── BUILDER SHELL ── */
   #screen-builder { background: #ffffff; }
@@ -708,8 +628,6 @@
     background: var(--surface); border-right: 1.5px solid var(--border);
     display: flex; flex-direction: column; overflow: hidden;
   }
-  .sidebar-header { padding: 32px 28px 24px; border-bottom: 1.5px solid var(--border); }
-  .sidebar-label { font-size: var(--t-body-sm); font-weight: 700; color: var(--fg3); letter-spacing: 2px; text-transform: uppercase; }
   .sidebar-list { flex: 1; overflow-y: auto; padding: 20px 18px; display: flex; flex-direction: column; gap: var(--s-3); }
   /* 라인업 선택 리스트: 9개 모델을 스크롤 없이 화면 높이에 균등 배치 */
   #s1-list { overflow: hidden; gap: var(--s-2); padding: 10px 14px; }
@@ -726,10 +644,6 @@
   }
   .sidebar-item:active { background: var(--cherry-light); transform: scale(.98); }
   .sidebar-item.active { background: var(--cherry-light); border-color: var(--cherry); }
-  .sidebar-item-icon { width: 44px; height: 44px; border-radius: var(--r-sm); background: var(--bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .sidebar-item.active .sidebar-item-icon { background: var(--cherry-mid); }
-  .sidebar-item-icon svg { width: 24px; height: 24px; opacity: .5; }
-  .sidebar-item.active .sidebar-item-icon svg { opacity: 1; color: var(--cherry); }
   .sidebar-item-name { font-size: var(--t-body-sm); font-weight: 700; color: var(--fg2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
   .sidebar-item.active .sidebar-item-name { color: var(--cherry-dark); }
   /* 스위치 분석 사이드바: 화면 높이에 정확히 맞춰 7개 균등 배치 */
@@ -815,8 +729,6 @@
   .spec-item .spec-icon { width: 32px; height: 32px; flex-shrink: 0; color: var(--fg); }
   .spec-item strong { color: var(--fg); font-weight: 700; }
   .spec-item span { color: var(--fg2); font-weight: 400; margin-left: var(--s-2); }
-  .spec-item.highlight strong, .spec-item.highlight span { color: var(--cherry-dark); }
-  .spec-item.highlight .spec-icon { color: var(--cherry); }
 
   /* ── STEP 2 ── */
   .s2-layout { flex: 1; display: flex; overflow: hidden; height: 100%; }
@@ -834,16 +746,6 @@
   }
   .switch-desc { display: none; }
 
-  .audio-btn {
-    display: flex; align-items: center; justify-content: center; gap: var(--s-4);
-    width: 100%; padding: var(--s-8);
-    background: var(--bg); border: 1.5px solid var(--border);
-    border-radius: var(--r-lg); font-size: var(--t-body); font-weight: 700; color: var(--fg);
-    cursor: pointer; transition: all .15s;
-  }
-  .audio-btn:active { background: var(--cherry-light); border-color: var(--cherry); color: var(--cherry); transform: scale(.97); }
-  .audio-play-icon { width: 44px; height: 44px; border-radius: 50%; background: var(--cherry); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .audio-play-icon svg { fill: white; width: 20px; height: 20px; margin-left: var(--s-1); }
 
   .wave-card {
     background: var(--surface); border-radius: var(--r-lg); border: 1.5px solid var(--border); padding: var(--s-8);
@@ -966,18 +868,6 @@
   /* 동그라미 구분자 제거 + 제목 글자("장"/"유") 시작점과 세로정렬 (아이콘 24px + gap 8px = 32px) */
   .sdc-list li { font-size: var(--t-body); color: var(--fg2); padding-left: var(--s-8); line-height: 1.5; white-space: nowrap; }
 
-  .tech-card {
-    background: var(--cherry-light); border: 1.5px solid var(--cherry-mid);
-    border-radius: var(--r-lg); padding: var(--s-8);
-    display: flex; gap: var(--s-5);
-  }
-  .tech-icon { width: 52px; height: 52px; border-radius: var(--r-md); background: var(--cherry); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .tech-icon svg { width: 28px; height: 28px; }
-  .tech-body-title { font-size: var(--t-body-sm); font-weight: 800; color: var(--cherry-dark); margin-bottom: var(--s-3); }
-  .tech-body-desc { font-size: var(--t-body-sm); color: var(--fg2); line-height: 1.65; }
-
-  /* Sidebar switch items */
-  .sw-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
 
   /* ── STEP 3 ── */
   .s3-layout { flex: 1; display: flex; overflow: hidden; height: 100%; }
@@ -1060,10 +950,6 @@
   }
   .key.tall-key { height: calc(72px * 2 + 6px); align-self: flex-start; position: relative; z-index: 3; }
   .key.tall-key .key-dot svg { height: 60px; }
-  .key.zone-hl {
-    box-shadow: 0 0 0 2px rgba(197,48,69,.5), 0 4px 0 #b0b8c5, 0 5px 14px rgba(197,48,69,.2);
-    border-color: transparent;
-  }
   .zone-overlay {
     position: absolute; border-radius: var(--r-md); pointer-events: none; z-index: 0;
     transition: opacity .3s;
@@ -1073,7 +959,6 @@
     border-color: #bbb; box-shadow: 0 4px 0 #aaa, 0 5px 10px rgba(0,0,0,.1);
   }
   .key.mapped .key-label { color: #666; }
-  .key.mapped.zone-hl { box-shadow: 0 0 0 2px rgba(197,48,69,.7), 0 4px 0 #111, 0 5px 16px rgba(197,48,69,.35); }
 
   /* widths (1u=38px, gap=4px) */
   .w1   { width: 72px; }
@@ -1086,13 +971,9 @@
   .w625 { width: 480px; }
   .w05  { width: 36px; }
   .w03  { width: 18px; }
-  .w45  { width: 324px; } /* 4.5 units — 96% 컴팩트 리뷰 페이지 스페이스바 (deprecated) */
-  .w456 { width: 328px; } /* 4.56 units — (deprecated) 65% 리뷰 스페이스바 이전 값 */
   .w579 { width: 417px; } /* 5.79 units — 65% 컴팩트 스페이스바, M키 우측 테두리(702px)에 끝나고 → 가 End/PgDn 우측(1215≈1217) 에 정렬 */
   .w582 { width: 419px; } /* 5.82 units — 96% 리뷰 페이지 스페이스바, row 4 ↑ 와 row 5 ↓ 세로 정렬용 */
   .wg   { width: 24px; background: none !important; border: none !important; box-shadow: none !important; pointer-events: none !important; }
-  .w1h2 { height: 150px !important; }
-  .w1h0 { width: 72px; visibility: hidden; pointer-events: none; }
 
   /* ── STEP 3 REVIEW ── */
   .s3-review { flex: 1; padding: 56px 48px; display: flex; flex-direction: column; gap: var(--s-8); overflow-y: auto; }
@@ -1193,14 +1074,6 @@
   .modal-title { font-size: var(--t-h2); font-weight: 900; color: var(--fg); margin-bottom: var(--s-4); letter-spacing: -1px; }
   .modal-desc { font-size: var(--t-body-sm); color: var(--fg2); line-height: 1.7; margin-bottom: var(--s-12); }
   .modal-desc strong { color: var(--cherry); font-size: var(--t-body); }
-  .modal-btns { display: flex; gap: var(--s-4); }
-  .modal-btn {
-    flex: 1; padding: var(--s-6); border-radius: var(--r-lg);
-    font-size: var(--t-body); font-weight: 700; cursor: pointer; border: none; transition: all .15s;
-  }
-  .modal-btn.secondary { background: var(--bg); color: var(--fg2); }
-  .modal-btn.primary { background: var(--cherry); color: #fff; }
-  .modal-btn.primary:active { background: var(--cherry-dark); transform: scale(.97); }
 
   /* QR modal */
   .qr-box {
@@ -1826,30 +1699,6 @@ function freqBarRanges() {
     const lo = Math.pow(10, lMin + (i / FREQ_BAR_N) * (lMax - lMin));
     const hi = Math.pow(10, lMin + ((i + 1) / FREQ_BAR_N) * (lMax - lMin));
     out.push([lo, hi]);
-  }
-  return out;
-}
-
-// 재생 전 미리 보이는 막대 실루엣(envelope) — freqData 기반 근사 스펙트럼.
-function buildEnvelopeGhost(swId) {
-  const fd = freqData[swId];
-  if (!fd) return null;
-  const N = FREQ_BAR_N;
-  const ranges = freqBarRanges();
-  const peakCenter = Math.log10(Math.sqrt(fd.peak[0] * fd.peak[1]));
-  const peakWidth = Math.max((Math.log10(fd.peak[1]) - Math.log10(fd.peak[0])) / 2, 0.15);
-  const secCenter = Math.log10(Math.sqrt(fd.secondary[0] * fd.secondary[1]));
-  const secWidth = Math.max((Math.log10(fd.secondary[1]) - Math.log10(fd.secondary[0])) / 2, 0.2);
-  const out = new Float32Array(N);
-  for (let i = 0; i < N; i++) {
-    const c = Math.sqrt(ranges[i][0] * ranges[i][1]);
-    const l = Math.log10(c);
-    let v = Math.exp(-Math.pow((l - peakCenter) / peakWidth, 2))
-          + 0.5 * Math.exp(-Math.pow((l - secCenter) / secWidth, 2));
-    if (fd.clickLevel >= 0.9) v += 0.55 * Math.exp(-Math.pow((l - 3.55) / 0.12, 2));
-    else if (fd.clickLevel >= 0.3) v += 0.22 * Math.exp(-Math.pow((l - 3.15) / 0.22, 2));
-    else if (fd.clickLevel <= 0.08) v *= 0.85;
-    out[i] = Math.min(0.9, v);
   }
   return out;
 }

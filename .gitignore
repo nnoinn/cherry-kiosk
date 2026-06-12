@@ -6,6 +6,7 @@ _*.jpg
 _*.webp
 _*.html
 _*.json
+_*.mjs
 
 # 메모리/피드백 (Claude Code 내부)
 memory/
