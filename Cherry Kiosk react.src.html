@@ -298,7 +298,7 @@
   #screen-history { background: #ffffff; overflow-y: auto; }
   #screen-tech { background: #ffffff; overflow: hidden; }
   #screen-tech .content-page { padding: 24px 28px 24px; }
-  .content-header {
+  .content-header {  /* 콘텐츠 페이지(역사·기술) 상단 sticky 헤더 — 홈버튼·제목·여백 3열 */
     position: sticky; top: 0; z-index: 25;
     background: var(--surface);
     border-bottom: 1.5px solid var(--border);
@@ -319,7 +319,7 @@
     text-align: center;
   }
   /* ── CONTENT CTA FOOTER ── */
-  .content-cta-footer {
+  .content-cta-footer {  /* 하단 sticky CTA 바 (커스텀 시작 버튼 담음) */
     background: #fff;
     border-top: 1.5px solid var(--border);
     padding: 32px 56px;
@@ -327,7 +327,7 @@
     flex-shrink: 0;
     position: sticky; bottom: 0; z-index: 25;
   }
-  .btn-cta-custom {
+  .btn-cta-custom {  /* footer의 "나만의 키보드 만들기" 버튼 */
     display: inline-flex; align-items: center; gap: var(--s-4);
     padding: 26px 56px; border-radius: var(--r-md);
     background: var(--cherry); color: #fff;
@@ -338,14 +338,14 @@
   .btn-cta-custom:active { background: var(--cherry-dark); transform: scale(.97); }
   .btn-cta-custom svg { width: 24px; height: 24px; }
 
-  .content-page {
+  .content-page {  /* 콘텐츠 페이지 본문 (헤더·푸터 사이 스크롤 영역) */
     flex: 1; padding: 64px 80px 120px;
     display: flex; flex-direction: column;
   }
 
 
   /* Overview stats */
-  .overview-grid {
+  .overview-grid {  /* 역사 상/하단 통계 카드 3열 그리드 */
     display: grid; grid-template-columns: repeat(3, 280px); gap: var(--s-10);
     margin-bottom: var(--s-14); justify-content: center;
   }
@@ -378,7 +378,7 @@
   }
 
   /* ORIGINAL CHERRY intro block */
-  .origin-block {
+  .origin-block {  /* ORIGINAL CHERRY 브랜드 소개 텍스트 블록 */
     max-width: 956px; margin: 0 auto 96px;
     display: flex; flex-direction: column; gap: var(--s-8);
     text-align: center;
@@ -392,7 +392,7 @@
   }
 
   /* Team CHERRY block */
-  .team-cherry-block { margin-top: var(--s-24); }
+  .team-cherry-block { margin-top: var(--s-24); }  /* Team CHERRY 소개 블록 */
   .team-cherry-title {
     font-family: 'Pretendard Variable','Pretendard',sans-serif;
     font-size: var(--t-page-xl); font-weight: 600; color: var(--fg2);
@@ -408,7 +408,7 @@
   }
 
   /* Story header */
-  .story-header { text-align: center; margin-bottom: var(--s-6); }
+  .story-header { text-align: center; margin-bottom: var(--s-6); }  /* 타임라인 위 "역사 스토리" 헤더 */
   .story-eyebrow {
     font-size: var(--t-body); font-weight: 700; color: var(--fg3);
     letter-spacing: 3px; margin-bottom: var(--s-4);
@@ -420,7 +420,7 @@
   }
 
   /* Timeline */
-  .timeline {
+  .timeline {  /* 역사 타임라인 컨테이너 (가운데 세로 점선 = ::before) */
     position: relative; padding: 80px 0 16px;
   }
   .timeline::before {
@@ -431,7 +431,7 @@
     background-image: linear-gradient(to bottom, var(--cherry) 50%, transparent 50%);
     background-size: 3px 12px;
   }
-  .timeline-cherry {
+  .timeline-cherry {  /* 스크롤에 따라 점선 위를 따라 내려오는 체리 마스코트 */
     position: absolute; left: 50%; top: 24px;
     width: 88px; height: 110px;
     transform: translateX(-50%);
@@ -440,7 +440,7 @@
     filter: drop-shadow(0 4px 8px rgba(0,0,0,.12));
   }
   .timeline-cherry svg, .timeline-cherry img { width: 100%; height: 100%; object-fit: contain; }
-  .timeline-row {
+  .timeline-row {  /* 타임라인 한 행 — 좌/우 교차 배치 (연도+설명 | 이미지) */
     display: grid; grid-template-columns: 1fr 80px 1fr;
     align-items: start; margin-bottom: var(--s-14); position: relative;
   }
@@ -480,8 +480,8 @@
   .timeline-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   /* Tech list (Content 2) */
-  .tech-list { display: flex; flex-direction: column; gap: var(--s-6); flex: 1; }
-  .tech-item {
+  .tech-list { display: flex; flex-direction: column; gap: var(--s-6); flex: 1; }  /* 기술 소개 카드 4개 리스트 */
+  .tech-item {  /* 기술 카드 (좌 이미지 380px | 우 텍스트) */
     background: var(--surface); border-radius: var(--r-xl);
     border: 1.6px solid var(--border); overflow: hidden;
     display: grid; grid-template-columns: 380px 1fr; gap: 0;
@@ -532,12 +532,12 @@
     background: rgba(22, 163, 74, 0.1); padding: 12px 22px; border-radius: var(--r-pill);
     letter-spacing: .2px;
   }
-  .home-headline {
+  .home-headline {  /* 홈 대형 헤드라인 */
     font-size: var(--t-display); font-weight: 900; line-height: 156px;
     letter-spacing: -2.5px; text-align: center; color: var(--fg);
     margin-bottom: 116px;
   }
-  .home-desc {
+  .home-desc {  /* 홈 헤드라인 아래 설명 문구 */
     font-size: var(--t-h2); font-weight: 500; color: var(--fg2); line-height: 48px;
     text-align: center; margin-bottom: 115px;
   }
@@ -548,7 +548,7 @@
   #screen-builder .content-header {
     grid-template-columns: 260px 1fr 0px;
   }
-  .stepper {
+  .stepper {  /* 빌더 상단 단계(1·2·3) 진행 표시기 */
     display: flex; align-items: center; gap: var(--s-3);
     justify-content: center;
   }
@@ -566,17 +566,17 @@
   .step-item.done .step-num { background: var(--bg); border-color: var(--border); color: var(--fg3); font-size: var(--t-caption); }
   .step-divider { width: 40px; height: 1.5px; background: var(--border); }
 
-  #builder-main { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; min-height: 0; }
+  #builder-main { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; min-height: 0; }  /* 빌더 본문 스크롤 영역 (스텝별 콘텐츠 교체) */
 
   /* ── FOOTER ── */
-  .kiosk-footer {
+  .kiosk-footer {  /* 빌더 하단 푸터 — 이전/다음 버튼 */
     background: var(--surface);
     border-top: 1.5px solid var(--border);
     padding: 28px 48px;
     display: flex; align-items: center; justify-content: space-between;
     flex-shrink: 0; z-index: 20;
   }
-  .btn-secondary {
+  .btn-secondary {  /* "이전" 버튼 */
     display: inline-flex; align-items: center; gap: var(--s-3);
     padding: 24px 56px; border-radius: var(--r-md);
     background: var(--bg); border: 1.5px solid var(--border);
@@ -584,7 +584,7 @@
     cursor: pointer; transition: all .15s;
   }
   .btn-secondary:active { background: var(--cherry-light); border-color: var(--cherry); color: var(--cherry); transform: scale(.97); }
-  .btn-next {
+  .btn-next {  /* "다음" 버튼 (마지막 단계에선 .cherry 클래스로 빨강) */
     display: inline-flex; align-items: center; gap: var(--s-3);
     padding: 24px 56px; border-radius: var(--r-md);
     background: var(--fg); color: #fff;
@@ -598,11 +598,11 @@
   .btn-next.disabled { background: var(--border); color: var(--fg3); cursor: not-allowed; box-shadow: none; }
 
   /* ── STEP 1 GRID ── */
-  .s1-grid-wrap { padding: 60px 64px; flex: 1; display: flex; flex-direction: column; }
+  .s1-grid-wrap { padding: 60px 64px; flex: 1; display: flex; flex-direction: column; }  /* Step1 모델 미선택 화면 (9개 그리드) */
   .step-heading { font-size: var(--t-page-md); font-weight: 900; letter-spacing: -2px; margin-bottom: var(--s-4); }
   .step-sub { font-size: var(--t-h3); font-weight: 500; color: var(--fg2); margin-bottom: var(--s-12); }
-  .model-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--s-6); flex: 1; }
-  .model-card {
+  .model-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--s-6); flex: 1; }  /* 모델 카드 3열 그리드 */
+  .model-card {  /* 모델 카드 (이미지 + 이름 + 레이아웃) */
     background: var(--surface); border-radius: var(--r-xl);
     border: 2px solid var(--border); cursor: pointer;
     padding: 32px 28px; display: flex; flex-direction: column;
@@ -622,8 +622,8 @@
   .model-meta { font-size: var(--t-body); color: var(--fg2); line-height: 1.6; }
 
   /* ── STEP 1 DETAIL ── */
-  .s1-detail { flex: 1; display: flex; overflow: hidden; height: 100%; }
-  .sidebar {
+  .s1-detail { flex: 1; display: flex; overflow: hidden; height: 100%; }  /* Step1 모델 선택 후 — 좌 사이드바 | 우 상세 패널 */
+  .sidebar {  /* 좌측 사이드바 (모델/스위치/브러시 목록 공용) */
     width: 260px; flex-shrink: 0;
     background: var(--surface); border-right: 1.5px solid var(--border);
     display: flex; flex-direction: column; overflow: hidden;
@@ -677,14 +677,14 @@
   .sidebar-item.s3-brush-item .sidebar-item-name {
     font-size: var(--t-body) !important; text-align: center;
   }
-  .s3-stem-icon {
+  .s3-stem-icon {  /* Step3 브러시 항목의 스위치 스템 아이콘 */
     width: 56px; height: 56px;
     display: flex; align-items: center; justify-content: center;
   }
   .s3-stem-icon svg { width: 100%; height: 100%; filter: drop-shadow(0 2px 5px rgba(0,0,0,.18)); }
 
-  .detail-panel { flex: 1; padding: var(--s-12); overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-8); }
-  .detail-3d-preview {
+  .detail-panel { flex: 1; padding: var(--s-12); overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-8); }  /* 우측 상세 패널 (3D·색상·스펙, 스크롤) */
+  .detail-3d-preview {  /* 모델 상세 상단 3D 미리보기 박스 */
     width: 100%; height: 360px; flex-shrink: 0;
     border-radius: var(--r-xl); background: #ffffff;
     border: 1.5px solid var(--border);
@@ -693,12 +693,12 @@
     padding: 20px 40px;
     box-sizing: border-box;
   }
-  .detail-card {
+  .detail-card {  /* 상세 정보 카드 (색상 선택·스펙 담는 박스) */
     background: var(--surface); border-radius: var(--r-lg);
     border: 1.5px solid var(--border); padding: var(--s-10);
     display: flex; flex-direction: column; gap: var(--s-8);
   }
-  .section-label {
+  .section-label {  /* 카드 내 섹션 제목 (점 + 라벨) */
     font-size: var(--t-body); font-weight: 700; color: var(--fg);
     letter-spacing: 0; text-transform: uppercase;
     display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4);
@@ -720,8 +720,8 @@
   /* 터치 누름 피드백 — 꾸욱 들어가는 효과(축소 + 살짝 어둡게). transition: all .15s로 부드럽게. */
   .color-btn:active { transform: scale(.95); filter: brightness(0.96); }
 
-  .spec-list { display: flex; flex-direction: column; gap: var(--s-4); }
-  .spec-item {
+  .spec-list { display: flex; flex-direction: column; gap: var(--s-4); }  /* 모델 스펙 목록 */
+  .spec-item {  /* 스펙 한 항목 (아이콘 + 항목명 + 값) */
     display: flex; align-items: center; gap: var(--s-5); font-size: var(--t-body);
     white-space: nowrap;
   }
@@ -731,10 +731,10 @@
   .spec-item span { color: var(--fg2); font-weight: 400; margin-left: var(--s-2); }
 
   /* ── STEP 2 ── */
-  .s2-layout { flex: 1; display: flex; overflow: hidden; height: 100%; }
-  .s2-detail { flex: 1; padding: var(--s-12); overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-6); }
+  .s2-layout { flex: 1; display: flex; overflow: hidden; height: 100%; }  /* Step2 레이아웃 — 좌 스위치 목록 | 우 분석 패널 */
+  .s2-detail { flex: 1; padding: var(--s-12); overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-6); }  /* Step2 우측 분석 패널 (세로 스크롤 — 유일하게 스크롤되는 영역) */
 
-  .switch-header { display: flex; flex-direction: column; gap: var(--s-2); padding-bottom: var(--s-8); border-bottom: 1.5px solid var(--border); }
+  .switch-header { display: flex; flex-direction: column; gap: var(--s-2); padding-bottom: var(--s-8); border-bottom: 1.5px solid var(--border); }  /* 선택 스위치 제목 영역 (색상바·이름·뱃지) */
   .switch-name-row { display: flex; align-items: center; gap: var(--s-4); }
   .switch-color-bar { width: 10px; height: 52px; border-radius: var(--r-xs); flex-shrink: 0; }
   .switch-name { font-size: var(--t-page-md); font-weight: 900; letter-spacing: -2px; white-space: nowrap; }
@@ -747,13 +747,13 @@
   .switch-desc { display: none; }
 
 
-  .wave-card {
+  .wave-card {  /* 타건음 분석 카드 (재생 버튼 + 주파수 그래프) */
     background: var(--surface); border-radius: var(--r-lg); border: 1.5px solid var(--border); padding: var(--s-8);
     display: flex; flex-direction: column; gap: var(--s-5);
   }
   .card-label { font-size: var(--t-h2); font-weight: 700; color: var(--fg); display: flex; justify-content: space-between; align-items: center; }
   .card-label .badge { background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-pill); padding: 10px 24px; font-size: var(--t-h3); color: var(--fg); font-weight: 700; }
-  .freq-play-btn {
+  .freq-play-btn {  /* 타건음 재생 버튼 (펄스 글로우로 클릭 유도) */
     padding: 16px 28px; border-radius: var(--r-md); background: var(--cherry); color: #fff;
     font-size: var(--t-body-sm); font-weight: 700; border: none; cursor: pointer;
     display: flex; align-items: center; gap: var(--s-3);
@@ -766,7 +766,7 @@
     0%, 100% { box-shadow: 0 0 0 0 rgba(197,48,69,.55); }
     50%      { box-shadow: 0 0 0 10px rgba(197,48,69,0); }
   }
-  .freq-graphs {
+  .freq-graphs {  /* 주파수 그래프 영역 — 좌 선그래프(2.6) | 우 막대(1) */
     display: grid; grid-template-columns: 2.6fr 1fr; gap: var(--s-5);
     background: #ffffff; border-radius: var(--r-md); padding: 22px 20px 14px;
     position: relative;
@@ -804,7 +804,7 @@
     font-size: var(--t-body-sm); font-weight: 600; color: var(--fg3);
     pointer-events: none;
   }
-  .freq-peak-pill {
+  .freq-peak-pill {  /* 피크 주파수 말풍선 (그래프 위 떠있는 표식) */
     position: absolute; transform: translate(-50%, -130%);
     background: #fff; border: 1.5px solid var(--border);
     border-radius: var(--r-pill); padding: 8px 16px;
@@ -838,16 +838,16 @@
   .freq-info-title { font-size: var(--t-body); font-weight: 800; color: var(--fg); line-height: 1.2; }
   .freq-info-desc { font-size: var(--t-body); color: var(--fg3); line-height: 1.4; white-space: pre-line; }
 
-  .force-card {
+  .force-card {  /* 포스커브(작동력 곡선) 카드 */
     background: var(--surface); border-radius: var(--r-lg); border: 1.5px solid var(--border); padding: var(--s-8);
     display: flex; flex-direction: column; gap: var(--s-4);
   }
   /* 포스커브 설명 — 스위치 설명 한 줄(.sdc-summary)과 동일 글꼴/사이즈 */
   /* margin-top: -8px → 제목과의 간격을 .force-card gap(16px)의 절반(8px)로 축소 */
   .force-curve-desc { font-size: var(--t-h3); color: var(--fg2); line-height: 1.6; margin-top: -8px; }
-  #s2-svg { width: 100%; height: 480px; display: block; }
+  #s2-svg { width: 100%; height: 480px; display: block; }  /* 포스커브 SVG (7종 스위치 곡선, 선택 스위치만 진하게) */
 
-  .switch-detail-card {
+  .switch-detail-card {  /* 스위치 상세 카드 (요약·스펙 4종·장점/유의사항) */
     background: var(--surface); border-radius: var(--r-lg); border: 1.5px solid var(--border);
     padding: var(--s-8); display: flex; flex-direction: column; gap: var(--s-6);
   }
@@ -857,7 +857,7 @@
   .sdc-spec-label { font-size: var(--t-body-sm); font-weight: 700; color: var(--fg3); letter-spacing: 0; text-transform: none; margin-bottom: var(--s-2); }
   .sdc-spec-value { font-size: var(--t-h3); font-weight: 800; color: var(--fg); }
   /* specs(4열 1fr)와 동일 그리드 → 장점은 1~2열, 유의사항은 3~4열(=총이동거리 박스 좌측에 정렬) */
-  .sdc-pros-cons { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-3); }
+  .sdc-pros-cons { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-3); }  /* 장점(1~2열) / 유의사항(3~4열) */
   .sdc-pros-cons > div:nth-child(1) { grid-column: 1 / 3; }
   .sdc-pros-cons > div:nth-child(2) { grid-column: 3 / 5; overflow: visible; }
   .sdc-pros-cons > div:nth-child(2) .sdc-list li { white-space: nowrap; }
@@ -870,9 +870,9 @@
 
 
   /* ── STEP 3 ── */
-  .s3-layout { flex: 1; display: flex; overflow: hidden; height: 100%; }
-  .s3-detail { flex: 1; padding: 44px 36px; overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-6); position: relative; }
-  .s3-tip-btn {
+  .s3-layout { flex: 1; display: flex; overflow: hidden; height: 100%; }  /* Step3 레이아웃 — 좌 브러시(스위치) | 우 키보드 */
+  .s3-detail { flex: 1; padding: 44px 36px; overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-6); position: relative; }  /* Step3 우측 영역 (키보드 + 팁·초기화 버튼) */
+  .s3-tip-btn {  /* 우상단 추천 팁 버튼 (도움말 모달 염) */
     position: absolute; top: 20px; right: 20px;
     display: flex; align-items: center; gap: var(--s-3);
     padding: 0 28px; border-radius: var(--r-pill);
@@ -897,7 +897,7 @@
   .s3-reset-btn svg { width: 44px; height: 44px; }
   .s3-reset-btn:active { color: var(--cherry); transform: scale(.92); }
 
-  .keyboard-wrap {
+  .keyboard-wrap {  /* 분할 키보드 영역 컨테이너 (위/아래 두 반쪽) */
     flex: 1; min-height: 0;
     background: linear-gradient(145deg, #f0f2f5, #e4e8ef);
     border-radius: var(--r-xl); border: 1.5px solid var(--border);
@@ -906,7 +906,7 @@
     position: relative;
   }
   /* zoom shrinks both visual rendering and layout box, so two halves fit in column width. */
-  .kb-half { flex-shrink: 0; zoom: 0.68; display: flex; justify-content: center; }
+  .kb-half { flex-shrink: 0; zoom: 0.68; display: flex; justify-content: center; }  /* 분할 키보드 반쪽 (스페이스바 끝 X좌표 기준으로 위/아래로 나뉨) */
   /* Right (bottom) keyboard right-aligns its rows so the right edges line up
      like a clean cut from the original full-width keyboard. */
   .kb-half:last-child { justify-content: center; }
@@ -915,7 +915,7 @@
   .kb-half.kb-single .kb-row { justify-content: flex-start; }
 
   /* keyboard */
-  .kb-shell {
+  .kb-shell {  /* 키보드 케이스(외형) */
     background: #e8e8e8; border-radius: var(--r-lg);
     padding: var(--s-5); box-shadow: 0 24px 64px rgba(0,0,0,.2);
     border-bottom: 12px solid #d0d0d0;
@@ -923,7 +923,7 @@
   .kb-plate { background: #f0f0f0; border-radius: var(--r-md); padding: var(--s-3); display: flex; flex-direction: column; gap: var(--s-2); position: relative; }
   .kb-row { display: flex; gap: var(--s-2); height: 72px; align-items: flex-start; }
 
-  .key {
+  .key {  /* 개별 키 (클릭 시 같은 data-zone 전체가 현재 브러시 색으로 칠해짐) */
     height: 72px; border-radius: var(--r-sm);
     background: linear-gradient(180deg, #fff 0%, #f1f5f9 100%);
     box-shadow: 0 4px 0 #b0b8c5, 0 5px 10px rgba(0,0,0,.12);
@@ -935,7 +935,7 @@
   .key:active { transform: translateY(4px); box-shadow: 0 0 0 #b0b8c5; }
   .key-label { font-size: var(--t-caption); font-weight: 800; color: #555; line-height: 1; pointer-events: none; transition: opacity .2s; }
   .key.mapped .key-label { opacity: 0; }
-  .key-dot {
+  .key-dot {  /* 키에 찍히는 스위치 스템 아이콘 (칠해진 색 표시) */
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
     pointer-events: none; opacity: 0; color: transparent;
@@ -950,7 +950,7 @@
   }
   .key.tall-key { height: calc(72px * 2 + 6px); align-self: flex-start; position: relative; z-index: 3; }
   .key.tall-key .key-dot svg { height: 60px; }
-  .zone-overlay {
+  .zone-overlay {  /* 구역(zone) 강조 오버레이 (해당 zone 키들 뒤 배경) */
     position: absolute; border-radius: var(--r-md); pointer-events: none; z-index: 0;
     transition: opacity .3s;
   }
@@ -976,8 +976,8 @@
   .wg   { width: 24px; background: none !important; border: none !important; box-shadow: none !important; pointer-events: none !important; }
 
   /* ── STEP 3 REVIEW ── */
-  .s3-review { flex: 1; padding: 56px 48px; display: flex; flex-direction: column; gap: var(--s-8); overflow-y: auto; }
-  .review-3d {
+  .s3-review { flex: 1; padding: 56px 48px; display: flex; flex-direction: column; gap: var(--s-8); overflow-y: auto; }  /* 견적서(리뷰) 페이지 — 완성 3D + 구성 정보 */
+  .review-3d {  /* 완성된 키보드 3D 미리보기 박스 */
     flex: 1; min-height: 500px; border-radius: var(--r-xl);
     background: linear-gradient(145deg, #f0f2f5, #e4e8ef);
     border: 1.5px solid var(--border);
@@ -987,7 +987,7 @@
 
   /* ── REVIEW 페이지 — 가로형 2박스 스택 ── */
   .review-info-stack { display: flex; flex-direction: column; gap: var(--s-5); }
-  .review-info-card {
+  .review-info-card {  /* 리뷰 정보 카드 (모델/스위치 구성 요약) */
     background: var(--surface); border-radius: var(--r-lg); padding: 28px 32px;
     border: 1.5px solid var(--border);
     display: flex; align-items: center; gap: var(--s-8);
@@ -1007,7 +1007,7 @@
   .ric-img { width: 100%; height: auto; display: block; }
 
   /* 리뷰 페이지 통합 키보드 — 빌드 화면 키보드를 단일 블록 + 작은 스케일로 표시 */
-  .ric-kb-wrap {
+  .ric-kb-wrap {  /* 리뷰용 통합 키보드 (분할 없이 단일 블록, 축소 표시) */
     width: 100%;
     display: flex; justify-content: center; align-items: flex-start;
     overflow-x: auto;
@@ -1048,7 +1048,7 @@
   .ric-kb-single .kb-section-numpad { justify-self: end; }
 
   /* ── MODALS ── */
-  #modal-layer {
+  #modal-layer {  /* 모달 오버레이 레이어 (블러 배경, 확인·QR·로딩·도움말 공용) */
     position: absolute; inset: 0;
     background: rgba(0,0,0,.6); backdrop-filter: blur(16px);
     display: flex; align-items: center; justify-content: center;
@@ -1056,7 +1056,7 @@
     transition: opacity .25s;
   }
   #modal-layer.open { opacity: 1; pointer-events: all; }
-  .modal-box {
+  .modal-box {  /* 모달 박스 (내용에 따라 아이콘/제목/설명/버튼 구성) */
     background: var(--surface); border-radius: var(--r-2xl);
     padding: 64px 56px; max-width: 680px; width: 100%;
     box-shadow: 0 48px 100px rgba(0,0,0,.35);
@@ -1080,7 +1080,7 @@
     background: var(--surface); padding: var(--s-6); border-radius: var(--r-lg);
     border: 1.5px solid var(--border); display: inline-block; margin-bottom: var(--s-8);
   }
-  .modal-full-btn {
+  .modal-full-btn {  /* QR 모달 "처음으로" 전체폭 버튼 */
     width: 100%; padding: var(--s-8); border-radius: var(--r-lg);
     background: var(--fg); color: #fff; font-size: var(--t-body); font-weight: 700;
     border: none; cursor: pointer; transition: background .15s;
@@ -1088,7 +1088,7 @@
   .modal-full-btn:active { background: var(--cherry); transform: scale(.97); }
 
   /* 3D 모델 로딩 모달 — 프로그레스 바 */
-  .load-progress-bar {
+  .load-progress-bar {  /* 3D 로딩 진행 막대 */
     width: 100%; height: 14px; background: var(--bg-soft, #f6f7fa);
     border-radius: var(--r-xs); overflow: hidden;
     border: 1.5px solid var(--border);
@@ -1118,7 +1118,7 @@
   @keyframes load-spin { to { transform: rotate(360deg); } }
 
   /* Help modal */
-  .help-modal { text-align: left; }
+  .help-modal { text-align: left; }  /* 도움말(추천 팁) 모달 */
   .help-modal .modal-title { text-align: left; }
   .help-list { display: flex; flex-direction: column; gap: var(--s-5); margin-bottom: 0; }
   .help-item { background: var(--bg); border-radius: var(--r-lg); padding: 28px 30px; border: 1.5px solid var(--border); }
