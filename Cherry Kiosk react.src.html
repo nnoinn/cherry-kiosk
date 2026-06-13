@@ -66,11 +66,11 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    /* ── Colors ── */
-    --cherry: #c53045;
-    --cherry-dark: #a02638;
-    --cherry-light: #fdf0f2;
-    --cherry-mid: #f5c6cc;
+    /* ── Colors ── 브랜드 레드 4단계 + 시맨틱 텍스트/배경 */
+    --cherry: #c53045;       /* 메인 브랜드 레드 — CTA·강조·active 테두리 */
+    --cherry-dark: #a02638;  /* 진한 레드 — 버튼 눌림(active) 상태 */
+    --cherry-light: #fdf0f2; /* 옅은 핑크 — 선택 항목 배경·eyebrow 라벨 */
+    --cherry-mid: #f5c6cc;   /* 중간 핑크 — active 아이콘 배경 */
     /* Semantic gray — 모두 --gray-* 원시 토큰을 참조(단일 출처).
        Slate 팔레트 기준으로 기존 hex 대비 매우 미세한 cooler shift 발생. */
     --fg:      var(--gray-900);  /* 본문 주 텍스트 */
@@ -94,39 +94,39 @@
     --t-caption:    18px;  /* 캡션·뱃지 (15/16/17 흡수) */
     --t-micro:      14px;  /* 미세 표기 (그래프 숫자) */
 
-    /* ── Font weight ── */
-    --fw-regular:   500;
-    --fw-medium:    600;
-    --fw-bold:      700;
-    --fw-extrabold: 800;
-    --fw-black:     900;
+    /* ── Font weight ── Pretendard Variable 가중치 (기본 굵기를 500부터 시작) */
+    --fw-regular:   500;  /* 일반 본문 */
+    --fw-medium:    600;  /* 약한 강조 */
+    --fw-bold:      700;  /* 버튼·소제목 */
+    --fw-extrabold: 800;  /* 카드 타이틀 */
+    --fw-black:     900;  /* 페이지 헤더·로고 */
 
     /* ── Spacing (4px base, 28·36은 의도적으로 생략해 24/32/40으로 정렬) ── */
-    --s-1:   4px;
-    --s-2:   8px;
-    --s-3:  12px;
-    --s-4:  16px;
-    --s-5:  20px;
-    --s-6:  24px;
-    --s-8:  32px;
-    --s-10: 40px;
-    --s-12: 48px;
-    --s-14: 56px;
-    --s-16: 64px;
-    --s-20: 80px;
-    --s-24: 96px;
+    --s-1:   4px;   /* 아이콘-텍스트 등 미세 간격 */
+    --s-2:   8px;   /* 인접 요소 좁은 간격 */
+    --s-3:  12px;   /* 리스트 항목 간격 */
+    --s-4:  16px;   /* 요소 간 기본 간격 */
+    --s-5:  20px;   /* 버튼 내부 가로 패딩 */
+    --s-6:  24px;   /* 카드 내부 패딩 */
+    --s-8:  32px;   /* 카드 간 간격 */
+    --s-10: 40px;   /* 블록 간 간격 */
+    --s-12: 48px;   /* 섹션 내 여백 */
+    --s-14: 56px;   /* 섹션 간 간격 */
+    --s-16: 64px;   /* 큰 섹션 간격 */
+    --s-20: 80px;   /* 페이지 상하 여백 */
+    --s-24: 96px;   /* 페이지 최상위 여백 */
 
-    /* ── Gray scale (Slate 기반 원시 토큰) ── */
-    --gray-50:  #f8fafc;
-    --gray-100: #f1f5f9;
-    --gray-200: #e2e8f0;
-    --gray-300: #cbd5e1;
-    --gray-400: #94a3b8;
-    --gray-500: #64748b;
-    --gray-600: #475569;
-    --gray-700: #334155;
-    --gray-800: #1e293b;
-    --gray-900: #0f172a;
+    /* ── Gray scale (Slate 기반 원시 토큰) ── 시맨틱(--fg/--fg2/--fg3/--border)이 참조하는 단일 출처 */
+    --gray-50:  #f8fafc;  /* 최상위 밝기 */
+    --gray-100: #f1f5f9;  /* 옅은 배경 */
+    --gray-200: #e2e8f0;  /* = --border (경계선) */
+    --gray-300: #cbd5e1;  /* 비활성 경계 */
+    --gray-400: #94a3b8;  /* = --fg3 (흐린 텍스트) */
+    --gray-500: #64748b;  /* 중간 회색 */
+    --gray-600: #475569;  /* = --fg2 (보조 텍스트) */
+    --gray-700: #334155;  /* 진한 회색 */
+    --gray-800: #1e293b;  /* 거의 검정 */
+    --gray-900: #0f172a;  /* = --fg (본문 주 텍스트) */
 
     /* ── Radius ── */
     --r-xs:    8px;   /* 3·6·7·8 흡수 */
@@ -152,7 +152,7 @@
     width: 100vw; height: 100vh;
     display: flex; align-items: center; justify-content: center;
   }
-  #kiosk {
+  #kiosk {  /* 1080×1920 고정 캔버스 — transform: scale로 뷰포트에 맞춤 */
     width: 1080px; height: 1920px;
     position: relative;
     overflow: hidden;
@@ -165,7 +165,7 @@
   #root { display: contents; }
 
   /* ── TRANSITIONS ── */
-  .screen {
+  .screen {  /* 모든 화면 공통 베이스 — 기본 숨김, .active일 때만 표시 */
     position: absolute; inset: 0;
     display: flex; flex-direction: column;
     opacity: 0; pointer-events: none;
@@ -190,7 +190,7 @@
   }
   /* margin-left 음수 — 로고 SVG 자체 좌측 여백까지 당겨 텍스트에 밀착 */
   .landing-cherry-icon { width: 80px; height: 80px; margin-top: -4px; margin-left: -14px; }
-  .landing-bg-kb {
+  .landing-bg-kb {  /* 배경 키캡 이미지 (콘텐츠 뒤, 클릭 통과) */
     position: absolute; inset: 0;
     pointer-events: none;
     overflow: hidden;
@@ -199,23 +199,23 @@
     background-position: center;
     background-repeat: no-repeat;
   }
-  .landing-content {
+  .landing-content {  /* 중앙 타이틀 묶음 (CHERRY + KEYBOARD) */
     position: absolute; top: 38%; left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2; text-align: center;
     display: flex; flex-direction: column; align-items: center;
   }
-  .landing-title-cherry {
+  .landing-title-cherry {  /* "CHERRY" 대형 타이틀 (가로 1.2배 확대) */
     font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
     font-size: var(--t-hero); font-weight: 900; color: var(--fg); letter-spacing: -2px; line-height: 1;
     transform: scaleX(1.2); transform-origin: center;
   }
-  .landing-title-kb {
+  .landing-title-kb {  /* 서브 타이틀 "KEYBOARD" */
     font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
     font-size: var(--t-page-xl); font-weight: 700; color: var(--fg); letter-spacing: 4px; margin-top: var(--s-4);
     transform: scaleX(1.2); transform-origin: center;
   }
-  .landing-cta {
+  .landing-cta {  /* "터치하여 시작" 시작 버튼 */
     position: absolute; top: 58%; left: 50%;
     transform: translateX(-50%);
     display: inline-flex; align-items: center; justify-content: center;
@@ -253,7 +253,7 @@
     align-items: center;
     padding: 200px 0 0;
   }
-  .home-eyebrow {
+  .home-eyebrow {  /* 홈 상단 pill 라벨 (분홍 배경) */
     display: inline-flex; align-items: center; justify-content: center;
     background: var(--cherry-light); color: var(--cherry);
     white-space: nowrap;
@@ -264,11 +264,11 @@
 
   /* ── HOME HUB ── */
   .home-hub { padding: 200px 0 0; justify-content: flex-start; }
-  .hub-cards {
+  .hub-cards {  /* 3개 허브 카드 세로 묶음 */
     display: flex; flex-direction: column; gap: var(--s-10);
     width: 855px; margin-top: 0;
   }
-  .hub-card {
+  .hub-card {  /* 허브 카드 (텍스트 | 화살표 2열 그리드) */
     background: var(--surface); border-radius: var(--r-xl);
     border: 1.6px solid var(--border); cursor: pointer;
     width: 855px; height: 180px;
@@ -284,7 +284,7 @@
   .hub-card-body { display: flex; flex-direction: column; gap: var(--s-3); }
   .hub-card-title { font-size: var(--t-h1); font-weight: 900; color: var(--fg); letter-spacing: -1.5px; line-height: 48.4px; }
   .hub-card-desc { font-size: var(--t-h3); font-weight: 400; color: var(--fg2); line-height: 37.2px; }
-  .hub-card-cta {
+  .hub-card-cta {  /* 카드 우측 화살표 버튼 */
     display: flex; align-items: center; justify-content: center;
     width: 80px; height: 80px;
     background: var(--cherry); border: none;
