@@ -15,7 +15,7 @@
     - 3D: <model-viewer> 웹컴포넌트로 GLB 렌더.
     - 오디오: Web Audio API(AnalyserNode)로 타건음 FFT 실시간 시각화.
     - 폰트: Pretendard(jsdelivr CDN). 폴백 sans-serif.
-    - 화면 캔버스는 1080×1920 고정(세로 키오스크), transform:scale로 뷰포트에 맞춤.
+    - 화면 캔버스는 1080×1920 고정(세로 키오스크) — autoscale 없이 항상 1:1로 표시.
 
   ▣ 화면 흐름 (SPA — App의 screen state로 전환, URL 불변)
     landing → home → { history | tech | builder }
@@ -152,7 +152,7 @@
     width: 100vw; height: 100vh;
     display: flex; align-items: center; justify-content: center;
   }
-  #kiosk {  /* 1080×1920 고정 캔버스 — transform: scale로 뷰포트에 맞춤 */
+  #kiosk {  /* 1080×1920 고정 캔버스 (autoscale 없음 — 항상 이 크기로 표시) */
     width: 1080px; height: 1920px;
     position: relative;
     overflow: hidden;
@@ -2961,20 +2961,11 @@ function App() {
   );
 }
 
-/* ───── SCALE: 1080x1920 캔버스를 뷰포트에 맞춰 균등 스케일 ───── */
-function scaleKiosk() {
-  const kiosk = document.getElementById('kiosk');
-  if (!kiosk) return;
-  const scaleX = window.innerWidth / 1080;
-  const scaleY = window.innerHeight / 1920;
-  const scale = Math.min(scaleX, scaleY);
-  kiosk.style.transform = `scale(${scale})`;
-  // v2와 동일한 세로 위치 보정 — flex 중앙정렬 + marginTop으로 정수 픽셀 정렬 유지
-  kiosk.style.marginTop = `${(window.innerHeight - 1920 * scale) / 2}px`;
-}
-window.addEventListener('resize', scaleKiosk);
-window.addEventListener('load', scaleKiosk);
-scaleKiosk();
+/* ───── 1080×1920 고정 (autoscale 없음) ─────
+   교수님 요청으로 뷰포트 맞춤 스케일(scaleKiosk)을 제거했다. 캔버스를 1080×1920
+   픽셀 그대로 고정 표시한다 — 1080×1920 디스플레이(또는 Chrome DevTools 디바이스
+   툴바를 1080×1920으로 설정)에서 1:1로 정확히 보인다. 그보다 작은 화면에서는
+   #stage-wrap(flex 중앙정렬) 기준으로 가장자리가 잘릴 수 있다. */
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script>
