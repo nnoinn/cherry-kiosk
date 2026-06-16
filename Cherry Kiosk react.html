@@ -778,10 +778,13 @@
     animation: freqPlayPulse 1.8s ease-in-out infinite;
   }
   .freq-play-btn:active { filter: brightness(0.92); transform: scale(.97); animation: none; }
-  /* 테두리 반짝 — 클릭 유도용 펄스 글로우 (드롭섀도우 없이 링만) */
+  /* 테두리 반짝 — 클릭 유도용 펄스 글로우(링만). 레이더 핑처럼 밖으로만 퍼지며
+     옅어져 사라진다(안으로 되돌아오는 단계 없음). opacity를 0에서 시작·복귀시켜
+     사이클 경계에서 깜빡임이 없게 함. */
   @keyframes freqPlayPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(197,48,69,.55); }
-    50%      { box-shadow: 0 0 0 10px rgba(197,48,69,0); }
+    0%   { box-shadow: 0 0 0 0 rgba(197,48,69,0); }
+    20%  { box-shadow: 0 0 0 0 rgba(197,48,69,.5); }   /* 테두리에 진한 링이 차오름 */
+    100% { box-shadow: 0 0 0 16px rgba(197,48,69,0); } /* 밖으로 퍼지며 옅어져 사라짐 */
   }
   .freq-graphs {  /* 주파수 그래프 영역 — 좌 선그래프(2.6) | 우 막대(1) */
     display: grid; grid-template-columns: 2.6fr 1fr; gap: var(--s-5);
