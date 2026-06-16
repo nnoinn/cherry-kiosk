@@ -1135,14 +1135,14 @@
   }
   .modal-close:active { background: var(--cherry-light); color: var(--cherry); border-color: var(--cherry-mid); transform: scale(.97); }
 
-  /* 터치 눌림 피드백 강화 — 색상 버튼처럼 "눌렀을 때 살짝 어두워지는" 느낌을
-     주요 버튼/카드 전체에 공통 적용. 기존 :active(scale·색 변화)는 그대로 두고
-     밝기(brightness)만 더해, 터치 순간에도 확실히 눌린 게 보이게 한다. */
-  .landing-cta:active, .home-btn:active, .hub-card:active, .btn-cta-custom:active,
-  .btn-secondary:active, .btn-next:active, .model-card:active, .sidebar-item:active,
-  .s3-tip-btn:active, .s3-reset-btn:active, .modal-full-btn:active, .modal-close:active {
-    filter: brightness(0.93);
-  }
+  /* 터치 눌림 피드백 — 터치는 CSS :active가 순간적으로만 발동해, 액션 버튼(특히
+     이미 빨강 배경인 시작하기·커스텀하러가기·메인 화살표)이 눌려 보이지 않는다.
+     아래 스크립트가 touchstart에 .tap-active를 붙이고 touchend 150ms 뒤 떼므로,
+     터치에서도 충분히 오래(축소+어둡게) 눌림이 보인다. 마우스는 기존 버튼별
+     :active로 처리되고, .tap-active는 터치 전용이다. */
+  .tap-active { transform: scale(0.95); filter: brightness(0.85); transition: transform .1s ease, filter .1s ease; }
+  .landing-cta.tap-active { transform: translateX(-50%) scale(0.95); }  /* 중앙정렬 translateX 유지 */
+  .hub-card.tap-active .hub-card-cta { filter: brightness(0.8); }       /* 카드를 누르면 내부 화살표도 어둡게 */
 
   /* scrollbar */
   ::-webkit-scrollbar { width: 5px; }
@@ -6515,12 +6515,31 @@ function App() {
    툴바를 1080×1920으로 설정)에서 1:1로 정확히 보인다. 그보다 작은 화면에서는
    #stage-wrap(flex 중앙정렬) 기준으로 가장자리가 잘릴 수 있다. */
 
-// 터치(키오스크·DevTools 디바이스 모드)에서도 버튼 :active(눌림) 효과가 즉시 발동하도록
-// 빈 touchstart 리스너를 등록한다. 터치 브라우저는 touchstart 핸들러가 있어야 :active를
-// 바로 적용하는 동작(quirk)이 있어서, 이 한 줄로 모든 :active 피드백(17곳)이 터치에서 살아난다.
-window.addEventListener('touchstart', function () {}, {
-  passive: true
-});
+// 터치 눌림 피드백 — 터치는 CSS :active가 순간적으로만 발동해 액션 버튼(특히 빨강 배경)이
+// 눌려 보이지 않는다. 눌린 요소에 .tap-active를 붙이고 touchend 후 150ms 유지했다 떼서,
+// 터치에서도 마우스처럼 눌림이 충분히 보이게 한다(.hub-card를 누르면 내부 화살표에도 적용).
+// 선택형(color-btn·sidebar-item)·키(key)는 선택 상태/색칠로 이미 피드백이 남아 제외.
+(function () {
+  var SEL = '.landing-cta, .hub-card, .btn-cta-custom, .home-btn, .btn-secondary, .btn-next, .model-card, .s3-tip-btn, .s3-reset-btn, .modal-full-btn, .modal-close, .freq-play-btn';
+  document.addEventListener('touchstart', function (e) {
+    var el = e.target.closest(SEL);
+    if (el) el.classList.add('tap-active');
+  }, {
+    passive: true
+  });
+  function clearTap() {
+    setTimeout(function () {
+      var els = document.querySelectorAll('.tap-active');
+      for (var i = 0; i < els.length; i++) els[i].classList.remove('tap-active');
+    }, 150);
+  }
+  document.addEventListener('touchend', clearTap, {
+    passive: true
+  });
+  document.addEventListener('touchcancel', clearTap, {
+    passive: true
+  });
+})();
 ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
 </script>
 
