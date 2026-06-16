@@ -1135,6 +1135,15 @@
   }
   .modal-close:active { background: var(--cherry-light); color: var(--cherry); border-color: var(--cherry-mid); transform: scale(.97); }
 
+  /* 터치 눌림 피드백 강화 — 색상 버튼처럼 "눌렀을 때 살짝 어두워지는" 느낌을
+     주요 버튼/카드 전체에 공통 적용. 기존 :active(scale·색 변화)는 그대로 두고
+     밝기(brightness)만 더해, 터치 순간에도 확실히 눌린 게 보이게 한다. */
+  .landing-cta:active, .home-btn:active, .hub-card:active, .btn-cta-custom:active,
+  .btn-secondary:active, .btn-next:active, .model-card:active, .sidebar-item:active,
+  .s3-tip-btn:active, .s3-reset-btn:active, .modal-full-btn:active, .modal-close:active {
+    filter: brightness(0.93);
+  }
+
   /* scrollbar */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
