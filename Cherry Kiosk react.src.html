@@ -3016,6 +3016,24 @@ function App() {
   document.addEventListener('touchcancel', clearTap, { passive: true });
 })();
 
+// 무인 키오스크 유휴 복귀 — 90초 동안 입력(터치·클릭·키)이 없으면 랜딩으로 자동 복귀해
+// 다음 사용자에게 초기 화면을 보여준다. 입력이 있으면 타이머를 리셋한다. 이미 랜딩
+// 화면이면 불필요한 새로고침을 피하려 reload 없이 타이머만 다시 건다.
+// (견적서 QR 모달의 20초 자동복귀와는 별개 — 그쪽이 더 짧아 먼저 동작한다.)
+(function () {
+  var IDLE_MS = 90000;
+  var timer = null;
+  function onIdle() {
+    if (document.querySelector('#screen-landing.active')) { arm(); return; }  // 랜딩이면 reload 생략
+    location.reload();
+  }
+  function arm() { clearTimeout(timer); timer = setTimeout(onIdle, IDLE_MS); }
+  ['pointerdown', 'keydown'].forEach(function (ev) {
+    document.addEventListener(ev, arm, { passive: true });
+  });
+  arm();
+})();
+
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script>
 
