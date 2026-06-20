@@ -2826,7 +2826,7 @@ function Step3({ brush, onSelectBrush, model }) {
       <div className="s3-detail">
         <div>
           <div className="step-heading">커스텀 스위치 맵핑</div>
-          <div className="step-sub">스위치를 선택하여 하단 기판을 터치하여 체결하세요.</div>
+          <div className="step-sub">스위치를 선택하고 하단 기판을 터치하여 체결하세요.</div>
         </div>
         <div className="keyboard-wrap" id="kb-wrap" onClick={handleKbClick}>
           <button className="s3-reset-btn" onClick={resetMapping} aria-label="맵핑 초기화">
@@ -2941,7 +2941,7 @@ function BuilderScreen({ onHome }) {
     <div className="screen active" id="screen-builder">
       <div className="content-header">
         <button className="home-btn" onClick={onHome} aria-label="홈으로"><HomeIcon /></button>
-        <Stepper step={step} />
+        <Stepper step={isReview ? 4 : step} />{/* 리뷰(빌드 완성)에선 step=4 → 3단계까지 모두 완료(✓) 표시 */}
         <div></div>
       </div>
       <div id="builder-main">
